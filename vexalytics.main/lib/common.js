@@ -66,18 +66,23 @@ async function gemini({ key, model, system, contents, maxTokens = 8192, temperat
     if (thinking) generationConfig.thinkingConfig = { thinkingLevel: 'low' };
     return post(JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig }), ms);
   };
-  let out; const t0 = Date.now();
+  // Total budget stays under Vercel's 60 s function limit, so we always return a readable message instead of Vercel's HTML error page.
+  const t0 = Date.now(), left = () => 50000 - (Date.now() - t0);
+  let out;
   try {
-    try { out = await call(!plain, 28000); }
-    catch (e) { if (e.name !== 'TimeoutError') throw e; out = await call(false, 25000); } // one retry without the thinking option
-    // Bad thinking option for this model, or overloaded: retry once plain
+    try { out = await call(!plain, Math.min(28000, left())); }
+    catch (e) { if (e.name !== 'TimeoutError' || left() < 6000) throw e; out = await call(false, left()); } // one retry without the thinking option
+    // Overloaded (429/5xx) or bad thinking option: one short pause, then one plain retry if time allows
     if (!out.r.ok && (out.r.status === 400 || out.r.status === 429 || out.r.status >= 500)) {
       const m = (out.j.error && out.j.error.message) || '';
-      if (/think/i.test(m) || out.r.status >= 500 || out.r.status === 429) out = await call(false, 25000);
+      if ((/think/i.test(m) || out.r.status >= 500 || out.r.status === 429) && left() > 8000) {
+        await new Promise(res => setTimeout(res, out.r.status === 400 ? 0 : 1500));
+        try { out = await call(false, left()); } catch (e) { /* keep the first answer from Google if the retry stalls */ if (e.name !== 'TimeoutError') throw e; }
+      }
     }
   } catch (e) {
     const why = [e.name, e.code, e.cause && (e.cause.code || e.cause.message)].filter(Boolean).join(' / ');
-    throw new Error((e.name === 'TimeoutError' ? 'Gemini did not answer in time' : 'Could not reach Gemini') + ' [build v5, model ' + model + ', ' + why + ', after ' + (Date.now() - t0) + ' ms]');
+    throw new Error((e.name === 'TimeoutError' ? 'Gemini did not answer in time' : 'Could not reach Gemini') + ' [build v6, model ' + model + ', ' + why + ', after ' + (Date.now() - t0) + ' ms]');
   }
   const { r, j } = out;
   if (!r.ok) throw new Error((j.error && j.error.message) || 'Gemini error ' + r.status);
