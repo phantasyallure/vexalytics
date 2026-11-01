@@ -132,9 +132,10 @@ module.exports = async (req, res) => {
       if (b.clear) { await delSetting('gemini_key'); delete st.gemini_key; return json(res, 200, view()); }
       const model = String(b.model || st.gemini_model || 'gemini-2.5-flash').trim().replace(/^models\//, '');
       if (!/^[A-Za-z0-9._-]{3,60}$/.test(model)) return json(res, 400, { error: 'Model name looks invalid.' });
-      const key = String(b.key || '').trim();
+      const key = String(b.key || '').trim().replace(/^["']+|["']+$/g, '');
       if (key) {
-        if (!/^[A-Za-z0-9_-]{20,}$/.test(key)) return json(res, 400, { error: 'That does not look like a Gemini API key.' });
+        // Only reject the obviously unusable (spaces, line breaks, too short). Google's newer keys contain dots, so the real check is the test call below.
+        if (!/^[\x21-\x7E]{15,500}$/.test(key)) return json(res, 400, { error: 'The key has spaces or line breaks in it. Copy it again and paste only the key.' });
         try { await gemini({ key, model, system: 'Reply with the single word OK.', contents: [{ role: 'user', parts: [{ text: 'ping' }] }], maxTokens: 256 }); }
         catch (e) { return json(res, 400, { error: 'Gemini rejected it: ' + e.message }); }
         await setSetting('gemini_key', key); st.gemini_key = key;
