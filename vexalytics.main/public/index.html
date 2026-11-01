@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vexalytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#15101f;--panel:#1f1830;--line:#352b4d;--ink:#f4eefb;--mute:#9d92b5;--hot:#ff5c7a;--gold:#ffb86b;--ok:#6fe0b0}
+@media (prefers-color-scheme:light){:root{--bg:#f6f2fb;--panel:#fff;--line:#e3dbef;--ink:#21172f;--mute:#6f6485}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.5 'Bricolage Grotesque',system-ui,sans-serif;min-height:100vh}
+main{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+[hidden]{display:none!important}
+h1,h2,h3{font-weight:800;letter-spacing:-.02em}
+.muted{color:var(--mute)}
+.top{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.top img{width:46px;height:46px;border-radius:50%;object-fit:cover}
+.top .sp{flex:1}
+.btn{display:inline-block;background:linear-gradient(120deg,var(--hot),var(--gold));color:#2a0f1a;font-weight:600;border:0;border-radius:99px;padding:10px 20px;text-decoration:none;cursor:pointer;font:inherit;font-weight:600;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:none;color:var(--mute);border:1px solid var(--line)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+.grid{display:grid;gap:16px;margin-top:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+.center{max-width:520px;margin:12vh auto;text-align:center}
+.center h1{font-size:2.4rem;margin-bottom:12px}.center p{margin-bottom:22px}
+.center ol{text-align:left;margin:0 0 20px 20px}
+code{background:var(--line);padding:1px 6px;border-radius:6px}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:6px 0 4px}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--hot),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.heat{display:grid;grid-template-columns:36px repeat(24,1fr);gap:3px;margin-top:20px}
+.heat b{font-weight:400;font-size:11px;color:var(--mute);align-self:center}
+.heat i{aspect-ratio:1;border-radius:4px;background:var(--hot);min-height:12px}
+.heat .hl{font-size:10px;color:var(--mute);text-align:center}
+.bar{display:grid;grid-template-columns:44px 1fr 52px;gap:10px;align-items:center;margin:9px 0;font-size:14px}
+.bar div{height:10px;background:var(--line);border-radius:9px;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--hot),var(--gold));transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar.top1 b{color:var(--gold)}
+.score{display:flex;gap:22px;align-items:center}
+.ring{--p:0;width:120px;height:120px;border-radius:50%;flex:none;background:conic-gradient(var(--hot) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;transition:--p 1s}
+.ring div{width:92px;height:92px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:2rem;font-weight:800}
+.rec{padding:12px 0;border-top:1px solid var(--line)}.rec:first-of-type{border:0}
+.rec b{display:block}
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:12px}
+.posts a{color:inherit;text-decoration:none;font-size:13px}
+.posts img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:var(--line);display:block;margin-bottom:6px}
+h3{font-size:1.1rem;margin-bottom:4px}
+.note{font-size:12.5px;color:var(--mute);margin-top:14px}
+.brand{font-weight:800;font-size:1.25rem;letter-spacing:-.03em;margin-bottom:14px;background:linear-gradient(120deg,var(--hot),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;width:max-content}
+.top>div:nth-child(2){min-width:0}.top h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn{white-space:nowrap}
+@media(max-width:600px){
+  body{font-size:14px}
+  main{padding:18px 14px 44px}
+  .top{flex-wrap:wrap;gap:10px;margin-bottom:18px}
+  .top .sp{display:none}.top>div:nth-child(2){flex:1}
+  .top .btn{flex:1;text-align:center;padding:9px 12px}
+  .card{padding:16px;border-radius:16px}
+  .grid{gap:12px}
+  .center{margin:8vh auto}.center h1{font-size:1.9rem}
+  .center input{width:100%;margin:0 0 12px!important}.center .btn{width:100%;text-align:center}
+  .heat{grid-template-columns:30px repeat(24,1fr);gap:2px}
+  .heat i{min-height:10px;border-radius:3px}
+  .heat .hl{font-size:9px}.heat .hl.x{visibility:hidden}
+  .score{flex-direction:column;align-items:stretch;gap:16px}
+  .ring{margin:0 auto}
+  .bar{grid-template-columns:40px 1fr 44px;gap:8px}
+  .posts{grid-template-columns:repeat(2,1fr)}
+}
+@media(pointer:coarse){input,select{font-size:16px!important}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <section id="loading" class="center"><h1>Reading your account…</h1><p class="muted">Pulling your posts and audience data from Meta.</p></section>
+
+  <section id="setup" class="center" hidden>
+    <h1>One-time setup</h1>
+    <ol class="muted"><li>In Vercel, open Settings → Environment Variables.</li><li>Add META_APP_ID, META_APP_SECRET, SUPABASE_URL, SUPABASE_SERVICE_KEY and DASH_PASSWORD.</li><li>Redeploy, then refresh this page.</li></ol>
+  </section>
+
+  <section id="pw" class="center" hidden>
+    <h1>Vexalytics</h1>
+    <p class="muted">Enter your password to continue.</p>
+    <p id="pwErr" style="color:var(--hot)"></p>
+    <input id="pwIn" type="password" autocomplete="current-password" style="background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:10px 18px;font:inherit;margin-right:8px">
+    <button class="btn" onclick="signIn()">Sign in</button>
+  </section>
+
+  <section id="connect" class="center" hidden>
+    <h1>Connect your Instagram</h1>
+    <p class="muted">Log in with the Facebook account that manages the Page linked to your Instagram. Everything stays on this laptop.</p>
+    <p id="err" style="color:var(--hot)"></p>
+    <a class="btn" href="/api/login">Connect with Meta</a>
+  </section>
+
+  <section id="app" hidden>
+    <div class="brand">Vexalytics</div>
+    <div class="top">
+      <img id="pic" alt="">
+      <div><h3 id="handle"></h3><div class="muted" id="sub"></div></div>
+      <div class="sp"></div>
+      <button class="btn ghost" onclick="location.reload()">Refresh</button>
+      <a class="btn ghost" href="/api/logout">Disconnect</a>
+    </div>
+
+    <div class="card hero">
+      <div class="muted" id="heroLabel"></div>
+      <h1 id="heroTitle"></h1>
+      <div class="muted" id="heroSub"></div>
+      <div class="heat" id="heat"></div>
+      <p class="note" id="heatNote"></p>
+      <label class="note" id="tzWrap">Instagram reports hours in
+        <select id="tz" onchange="try{localStorage.setItem('tz',this.value)}catch{};render(DATA)" style="background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:3px 6px;font:inherit">
+          <option value="9">US Pacific (winter)</option><option value="8">US Pacific (summer)</option><option value="1">UTC</option><option value="0">Algeria time</option>
+        </select></label>
+    </div>
+
+    <div class="grid g2">
+      <div class="card"><h3>Posting health</h3><p class="muted" id="scoreSub" style="margin-bottom:16px"></p>
+        <div class="score"><div class="ring" id="ring"><div id="scoreNum">0</div></div><div id="parts" style="flex:1"></div></div></div>
+      <div class="card"><h3>What to do next</h3><div id="recs"></div></div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card"><h3>Audience by day</h3><div class="muted" id="d1Sub" style="font-size:13px"></div><div id="d1"></div></div>
+      <div class="card"><h3>Your posts by day</h3><div class="muted" style="font-size:13px">Average likes + comments</div><div id="d2"></div></div>
+      <div class="card"><h3>By format</h3><div class="muted" style="font-size:13px">Average likes + comments</div><div id="fmt"></div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px"><h3>Your best posts</h3><div class="posts" id="best"></div></div>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const wd = d => (d.getDay() + 6) % 7;
+const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+const TZ = 'Africa/Algiers';
+const fmtDT = new Intl.DateTimeFormat('en-US', {timeZone: TZ, weekday: 'short', hour: 'numeric', hourCycle: 'h23'});
+const WK = {Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
+function dz(d){ const p = fmtDT.formatToParts(d); return {w: WK[p.find(x => x.type === 'weekday').value], h: +p.find(x => x.type === 'hour').value}; }
+let DATA;
+const hh = h => String(h).padStart(2, '0') + ':00';
+const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function show(id){ ['loading','setup','pw','connect','app'].forEach(s => $('#' + s).hidden = s !== id); }
+
+$('#pwIn').addEventListener('keydown', e => e.key === 'Enter' && signIn());
+async function signIn(){
+  const r = await fetch('/api/auth', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({password: $('#pwIn').value})});
+  if (r.ok) location.reload(); else $('#pwErr').textContent = 'Wrong password.';
+}
+(async function boot(){
+  const st = await (await fetch('/api/status')).json();
+  if (!st.configured) return show('setup');
+  if (!st.authed) return show('pw');
+  if (!st.connected) return show('connect');
+  const r = await fetch('/api/data'), d = await r.json();
+  if (!r.ok) { $('#err').textContent = d.error; return show('connect'); }
+  render(d); show('app');
+})();
+
+function bars(el, labels, vals, fmt = v => v.toFixed(0)){
+  const mx = Math.max(...vals, 1), top = vals.indexOf(Math.max(...vals));
+  el.innerHTML = labels.map((l, i) => `<div class="bar ${i === top ? 'top1' : ''}"><b>${l}</b><div><span style="width:0" data-w="${vals[i] / mx * 100}"></span></div><span style="color:var(--mute)">${fmt(vals[i])}</span></div>`).join('');
+  requestAnimationFrame(() => el.querySelectorAll('span[data-w]').forEach(s => s.style.width = s.dataset.w + '%'));
+}
+
+function render(d){
+  DATA = d;
+  if (!window._tz) { try { const s = localStorage.getItem('tz'); if (s) $('#tz').value = s; } catch {} window._tz = 1; }
+  const F = d.profile.followers_count || 1;
+  const posts = d.media.map(m => ({...m, t: new Date(m.timestamp), e: (m.like_count || 0) + (m.comments_count || 0)})).sort((a, b) => b.t - a.t);
+  $('#pic').src = d.profile.profile_picture_url || '';
+  $('#handle').textContent = '@' + d.profile.username;
+  $('#sub').textContent = `${F.toLocaleString()} followers · ${posts.length} posts analysed`;
+
+  // --- when is the audience online? (weekday x hour)
+  let grid = Array.from({length: 7}, () => Array(24).fill(0)), src = 'audience';
+  if (d.online && d.online.length) {
+    const cnt = Array(7).fill(0);
+    const shift = +$('#tz').value;
+    d.online.forEach(v => { const w = wd(new Date(v.end_time)); for (const h in v.value) { const t = +h + shift; grid[(w + Math.floor(t / 24)) % 7][t % 24] += v.value[h]; } });
+    grid = grid.map(row => row.map(x => x * 7 / d.online.length));
+  } else {
+    src = 'posts';
+    const n = Array.from({length: 7}, () => Array(24).fill(0));
+    posts.forEach(p => { const {w, h} = dz(p.t); grid[w][h] += p.e; n[w][h]++; });
+    grid = grid.map((row, w) => row.map((x, h) => n[w][h] ? x / n[w][h] : 0));
+  }
+  const flat = grid.flat(), mx = Math.max(...flat, 1), bi = flat.indexOf(Math.max(...flat));
+  const bw = Math.floor(bi / 24), bh = bi % 24;
+  const dayTot = grid.map(r => r.reduce((a, b) => a + b, 0));
+  $('#heroLabel').textContent = src === 'audience' ? 'Your followers are most active' : 'Your posts performed best';
+  $('#heroTitle').innerHTML = `<em>${FULL[bw]}</em> around ${hh(bh)}`;
+  $('#heroSub').textContent = src === 'audience' ? 'Algeria time (UTC+1). Based on the last 30 days of follower activity.' : 'Algeria time (UTC+1). Instagram did not return audience-activity data, so this uses your own posts. Accounts need 100+ followers for activity data.';
+  $('#heat').innerHTML = '<b></b>' + [...Array(24).keys()].map(h => `<span class="hl ${h % 6 ? 'x' : ''}">${h % 3 ? '' : h}</span>`).join('') +
+    grid.map((row, w) => `<b>${DAYS[w]}</b>` + row.map((v, h) => `<i title="${DAYS[w]} ${hh(h)}" style="opacity:${.08 + .92 * v / mx}"></i>`).join('')).join('');
+  $('#tzWrap').hidden = src !== 'audience';
+  $('#heatNote').textContent = src === 'audience' ? 'Hours converted to Algeria time. If the peak looks off, change the source time zone below.' : 'Darker squares = higher average likes + comments for posts published in that slot.';
+  $('#d1Sub').textContent = src === 'audience' ? 'Relative follower activity' : 'Not available — showing post results';
+  bars($('#d1'), DAYS, dayTot.map(v => v / Math.max(...dayTot, 1) * 100), v => v.toFixed(0) + '%');
+
+  // --- your posts by weekday / format
+  const byDay = DAYS.map((_, w) => avg(posts.filter(p => dz(p.t).w === w).map(p => p.e)));
+  bars($('#d2'), DAYS, byDay);
+  const fm = {VIDEO: 'Reels/Video', IMAGE: 'Photo', CAROUSEL_ALBUM: 'Carousel'};
+  const fkeys = Object.keys(fm).filter(k => posts.some(p => p.media_type === k));
+  const fvals = fkeys.map(k => avg(posts.filter(p => p.media_type === k).map(p => p.e)));
+  bars($('#fmt'), fkeys.map(k => fm[k].split('/')[0]), fvals);
+
+  // --- posting health score
+  const DAY = 864e5, now = Date.now();
+  const l30 = posts.filter(p => now - p.t < 30 * DAY), p30 = posts.filter(p => now - p.t >= 30 * DAY && now - p.t < 60 * DAY);
+  const ppw = l30.length / 4.3;
+  const er = avg(posts.slice(0, 20).map(p => p.e / F * 100));
+  const ratio = p30.length && avg(p30.map(p => p.e)) ? avg(l30.map(p => p.e)) / avg(p30.map(p => p.e)) : null;
+  let gap = 0; for (let i = 0; i < Math.min(posts.length - 1, 15); i++) gap = Math.max(gap, (posts[i].t - posts[i + 1].t) / DAY);
+  const types = new Set(posts.slice(0, 15).map(p => p.media_type)).size;
+  const parts = [
+    ['Frequency', Math.min(1, ppw / 3.5) * 30, 30],
+    ['Engagement', Math.min(1, er / 3) * 30, 30],
+    ['Momentum', ratio === null ? 10 : Math.max(0, Math.min(1, (ratio - .7) / .6)) * 20, 20],
+    ['Consistency', gap <= 7 ? 10 : gap <= 14 ? 5 : 0, 10],
+    ['Variety', Math.min(1, types / 3) * 10, 10]
+  ];
+  const score = Math.round(parts.reduce((a, p) => a + p[1], 0));
+  $('#scoreNum').textContent = score;
+  $('#ring').style.setProperty('--p', score);
+  $('#scoreSub').textContent = score >= 70 ? 'Your strategy is working.' : score >= 45 ? 'Decent base, with clear room to grow.' : 'Needs attention — the tips on the right will help most.';
+  $('#parts').innerHTML = parts.map(p => `<div class="bar" style="grid-template-columns:84px 1fr 38px;margin:5px 0"><b style="font-weight:400">${p[0]}</b><div><span style="width:${p[1] / p[2] * 100}%"></span></div><span style="color:var(--mute)">${Math.round(p[1])}/${p[2]}</span></div>`).join('');
+
+  // --- recommendations
+  const R = [];
+  const bestPost = DAYS[byDay.indexOf(Math.max(...byDay))], bestAud = DAYS[bw];
+  if (ppw < 2) R.push(['Post more often', `You averaged ${ppw.toFixed(1)} posts a week over the last 30 days. Aim for 3–4.`]);
+  else if (ppw > 7) R.push(['Protect quality', `${ppw.toFixed(1)} posts a week is a lot. Check whether engagement per post is dropping.`]);
+  if (gap > 7) R.push(['Close the gaps', `Your longest break was ${Math.round(gap)} days. Long silences cost reach. Batch-create content to stay steady.`]);
+  if (fvals.length > 1) { const k = fkeys[fvals.indexOf(Math.max(...fvals))]; R.push([`Lean into ${fm[k].split('/')[0]}`, `It earns the most engagement per post. Make it a larger share of your mix.`]); }
+  if (types < 2) R.push(['Mix formats', 'You post one format almost exclusively. Test Reels and carousels.']);
+  R.push([`Publish on ${bestAud} around ${hh(bh)}`, bestPost === bestAud ? 'Your best-performing day matches your audience peak. Keep it.' : `Your posts do best on ${bestPost}, but your audience peaks on ${bestAud}. Test both for a month.`]);
+  if (er < 1) R.push(['Boost interaction', `Engagement is ${er.toFixed(2)}% of followers. End posts with a question and reply to comments in the first hour.`]);
+  if (ratio !== null && ratio < .85) R.push(['Engagement is slipping', `Posts from the last 30 days earn ${Math.round((1 - ratio) * 100)}% less than the 30 days before. Revisit what your best posts had in common.`]);
+  if (ratio !== null && ratio > 1.15) R.push(['Momentum is up', `Engagement rose ${Math.round((ratio - 1) * 100)}% versus the previous 30 days. Repeat what you changed.`]);
+  $('#recs').innerHTML = R.slice(0, 6).map(r => `<div class="rec"><b>${esc(r[0])}</b><span class="muted">${esc(r[1])}</span></div>`).join('');
+
+  // --- best posts
+  $('#best').innerHTML = [...posts].sort((a, b) => b.e - a.e).slice(0, 6).map(p =>
+    `<a href="${esc(p.permalink)}" target="_blank" rel="noopener"><img src="${esc(p.thumbnail_url || p.media_url)}" alt=""><b>${p.e.toLocaleString()}</b> <span class="muted">likes + comments · ${p.t.toLocaleDateString()}</span></a>`).join('');
+}
+</script>
+</body>
+</html>
