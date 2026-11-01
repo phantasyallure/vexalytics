@@ -42,19 +42,32 @@ const fixModel = m => { m = String(m || '').trim().replace(/^models\//, ''); ret
 async function gemini({ key, model, system, contents, maxTokens = 8192, temperature = 0.5 }) {
   model = fixModel(model);
   if (!/^[A-Za-z0-9._-]+$/.test(model)) throw new Error('Invalid model name.');
-  let r;
-  try {
-    r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+  const call = async (thinking, ms) => {
+    const generationConfig = { temperature, maxOutputTokens: maxTokens };
+    if (thinking) generationConfig.thinkingConfig = { thinkingLevel: 'low' }; // keep newer "thinking" models fast
+    const r = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig: { temperature, maxOutputTokens: maxTokens } }),
-      signal: AbortSignal.timeout(55000)
+      body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig }),
+      signal: AbortSignal.timeout(ms)
     });
-  } catch (e) { throw new Error(e.name === 'TimeoutError' ? 'Gemini took too long. Try again, or pick a faster model in Settings.' : 'Could not reach Gemini.'); }
-  const j = await r.json().catch(() => ({}));
+    return { r, j: await r.json().catch(() => ({})) };
+  };
+  let out;
+  try {
+    try { out = await call(true, 28000); }
+    catch (e) { if (e.name !== 'TimeoutError') throw e; out = await call(false, 25000); } // one retry without the thinking option
+    // Bad thinking option for this model, or overloaded: retry once plain
+    if (!out.r.ok && (out.r.status === 400 || out.r.status === 429 || out.r.status >= 500)) {
+      const m = (out.j.error && out.j.error.message) || '';
+      if (/think/i.test(m) || out.r.status >= 500 || out.r.status === 429) out = await call(false, 25000);
+    }
+  } catch (e) { throw new Error(e.name === 'TimeoutError' ? 'Gemini did not answer in time (model: ' + model + '). Try again, or type a different model name in Settings.' : 'Could not reach Gemini.'); }
+  const { r, j } = out;
   if (!r.ok) throw new Error((j.error && j.error.message) || 'Gemini error ' + r.status);
   const c = j.candidates && j.candidates[0];
-  const text = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('') : '';
+  const text = c && c.content && c.content.parts ? c.content.parts.filter(p => !p.thought).map(p => p.text || '').join('') : '';
   if (!text) throw new Error(j.promptFeedback && j.promptFeedback.blockReason ? 'Gemini blocked this request: ' + j.promptFeedback.blockReason : c && c.finishReason === 'MAX_TOKENS' ? 'Gemini ran out of space before answering. Try a shorter question.' : 'Gemini returned an empty answer.');
   return text;
 }
