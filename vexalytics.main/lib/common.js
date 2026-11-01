@@ -39,11 +39,15 @@ const delSetting = key => sb('app_settings?key=eq.' + encodeURIComponent(key), {
 const DEFAULT_MODEL = 'gemini-3.8-flash';
 // Old saved models (gemini-1.x / 2.x) are retired for new users, so quietly use the current default instead.
 const fixModel = m => { m = String(m || '').trim().replace(/^models\//, ''); return !m || /^gemini-(1|2)\./.test(m) ? DEFAULT_MODEL : m; };
-async function gemini({ key, model, system, contents, maxTokens = 8192, temperature = 0.5 }) {
+async function gemini({ key, model, system, contents, maxTokens = 8192, temperature = 0.5, plain = false }) {
   model = fixModel(model);
   if (!/^[A-Za-z0-9._-]+$/.test(model)) throw new Error('Invalid model name.');
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
   const call = async (thinking, ms) => {
+    if (plain) { // bare request, identical to Google's own curl quickstart (used for the key test)
+      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify({ contents }), signal: AbortSignal.timeout(ms) });
+      return { r, j: await r.json().catch(() => ({})) };
+    }
     const generationConfig = { temperature, maxOutputTokens: maxTokens };
     if (thinking) generationConfig.thinkingConfig = { thinkingLevel: 'low' }; // keep newer "thinking" models fast
     const r = await fetch(url, {
@@ -56,7 +60,7 @@ async function gemini({ key, model, system, contents, maxTokens = 8192, temperat
   };
   let out;
   try {
-    try { out = await call(true, 28000); }
+    try { out = await call(!plain, 28000); }
     catch (e) { if (e.name !== 'TimeoutError') throw e; out = await call(false, 25000); } // one retry without the thinking option
     // Bad thinking option for this model, or overloaded: retry once plain
     if (!out.r.ok && (out.r.status === 400 || out.r.status === 429 || out.r.status >= 500)) {
