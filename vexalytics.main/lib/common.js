@@ -1,3 +1,4 @@
+try { require('dns').setDefaultResultOrder('ipv4first'); } catch {}
 const crypto = require('crypto');
 const G = 'https://graph.facebook.com/v23.0';
 
@@ -58,7 +59,7 @@ async function gemini({ key, model, system, contents, maxTokens = 8192, temperat
     });
     return { r, j: await r.json().catch(() => ({})) };
   };
-  let out;
+  let out; const t0 = Date.now();
   try {
     try { out = await call(!plain, 28000); }
     catch (e) { if (e.name !== 'TimeoutError') throw e; out = await call(false, 25000); } // one retry without the thinking option
@@ -67,7 +68,10 @@ async function gemini({ key, model, system, contents, maxTokens = 8192, temperat
       const m = (out.j.error && out.j.error.message) || '';
       if (/think/i.test(m) || out.r.status >= 500 || out.r.status === 429) out = await call(false, 25000);
     }
-  } catch (e) { throw new Error(e.name === 'TimeoutError' ? 'Gemini did not answer in time (model: ' + model + '). Try again, or type a different model name in Settings.' : 'Could not reach Gemini.'); }
+  } catch (e) {
+    const why = [e.name, e.code, e.cause && (e.cause.code || e.cause.message)].filter(Boolean).join(' / ');
+    throw new Error((e.name === 'TimeoutError' ? 'Gemini did not answer in time' : 'Could not reach Gemini') + ' [build v4, model ' + model + ', ' + why + ', after ' + (Date.now() - t0) + ' ms]');
+  }
   const { r, j } = out;
   if (!r.ok) throw new Error((j.error && j.error.message) || 'Gemini error ' + r.status);
   const c = j.candidates && j.candidates[0];
