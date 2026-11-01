@@ -29,16 +29,23 @@ module.exports = async (req, res) => {
 
     if (action === 'login') {
       const scope = 'instagram_basic,instagram_manage_insights,pages_show_list,pages_read_engagement';
-      return redirect(res, `https://www.facebook.com/v23.0/dialog/oauth?client_id=${ID}&redirect_uri=${encodeURIComponent(REDIRECT)}&scope=${scope}&response_type=code`);
+      const q = process.env.META_CONFIG_ID // Facebook Login for Business uses a configuration instead of scopes
+        ? `config_id=${process.env.META_CONFIG_ID}&response_type=code&override_default_response_type=true`
+        : `scope=${scope}&response_type=code`;
+      return redirect(res, `https://www.facebook.com/v23.0/dialog/oauth?client_id=${ID}&redirect_uri=${encodeURIComponent(REDIRECT)}&${q}`);
     }
 
     if (action === 'callback') {
       if (req.query.error || !req.query.code) return fail(res, 'Meta login was cancelled or denied.');
       const short = await graph('/oauth/access_token', { client_id: ID, client_secret: SECRET, redirect_uri: REDIRECT, code: req.query.code });
       const long = await graph('/oauth/access_token', { grant_type: 'fb_exchange_token', client_id: ID, client_secret: SECRET, fb_exchange_token: short.access_token });
-      const pages = await graph('/me/accounts', { fields: 'name,instagram_business_account{id,username}', access_token: long.access_token });
-      const hit = (pages.data || []).find(p => p.instagram_business_account);
-      if (!hit) return fail(res, 'No Facebook Page with a linked Instagram professional account was found. Check the link in Page settings, and that you selected the Page during login.');
+      const pages = await graph('/me/accounts', { fields: 'name,instagram_business_account{id,username},connected_instagram_account{id,username}', access_token: long.access_token });
+      const list = pages.data || [];
+      const hit = list.find(p => p.instagram_business_account || p.connected_instagram_account);
+      if (!hit) return fail(res, list.length
+        ? 'Meta returned these Pages, but none has a linked Instagram professional account: ' + list.map(p => p.name).join(', ') + '. Link your Instagram to the Page in Page settings, then reconnect.'
+        : 'Meta returned no Pages for this login. Reconnect and make sure the Page is selected and allowed on the login screen. If the Page belongs to a business portfolio, tell Claude.');
+      hit.instagram_business_account = hit.instagram_business_account || hit.connected_instagram_account;
       const r = await saveSession({ token: long.access_token, ig_id: hit.instagram_business_account.id, page_name: hit.name });
       if (!r.ok) return fail(res, 'Could not save the login to Supabase: ' + (await r.text()));
       return redirect(res, '/');
