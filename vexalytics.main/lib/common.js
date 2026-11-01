@@ -44,20 +44,27 @@ async function gemini({ key, model, system, contents, maxTokens = 8192, temperat
   model = fixModel(model);
   if (!/^[A-Za-z0-9._-]+$/.test(model)) throw new Error('Invalid model name.');
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-  const call = async (thinking, ms) => {
-    if (plain) { // bare request, identical to Google's own curl quickstart (used for the key test)
-      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify({ contents }), signal: AbortSignal.timeout(ms) });
-      return { r, j: await r.json().catch(() => ({})) };
-    }
-    const generationConfig = { temperature, maxOutputTokens: maxTokens };
-    if (thinking) generationConfig.thinkingConfig = { thinkingLevel: 'low' }; // keep newer "thinking" models fast
-    const r = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig }),
-      signal: AbortSignal.timeout(ms)
+  // Uses Node's own https module (not fetch) and forces IPv4, and records how far the request got, so a stall can be pinpointed.
+  let stage = 'start';
+  const post = (body, ms) => new Promise((resolve, reject) => {
+    const u = new URL(url);
+    const req = require('https').request({ hostname: u.hostname, path: u.pathname, method: 'POST', family: 4,
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key, 'Content-Length': Buffer.byteLength(body) } }, res => {
+      stage = 'got-headers'; const chunks = [];
+      res.on('data', d => chunks.push(d));
+      res.on('end', () => { let j = {}; try { j = JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch {} resolve({ r: { ok: res.statusCode >= 200 && res.statusCode < 300, status: res.statusCode }, j }); });
+      res.on('error', reject);
     });
-    return { r, j: await r.json().catch(() => ({})) };
+    req.on('socket', sock => { stage = 'socket'; sock.on('lookup', () => { stage = 'dns-ok'; }); sock.on('connect', () => { stage = 'tcp-connected'; }); sock.on('secureConnect', () => { stage = 'tls-ok'; }); });
+    req.setTimeout(ms, () => { const e = new Error('timeout'); e.name = 'TimeoutError'; e.code = 'stalled-after-' + stage; req.destroy(e); });
+    req.on('error', reject);
+    req.end(body);
+  });
+  const call = async (thinking, ms) => {
+    if (plain) return post(JSON.stringify({ contents }), ms);
+    const generationConfig = { temperature, maxOutputTokens: maxTokens };
+    if (thinking) generationConfig.thinkingConfig = { thinkingLevel: 'low' };
+    return post(JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig }), ms);
   };
   let out; const t0 = Date.now();
   try {
@@ -70,7 +77,7 @@ async function gemini({ key, model, system, contents, maxTokens = 8192, temperat
     }
   } catch (e) {
     const why = [e.name, e.code, e.cause && (e.cause.code || e.cause.message)].filter(Boolean).join(' / ');
-    throw new Error((e.name === 'TimeoutError' ? 'Gemini did not answer in time' : 'Could not reach Gemini') + ' [build v4, model ' + model + ', ' + why + ', after ' + (Date.now() - t0) + ' ms]');
+    throw new Error((e.name === 'TimeoutError' ? 'Gemini did not answer in time' : 'Could not reach Gemini') + ' [build v5, model ' + model + ', ' + why + ', after ' + (Date.now() - t0) + ' ms]');
   }
   const { r, j } = out;
   if (!r.ok) throw new Error((j.error && j.error.message) || 'Gemini error ' + r.status);
