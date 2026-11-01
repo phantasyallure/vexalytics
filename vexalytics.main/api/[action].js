@@ -15,13 +15,24 @@ Rules:
 - Be direct and practical. No filler, no generic social-media advice that the data does not support.
 - Reply in the language the user writes in (default English). Use Markdown: short headings, tables where useful, bullet lists for actions.`;
 
-const REPORTS = {
-  full: ['Full performance report', `Write a complete performance report using the WHOLE dataset. Sections: 1) Executive summary (5 lines max), 2) Account snapshot (table of KPIs), 3) What is working (with evidence), 4) What is not working (with evidence), 5) Best times and audience, 6) Content and format analysis, 7) Top 5 and bottom 3 posts and why they differ, 8) Priority actions for the next 30 days (max 7, ordered by impact, each with the metric to watch), 9) Data caveats.`],
-  plan: ['30-day content plan', `Build a concrete 30-day content plan from the data. Start with 4 lines on the strategy and the posting rhythm the data supports. Then a table per week: Day | Time (Algeria) | Format | Content idea (based on themes of the best captions) | Goal. Use the best days/times and best formats from DATA. End with the 3 metrics to track weekly and what result would mean the plan works.`],
-  timing: ['Timing and audience report', `Analyse WHEN to post and WHO the audience is. Include: the audience-online pattern (source and confidence), the best 5 slots with evidence, how the user's own post results compare with the audience peaks, demographics if present, and a 3-week timing test plan (what to post when, what to compare). Be explicit about how reliable each conclusion is.`],
-  content: ['Content and captions report', `Analyse the content. Include: format comparison, caption length and hashtag effects, recurring themes in the best vs the weakest captions (read the captions in DATA), reach/saves/shares insights where present, a list of 10 specific post ideas based on what already works, and what to stop doing.`],
-  growth: ['Growth report', `Analyse growth and reach. Include: follower trend, reach and profile activity from the account insights, engagement trend over time (use post dates), posting frequency vs results, the 3 biggest growth levers supported by the data, and realistic 30-day targets expressed relative to the account's own history.`]
+const PERIODS = { day: ['daily', 'Daily', 'today and tomorrow'], week: ['weekly', 'Weekly', 'the next 7 days'], month: ['monthly', 'Monthly', 'the next 30 days'] };
+const PLAN = {
+  day: ['Daily plan', `Build a plan for TODAY (and tomorrow if today's best slots have passed). Give: the exact posting slots in Algeria time with the evidence behind each, the format and caption angle for each post (based on the best posts in DATA), 3 engagement actions for the hour after posting (replies, comments, stories) and the one metric to check tonight. Keep it to one page.`],
+  week: ['Weekly plan', `Build a 7-day plan starting tomorrow. Start with 3 lines on the weekly rhythm the data supports. Then a table: Day | Time (Algeria) | Format | Content idea (based on themes of the best captions) | Goal. Use the best days/times and formats from DATA. End with the 3 metrics to check at the end of the week and what result would mean the plan worked.`],
+  month: ['Monthly plan', `Build a concrete 30-day content plan from the data. Start with 4 lines on the strategy and the posting rhythm the data supports. Then a table per week: Day | Time (Algeria) | Format | Content idea (based on themes of the best captions) | Goal. End with the 3 metrics to track weekly and what result would mean the plan works.`]
 };
+const REPORTS = {
+  full: ['{A} performance report', `Write a complete {a} performance report using the WHOLE dataset. Sections: 1) Executive summary (5 lines max), 2) This period vs the previous period (table, from DATA.period), 3) What is working (with evidence), 4) What is not working (with evidence), 5) Best times and audience, 6) Content and format analysis, 7) Top 5 and bottom 3 posts and why they differ, 8) Priority actions for {H} (max 7, ordered by impact, each with the metric to watch), 9) Data caveats.`],
+  timing: ['Timing and audience report', `Analyse WHEN to post and WHO the audience is. Include: the audience-online pattern (source and confidence), the best 5 slots with evidence, how the user's own post results compare with the audience peaks, demographics if present, and a test plan for {H} (what to post when, what to compare). Be explicit about how reliable each conclusion is.`],
+  content: ['Content and captions report', `Analyse the content. Include: format comparison, caption length and hashtag effects, recurring themes in the best vs the weakest captions (read the captions in DATA), reach/saves/shares insights where present, a list of specific post ideas for {H} based on what already works, and what to stop doing.`],
+  growth: ['{A} growth report', `Analyse growth and reach for the {a} period in DATA.period. Include: follower trend, reach and profile activity from the account insights, engagement trend over time (DATA.period.trend), posting frequency vs results, the 3 biggest growth levers supported by the data, and realistic targets for {H} expressed relative to the account's own history.`]
+};
+function reportSpec(type, period) {
+  const P = PERIODS[period] || PERIODS.week, t = type === 'plan' ? PLAN[period] || PLAN.week : REPORTS[type];
+  if (!t) return null;
+  const f = x => x.replace(/\{A\}/g, P[1]).replace(/\{a\}/g, P[0]).replace(/\{H\}/g, P[2]);
+  return [f(t[0]), f(t[1]) + ` The reporting period is ${P[0]} (DATA.period): lead with it, and use the full history as evidence.`];
+}
 
 const clip = (s, n) => String(s || '').slice(0, n);
 const cleanMsgs = m => (Array.isArray(m) ? m : []).slice(-14).map(x => ({ role: x.role === 'assistant' ? 'model' : 'user', parts: [{ text: clip(x.content, 6000) }] })).filter(x => x.parts[0].text);
@@ -140,7 +151,7 @@ module.exports = async (req, res) => {
       const data = clip(JSON.stringify(b.context || {}), 150000);
       try {
         if (action === 'report') {
-          const R = REPORTS[b.type]; if (!R) return json(res, 400, { error: 'Unknown report type.' });
+          const R = reportSpec(b.type, b.period); if (!R) return json(res, 400, { error: 'Unknown report type.' });
           const md = await gemini({ key, model, maxTokens: 16384, temperature: 0.4, system: BASE + '\n\nDATA:\n' + data,
             contents: [{ role: 'user', parts: [{ text: R[1] + ' Start with a single H1 title: "' + R[0] + '".' }] }] });
           return json(res, 200, { md, title: R[0] });
