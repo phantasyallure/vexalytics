@@ -164,15 +164,8 @@ select{background:var(--field);color:var(--ink);border:1px solid var(--line);bor
 /* ---------- menu bar (top on desktop, bottom tab bar on phones) ---------- */
 .mbar{position:sticky;top:0;z-index:30;display:block}
 .mbar:before{content:"";position:absolute;inset:0;z-index:-1;background:var(--nav);border-bottom:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-.mbar-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:22px;padding:10px 20px;padding-top:max(10px,env(safe-area-inset-top))}
+.mbar-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 20px;padding-top:max(10px,env(safe-area-inset-top))}
 .mbar .brand{font-size:1.65rem}
-.menu{display:flex;gap:4px;flex:1;min-width:0}
-.menu button{display:flex;align-items:center;gap:8px;border:0;background:none;color:var(--mute);font:700 14.5px Manrope,system-ui,sans-serif;padding:9px 14px;border-radius:12px;cursor:pointer;position:relative;transition:color .25s,background .25s}
-.menu button:hover{color:var(--ink);background:var(--track)}
-.menu button svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.menu button[aria-selected=true]{color:var(--ink);background:var(--track)}
-.menu button[aria-selected=true]:after{content:"";position:absolute;left:14px;right:14px;bottom:-11px;height:3px;border-radius:9px;background:var(--grad)}
-.tools{margin-left:auto}
 #app main,main{padding-top:24px}
 /* shared bits */
 .bar b small{display:block;color:var(--mute);font-weight:500;font-size:11.5px;line-height:1.15}
@@ -210,7 +203,6 @@ select{background:var(--field);color:var(--ink);border:1px solid var(--line);bor
 #rep{margin-top:18px}
 .repbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
 /* chat */
-.chatw{display:flex;flex-direction:column;height:calc(100vh - 150px);height:calc(100dvh - 150px);min-height:480px;padding:18px}
 .msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:2px 2px 14px}
 .msg{max-width:min(740px,94%);padding:12px 16px;border-radius:18px;border:1px solid var(--line);background:var(--track)}
 .msg.u{align-self:flex-end;background:var(--grad);color:var(--ona);border-color:transparent;font-weight:600;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -220,7 +212,7 @@ select{background:var(--field);color:var(--ink);border:1px solid var(--line);bor
 .sugg{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
 .sugg button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 15px;font:600 13.5px Manrope,system-ui,sans-serif;cursor:pointer}
 .sugg button:hover{border-color:var(--a1)}
-.composer{display:flex;gap:10px;align-items:flex-end;padding-top:12px;border-top:1px solid var(--line)}
+.composer{flex:none;display:flex;gap:10px;align-items:flex-end;padding-top:12px;border-top:1px solid var(--line)}
 .composer textarea,.fld input,.fld select{background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:12px 16px;font:inherit;width:100%}
 .composer textarea{resize:none;max-height:140px;min-height:46px;flex:1;border-radius:20px}
 .composer .btn{padding:12px 22px;flex:none}
@@ -233,23 +225,41 @@ select{background:var(--field);color:var(--ink);border:1px solid var(--line);bor
 .fld{margin-top:14px}.fld label{display:block;font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:7px}
 .fld input,.fld select{border-radius:14px}
 .stat{margin-top:10px;font-size:13.5px;min-height:1.4em}.stat.ok{color:var(--ok)}.stat.bad{color:var(--bad)}
+/* ---------- sidebar + agent drawers ---------- */
+.seg.per{width:auto;display:inline-grid;grid-template-columns:repeat(3,auto);padding:3px;margin-left:auto}
+.seg.per button{padding:7px 16px;font-size:13.5px}
+.tools{margin-left:0}
+#scrim{position:fixed;inset:0;z-index:50;background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+#side,#agent{position:fixed;z-index:60;top:0;bottom:0;background:var(--field);color:var(--ink);display:flex;flex-direction:column;visibility:hidden;transition:transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s .38s}
+#side{left:0;width:min(300px,86vw);border-right:1px solid var(--line);box-shadow:24px 0 60px -24px var(--shadow);transform:translateX(-104%);padding:max(18px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom))}
+#agent{right:0;width:min(440px,100vw);border-left:1px solid var(--line);box-shadow:-24px 0 60px -24px var(--shadow);transform:translateX(104%);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom))}
+body.side-open #side,body.agent-open #agent{transform:none;visibility:visible;transition:transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s}
+#side .sh{display:flex;align-items:center;justify-content:space-between;padding:2px 6px 18px}
+.menu{display:grid;gap:4px}
+.menu button{display:flex;align-items:center;gap:14px;border:0;background:none;color:var(--mute);font:700 15.5px Manrope,system-ui,sans-serif;padding:13px 14px;border-radius:14px;cursor:pointer;text-align:left;transition:color .25s,background .25s}
+.menu button:hover{color:var(--ink);background:var(--track)}
+.menu button svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.menu button[aria-selected=true]{background:var(--grad);color:var(--ona)}
+#side .sf{margin-top:auto;padding:16px 8px 0;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;min-width:0}
+#side .sf img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--line);flex:none}
+.ah{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+.ah .acts{gap:12px}
+#agent .msgs{min-height:0}
+@media(min-width:900px){body.agent-open #agent{box-shadow:-24px 0 60px -24px var(--shadow)}}
 @media(max-width:760px){
   .g2{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr;gap:12px}.kpi b{font-size:2rem}.mini{grid-template-columns:1fr 1fr}.demo{grid-template-columns:1fr}
-  .mbar-in{gap:10px;padding:8px 14px;padding-top:max(8px,env(safe-area-inset-top))}
-  .menu{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;flex:none;gap:2px;padding:5px;background:var(--nav);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 40px var(--shadow)}
-  .menu button{flex:1;min-width:0;flex-direction:column;gap:3px;font-size:10.5px;padding:8px 1px 7px;border-radius:16px}
-  .menu button[aria-selected=true]{background:var(--grad);color:var(--ona)}.menu button[aria-selected=true]:after{display:none}
-  main{padding:18px 14px calc(104px + env(safe-area-inset-bottom))}
+  .mbar-in{gap:8px;padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top))}.seg.per button{padding:7px 11px;font-size:13px}.mbar .brand{display:none}
+  main{padding:18px 14px calc(50px + env(safe-area-inset-bottom))}
   .card{padding:18px;border-radius:20px}.grid{gap:12px}.hero{margin-top:6px}
   .heat{grid-template-columns:30px repeat(24,minmax(0,1fr));gap:2px}.heat u{min-height:9px;border-radius:3px}.hl{font-size:10px}.hl.x{visibility:hidden}
   .score{flex-direction:column;align-items:flex-start}.auth{margin:9vh auto}
   .posts{grid-template-columns:1fr 1fr}.bar{grid-template-columns:48px 1fr 52px;gap:10px}
-  .chatw{height:calc(100vh - 230px);height:calc(100dvh - 230px);padding:14px}
 }
 @media(max-width:560px){
   .hero{flex-direction:column;align-items:flex-start;gap:18px}.hero-ic{width:92px}
   .brand,.mbar .brand{font-size:1.5rem}.mark{width:34px;height:34px;border-radius:11px}.brandrow{gap:8px}
-  .chip{padding:4px}.chip b{display:none}.ibtn{width:40px;height:40px}.tools{gap:6px}
+  .ibtn{width:40px;height:40px}.tools{gap:6px}.mbar .mark{display:none}
 }
 @media(pointer:coarse){input,select,textarea{font-size:16px!important}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}}
@@ -288,25 +298,47 @@ window.TH=(function(){
   <h1 class="serif g">Welcome back, sir.</h1>
 </div>
 
-<!-- ===== menu bar ===== -->
+<!-- ===== top bar ===== -->
 <header class="mbar" id="mbar" hidden><div class="mbar-in">
+  <button class="ibtn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="side" title="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   <div class="brandrow"><img class="mark" src="/icon-192.png" width="38" height="38" alt=""><div class="brand">Vexalytics</div></div>
+  <div class="seg per" id="per" role="radiogroup" aria-label="Time range">
+    <button type="button" role="radio" data-per="day" aria-checked="false">Day</button>
+    <button type="button" role="radio" data-per="week" aria-checked="true">Week</button>
+    <button type="button" role="radio" data-per="month" aria-checked="false">Month</button>
+  </div>
+  <div class="tools">
+    <button class="ibtn" id="agentBtn" type="button" aria-label="Open AI agent" aria-expanded="false" aria-controls="agent" title="AI agent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg></button>
+    <button class="ibtn" id="thm" type="button" aria-label="Switch to light mode" title="Light / dark">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </div>
+</div></header>
+
+<!-- ===== sidebar (left) ===== -->
+<div id="scrim" hidden></div>
+<aside id="side" aria-label="Menu" aria-hidden="true">
+  <div class="sh"><div class="brandrow"><img class="mark" src="/icon-192.png" width="38" height="38" alt=""><div class="brand">Vexalytics</div></div>
+    <button class="ibtn s" id="sideClose" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
   <nav class="menu" role="tablist" aria-label="Sections">
     <button role="tab" data-t="over" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
     <button role="tab" data-t="aud" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.4c2.2.7 3.5 2.6 3.5 5.6"/></svg><span>Audience</span></button>
     <button role="tab" data-t="con" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-5-5L5 21"/></svg><span>Content</span></button>
     <button role="tab" data-t="str" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg><span>Strategy</span></button>
-    <button role="tab" data-t="ai" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg><span>Agent</span></button>
     <button role="tab" data-t="set" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></svg><span>Settings</span></button>
   </nav>
-  <div class="tools">
-    <button class="ibtn" id="thm" type="button" aria-label="Switch to light mode" title="Light / dark">
-      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-    </button>
-    <div class="chip" id="chip"><img id="av" alt=""><b id="hd"></b></div>
-  </div>
-</div></header>
+  <div class="sf" id="chip"><img id="av" alt=""><div style="min-width:0"><b id="hd" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></b><span class="muted sm">Instagram connected</span></div></div>
+</aside>
+
+<!-- ===== AI agent (right, beside the sidebar) ===== -->
+<aside id="agent" aria-label="AI agent" aria-hidden="true">
+  <div class="ah"><div><div class="ai-ic serif" style="font-size:1.7rem;line-height:1">Vex</div><span class="muted sm">Your analytics agent</span></div>
+    <span class="acts"><a href="#" id="clr" class="muted sm">Clear</a><button class="ibtn s" id="agentClose" type="button" aria-label="Close agent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span></div>
+  <div class="banner" id="aiBan" hidden><span class="muted sm">Add your Gemini API key in Settings to chat with your agent.</span><button class="btn sm2" type="button" data-go="set">Open Settings</button></div>
+  <div class="msgs" id="msgs" aria-live="polite"></div>
+  <div class="composer"><textarea id="q" rows="1" placeholder="Ask about your account…" aria-label="Message"></textarea><button class="btn" id="send" type="button">Send</button></div>
+</aside>
 
 <main>
 <section id="loading" class="auth"><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">Reading your account…</p><div class="load"></div></section>
@@ -326,7 +358,8 @@ window.TH=(function(){
       <div class="hero-ic"><picture><source srcset="/vexalytics-icon.webp" type="image/webp"><img src="/vexalytics-icon.png" width="512" height="512" alt="Vexalytics"></picture></div>
       <div><h1 class="g">Welcome back, sir.</h1><p class="muted" id="insight"></p></div>
     </div>
-    <div class="kpis" id="kpis" style="margin-top:20px"></div>
+    <p class="muted sm" id="perNote" style="margin-top:20px"></p>
+    <div class="kpis" id="kpis" style="margin-top:10px"></div>
     <div class="grid g2">
       <div class="card"><div class="hd"><p class="muted">Best time to post</p><span class="tag" id="btTag"></span></div><div class="big serif g" id="bt"></div><p class="muted sm">Algeria time (UTC+1)</p><div class="chips" id="chips"></div><p class="muted sm" id="btN" style="margin-top:12px"></p></div>
       <div class="card"><h2>Posting health</h2><div class="score">
@@ -336,7 +369,7 @@ window.TH=(function(){
           <text id="sc" class="ring-num" x="60" y="70" text-anchor="middle" font-size="34" font-weight="800" font-family="Manrope">0</text></svg>
         <div><b id="scT" style="font-size:1.2rem"></b><p class="muted sm" id="scS" style="margin-top:6px"></p></div></div></div>
     </div>
-    <div class="card" style="margin-top:16px"><h2>Engagement per post</h2><p class="muted sm">Likes plus comments, oldest to newest. Hollow dots are posts under 48 hours old, still collecting engagement.</p><div id="chart"></div></div>
+    <div class="card" style="margin-top:16px"><h2 id="chartT">Engagement</h2><p class="muted sm" id="chartS"></p><div id="chart"></div></div>
     <div class="card" style="margin-top:16px"><h2>Do this next</h2><div id="recs3"></div></div>
   </div>
 
@@ -369,16 +402,6 @@ window.TH=(function(){
       <div class="pills" id="pills" role="group" aria-label="Report type"></div>
       <div class="acts"><button class="btn sm2" id="repAI" type="button">Generate with Gemini</button><button class="btn ghost" id="repLoc" type="button">Instant report (no AI)</button><span class="muted sm" id="repHint"></span></div>
       <div id="rep" hidden></div></div>
-  </div>
-
-  <!-- ===== AGENT ===== -->
-  <div class="panel" id="t-ai" hidden>
-    <div class="card chatw">
-      <div class="banner" id="aiBan" hidden><span class="muted sm">Add your Gemini API key in Settings to talk to your agent.</span><button class="btn sm2" type="button" data-go="set">Open Settings</button></div>
-      <div class="msgs" id="msgs" aria-live="polite"></div>
-      <div class="composer"><textarea id="q" rows="1" placeholder="Ask about your account…" aria-label="Message"></textarea><button class="btn" id="send" type="button">Send</button></div>
-    </div>
-    <p class="muted sm" style="margin-top:10px;text-align:center">The agent reads your analysed data. <a href="#" id="clr" class="muted">Clear chat</a></p>
   </div>
 
   <!-- ===== SETTINGS ===== -->
@@ -422,6 +445,8 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const dshort=d=>d.toLocaleDateString('en-GB',{timeZone:TZ,day:'numeric',month:'short'});
 const isoDay=d=>new Intl.DateTimeFormat('en-CA',{timeZone:TZ}).format(d);
 const LS={g:k=>{try{return localStorage.getItem(k)}catch{return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
+const PERS={day:{n:1,adj:'Daily',now:'Today',unit:'day',prev:'yesterday',plan:"Daily plan",nb:14},week:{n:7,adj:'Weekly',now:'This week',unit:'week',prev:'the previous 7 days',plan:'Weekly plan',nb:8},month:{n:30,adj:'Monthly',now:'This month',unit:'month',prev:'the previous 30 days',plan:'Monthly plan',nb:6}};
+let PER=PERS[LS.g('vx-per')]?LS.g('vx-per'):'week';
 let DATA,S,SUM,CUR='over',AI={has:false,model:'gemini-2.5-flash',masked:'',fromEnv:false};
 const show=id=>{['loading','setup','pw','connect','app'].forEach(s=>$('#'+s).hidden=s!==id);$('#mbar').hidden=id!=='app'};
 
@@ -439,11 +464,30 @@ function grow(root){
 }
 function tab(t){
   CUR=t;$$('.menu button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
-  $$('.panel').forEach(p=>p.hidden=p.id!=='t-'+t);grow($('#t-'+t));scrollTo(0,0);
-  if(t==='ai')drawChat();
+  $$('.panel').forEach(p=>p.hidden=p.id!=='t-'+t);grow($('#t-'+t));scrollTo(0,0);openSide(false);
 }
 $$('.menu button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
-document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)tab(g.dataset.go)});
+function layers(){
+  const sd=document.body.classList.contains('side-open'),ag=document.body.classList.contains('agent-open');
+  $('#scrim').hidden=!(sd||(ag&&innerWidth<900));
+  $('#side').setAttribute('aria-hidden',!sd);$('#agent').setAttribute('aria-hidden',!ag);
+  $('#menuBtn').setAttribute('aria-expanded',sd);$('#agentBtn').setAttribute('aria-expanded',ag);
+}
+function openSide(o){document.body.classList.toggle('side-open',o);if(o)document.body.classList.remove('agent-open');layers();if(o)setTimeout(()=>{const c=$('#side [aria-selected=true]');c&&c.focus()},380)}
+function openAgent(o){document.body.classList.toggle('agent-open',o);if(o){document.body.classList.remove('side-open');drawChat()}layers();if(o)setTimeout(()=>$('#q').focus(),380)}
+$('#menuBtn').onclick=()=>openSide(!document.body.classList.contains('side-open'));
+$('#sideClose').onclick=()=>openSide(false);
+$('#agentBtn').onclick=()=>openAgent(!document.body.classList.contains('agent-open'));
+$('#agentClose').onclick=()=>openAgent(false);
+$('#scrim').onclick=()=>{openSide(false);openAgent(false)};
+addEventListener('keydown',e=>{if(e.key==='Escape'){openSide(false);openAgent(false)}});
+addEventListener('resize',layers);
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){openAgent(false);tab(g.dataset.go)}});
+// day / week / month switch
+function perSync(){$$('#per button').forEach(b=>b.setAttribute('aria-checked',b.dataset.per===PER))}
+$('#per').addEventListener('click',e=>{const b=e.target.closest('[data-per]');if(!b||b.dataset.per===PER)return;PER=b.dataset.per;LS.s('vx-per',PER);perSync();drawPills();showSaved();if(DATA)render(DATA)});
+$('#per').addEventListener('keydown',e=>{const k={ArrowRight:1,ArrowLeft:-1}[e.key];if(!k)return;const r=[...$$('#per button')],i=r.findIndex(x=>x.dataset.per===PER),n=r[(i+k+r.length)%r.length];n.click();n.focus()});
+perSync();
 
 $('#pwIn').addEventListener('keydown',e=>e.key==='Enter'&&signIn());
 async function signIn(){const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('#pwIn').value})});if(r.ok)location.reload();else $('#pwErr').textContent='Wrong password.'}
@@ -454,7 +498,7 @@ async function signIn(){const r=await fetch('/api/auth',{method:'POST',headers:{
   if(!st.connected)return show('connect');
   const r=await fetch('/api/data'),d=await r.json();
   if(!r.ok){$('#err').textContent=d.error;return show('connect')}
-  render(d);show('app');tab('over');
+  render(d);show('app');tab('over');drawChat();
   fetch('/api/settings').then(x=>x.json()).then(a=>{if(!a.error){AI=a;aiSync()}}).catch(()=>{});
   try{if(!sessionStorage.getItem('hi')){sessionStorage.setItem('hi',1);const h=$('#hi');h.hidden=false;setTimeout(()=>h.remove(),2500)}}catch{}
 })();
@@ -513,21 +557,31 @@ function analyze(d){
     T.conf=P.length>=40?'moderate':'low';T.dayV=byDay.map(x=>x.med);T.dayN=byDay.map(x=>x.n);
   }
   // ----- health score -----
-  const l30=posts.filter(p=>now-p.t<30*DAY),M30=P.filter(p=>now-p.t<30*DAY),M60=P.filter(p=>now-p.t>=30*DAY&&now-p.t<60*DAY);
-  const ppw=l30.length/4.3,er=med(P.slice(0,20).map(p=>p.e/F*100)),perPost=med(P.slice(0,20).map(p=>p.e));
+  // The Day / Week / Month switch decides the window. Scores use at least 7 days so one quiet day cannot wreck them.
+  const N=PERS[PER].n,W=Math.max(N,7),inW=(a,b)=>posts.filter(p=>p.age>=a&&p.age<b),vis=a=>a.filter(p=>!p.hid),sumE=a=>vis(a).reduce((x,p)=>x+p.e,0);
+  const cur=inW(0,N),prv=inW(N,2*N),curW=inW(0,W);
+  const M30=P.filter(p=>p.age<W),M60=P.filter(p=>p.age>=W&&p.age<2*W);
+  const ppw=curW.length/(W/7),er=med(P.slice(0,20).map(p=>p.e/F*100)),perPost=med(P.slice(0,20).map(p=>p.e));
+  const per={n:cur.length,pn:prv.length,sum:sumE(cur),psum:sumE(prv),er:med(vis(cur).map(p=>p.e/F*100)),per:med(vis(prv).map(p=>p.e/F*100)),late:cur.filter(p=>!p.mature).length,from:new Date(now-N*DAY)};
+  const trend=[];for(let k=PERS[PER].nb-1;k>=0;k--){const a=inW(k*N,(k+1)*N);trend.push({v:sumE(a),n:a.length,t:new Date(now-(k+1)*N*DAY),m:k>0})}
+  // best slots for today (or tomorrow once today's have passed), used by the Day view
+  const nz=dz(new Date(now));let tw=nz.w,tl='Today';
+  const dayPk=w=>T.src==='audience'?peaks(T.grid.slice(w*24,w*24+24),3).map(h=>({w,h,len:1,v:T.grid[w*24+h]})):T.slots.filter(x=>x.w===w);
+  T.today=dayPk(tw).filter(x=>x.h+x.len>nz.h);if(!T.today.length){tw=(tw+1)%7;tl='Tomorrow';T.today=dayPk(tw)}T.todayW=tw;T.todayL=tl;
   const m30=med(M30.map(p=>p.e)),m60=med(M60.map(p=>p.e)),ratio=M30.length>=2&&M60.length>=2&&m60?m30/m60:null;
   let gap=0;for(let i=0;i<Math.min(posts.length-1,15);i++)gap=Math.max(gap,(posts[i].t-posts[i+1].t)/DAY);
   const types=new Set(posts.slice(0,15).map(p=>p.fmt)).size;
   const parts=[['Frequency',Math.min(1,ppw/3.5)*30,30],['Engagement',Math.min(1,er/3)*30,30],['Momentum',ratio===null?10:Math.max(0,Math.min(1,(ratio-.7)/.6))*20,20],['Consistency',gap<=7?10:gap<=14?5:0,10],['Variety',Math.min(1,types/3)*10,10]];
   const score=Math.round(parts.reduce((a,p)=>a+p[1],0));
   const rq=P.filter(p=>p.ins&&p.ins.reach);
-  const S={F,posts,P,hidden,byDay,fmts,capB,tagB,T,ppw,er,perPost,ratio,gap,types,parts,score,rq,now,DAY};
+  const S={F,posts,P,hidden,byDay,fmts,capB,tagB,T,ppw,er,perPost,ratio,gap,types,parts,score,rq,now,DAY,N,W,per,trend};
   S.R=recs(S);return S;
 }
 function recs(S){
-  const{T,byDay,fmts,ppw,gap,types,er,ratio,P,capB}=S,R=[],okD=byDay.filter(x=>x.n>=3),bestPost=okD.length?okD.reduce((a,b)=>b.med>a.med?b:a):null;
+  const{T,byDay,fmts,ppw,gap,types,er,ratio,P,capB,W}=S,R=[],okD=byDay.filter(x=>x.n>=3),bestPost=okD.length?okD.reduce((a,b)=>b.med>a.med?b:a):null;
+  if(PER==='day'&&S.per.n===0&&T.slots.length)R.push(['Nothing posted yet today',`Your best ${T.todayL.toLowerCase()} slot is ${slotLbl(T.today[0]||T.slots[0])}. Post an hour before it.`]);
   if(P.length<12)R.push(['Small sample',`Only ${P.length} posts are old enough to measure. Treat day, format and caption findings as hints, not rules.`]);
-  if(ppw<2)R.push(['Post more often',`You averaged ${ppw.toFixed(1)} posts a week over the last 30 days. Aim for 3 to 4.`]);
+  if(ppw<2)R.push(['Post more often',`You averaged ${ppw.toFixed(1)} posts a week over the last ${W} days. Aim for 3 to 4.`]);
   else if(ppw>7)R.push(['Protect quality',`${ppw.toFixed(1)} posts a week is a lot. Check whether engagement per post is dropping.`]);
   if(gap>7)R.push(['Close the gaps',`Your longest break was ${Math.round(gap)} days. Long silences cost reach, so batch your content to stay steady.`]);
   const fOk=fmts.filter(x=>x.n>=3);
@@ -537,8 +591,8 @@ function recs(S){
     R.push([`Publish on ${FULL[s.w]} around ${hh(s.h)}`,T.src==='audience'?(bestPost&&bestPost.k!==s.w?`Your audience peaks on ${FULL[s.w]}, but your posts have done best on ${FULL[bestPost.k]} (n=${bestPost.n}). Test both for a month. Post about an hour before the peak so the post is fresh when followers arrive.`:`Your audience peak and your best-performing day agree. Post about an hour before ${hh(s.h)}.`):`Based on your own posts (${when}). Instagram sent no audience data, so confidence is ${T.conf}.`])}
   const cb=capB.filter(x=>x.n>=3);if(cb.length>1){const b=cb.reduce((a,c)=>c.med>a.med?c:a);R.push(['Caption length',`${b.k.split(' (')[0]} captions do best for you (typical ${Math.round(b.med)}, n=${b.n}).`])}
   if(er<1)R.push(['Boost interaction',`Engagement is ${er.toFixed(2)}% of followers. End posts with a question and reply to comments in the first hour.`]);
-  if(ratio!==null&&ratio<.85)R.push(['Engagement is slipping',`The last 30 days earn ${Math.round((1-ratio)*100)}% less per post than the 30 before. Revisit what your best posts had in common.`]);
-  if(ratio!==null&&ratio>1.15)R.push(['Momentum is up',`Engagement rose ${Math.round((ratio-1)*100)}% versus the previous 30 days. Repeat what you changed.`]);
+  if(ratio!==null&&ratio<.85)R.push(['Engagement is slipping',`The last ${W} days earn ${Math.round((1-ratio)*100)}% less per post than the ${W} before. Revisit what your best posts had in common.`]);
+  if(ratio!==null&&ratio>1.15)R.push(['Momentum is up',`Engagement rose ${Math.round((ratio-1)*100)}% versus the previous ${W} days. Repeat what you changed.`]);
   return R;
 }
 const slotLbl=s=>s.len===1?hh(s.h):hh(s.h)+' to '+hh(s.h+s.len);
@@ -594,13 +648,13 @@ function render(d){
   $('#align').value=LS.g('vx-align')==='start'?'start':'end';
 
   // ----- timing: overview + audience -----
-  const aud=T.src==='audience',top=T.slots[0];
+  const aud=T.src==='audience',top=T.slots[0],dayView=PER==='day'&&T.today.length,tp=dayView?T.today[0]:top,rng=s=>s.len===1?hh(s.h):hh(s.h)+'–'+hh(s.h+s.len);
   if(top){
-    $('#bt').textContent=`${FULL[top.w]}, ${aud?hh(top.h):slotLbl(top)}`;
-    $('#chips').innerHTML=T.slots.slice(0,3).map(s=>`<span>${DAYS[s.w]} ${s.len===1?hh(s.h):hh(s.h)+'–'+hh(s.h+s.len)}</span>`).join('');
-    $('#insight').innerHTML=aud?`Your followers are most active on <b>${FULL[top.w]}</b> around <b>${hh(top.h)}</b>. At the peak about <b>${r1(T.peakPct)}%</b> of them (~${T.peakN.toLocaleString()}) are online.`:`Your posts performed best on <b>${FULL[top.w]}</b>, ${slotLbl(top)}.`;
+    $('#bt').textContent=dayView?`${T.todayL}, ${aud?hh(tp.h):slotLbl(tp)}`:`${FULL[top.w]}, ${aud?hh(top.h):slotLbl(top)}`;
+    $('#chips').innerHTML=(dayView?T.today:T.slots.slice(0,3)).map(s=>`<span>${dayView?'':DAYS[s.w]+' '}${rng(s)}</span>`).join('');
+    $('#insight').innerHTML=dayView?`${T.todayL} (${FULL[T.todayW]}) ${aud?'your followers are most active around':'your posts do best around'} <b>${aud?hh(tp.h):slotLbl(tp)}</b>.`:aud?`Your followers are most active on <b>${FULL[top.w]}</b> around <b>${hh(top.h)}</b>. At the peak about <b>${r1(T.peakPct)}%</b> of them (~${T.peakN.toLocaleString()}) are online.`:`Your posts performed best on <b>${FULL[top.w]}</b>, ${slotLbl(top)}.`;
   }else{$('#bt').textContent='Not enough data';$('#chips').innerHTML='';$('#insight').textContent='Publish a few more posts to unlock timing insights.'}
-  $('#btTag').textContent=aud?'From follower activity':'From your posts';$('#btTag').className='tag '+(T.conf==='good'?'ok':T.conf==='low'?'warn':'');
+  $('#btTag').textContent=(aud?'From follower activity':'From your posts')+(dayView?' · '+T.todayL.toLowerCase():'');$('#btTag').className='tag '+(T.conf==='good'?'ok':T.conf==='low'?'warn':'');
   $('#btN').textContent=aud?`Post about an hour before the peak so your post is fresh when followers arrive. Based on ${T.days} days of activity, smoothed over 3 hours. ${T.conf==='good'?'':'Fewer than 14 days available, so confidence is limited.'}`:`Instagram sent no follower-activity data (needs 100+ followers), so this uses your ${P.length} measurable posts in 3-hour windows. Confidence: ${T.conf}.`;
   $('#hT').textContent=aud?'When your followers are online':'When your posts performed best';
   $('#hS').textContent='Algeria time (UTC+1). '+(aud?`Average of the last ${T.days} days, smoothed over 3 hours.`:'Median engagement of posts published in each 3-hour window.');
@@ -636,10 +690,17 @@ function render(d){
   $('#scT').textContent=score>=70?'Your strategy is working':score>=45?'A solid base with room to grow':'Needs attention';
   $('#scS').textContent=score>=70?'Keep your rhythm and double down on what works.':'The tips below will move your score the most.';
   bars($('#parts'),parts.map(p=>p[0]),parts.map(p=>p[1]/p[2]*100),v=>v.toFixed(0)+'%',null,104);
-  const dl=ratio===null?['Not enough history for a comparison','']:[`${ratio>=1?'▲':'▼'} ${Math.abs(Math.round((ratio-1)*100))}% vs previous 30 days`,ratio>=1?'up':'dn'];
+  const P0=PERS[PER],per=S.per,pc=(x,y)=>y?Math.round((x/y-1)*100):null;
+  const dtxt=(x,y,l)=>{const c=pc(x,y);return c===null?`No ${l} ${P0.prev} to compare`:`${c>=0?'▲':'▼'} ${Math.abs(c)}% vs ${P0.prev}`},dcls=(x,y)=>{const c=pc(x,y);return c===null?'':c>=0?'up':'dn'};
   const k=(l,v,s,c='')=>`<div class="card kpi"><small>${l}</small><b class="num">${v}</b><span class="${c}">${s}</span></div>`;
-  $('#kpis').innerHTML=k('Followers',F.toLocaleString(),`${posts.length} posts analysed`)+k('Engagement rate',er.toFixed(2)+'%','Typical of last 20 posts, per follower')+k('Typical per post',Math.round(perPost).toLocaleString(),dl[0],dl[1])+k('Posts per week',ppw.toFixed(1),'Last 30 days');
-  chart($('#chart'),posts.slice(0,24).reverse().map(p=>({v:p.e,t:p.t,m:p.mature&&!p.hid})));
+  $('#perNote').textContent=`${P0.now}: ${PER==='day'?'last 24 hours':dshort(per.from)+' to '+dshort(new Date())}, compared with ${P0.prev}.${per.late?` ${per.late} post${per.late>1?'s are':' is'} under 48 hours old and still collecting engagement.`:''}`;
+  $('#kpis').innerHTML=k('Followers',F.toLocaleString(),`${posts.length} posts analysed`)
+    +k(`Posts ${P0.now.toLowerCase()}`,per.n,dtxt(per.n,per.pn,'posts'),dcls(per.n,per.pn))
+    +k('Engagement',per.sum.toLocaleString(),dtxt(per.sum,per.psum,'engagement')+' · likes + comments',dcls(per.sum,per.psum))
+    +k('Engagement rate',per.n?per.er.toFixed(2)+'%':'—','Typical post, per follower',dcls(per.er,per.per));
+  $('#chartT').textContent=`Engagement by ${P0.unit}`;
+  $('#chartS').textContent=`Total likes plus comments per ${P0.unit}, oldest to newest. The hollow dot is the current ${P0.unit}, still collecting.`;
+  chart($('#chart'),S.trend);
   const rh=a=>a.map(r=>`<div class="rec"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join('');
   $('#recs3').innerHTML=rh(S.R.slice(0,3));$('#recs').innerHTML=rh(S.R);
   SUM=digest(d,S);
@@ -653,7 +714,8 @@ function digest(d,S){
   return{
     today:isoDay(new Date()),timezone:'Africa/Algiers (UTC+1)',
     account:{username:d.profile.username,name:d.profile.name,followers:F,totalMedia:d.profile.media_count,postsAnalysed:posts.length,measurablePosts:P.length,postsWithHiddenLikes:S.hidden,oldestPost:isoDay(posts[posts.length-1].t),newestPost:isoDay(posts[0].t)},
-    kpis:{engagementRatePct:r1(S.er),typicalEngagementPerPost:Math.round(S.perPost),postsPerWeekLast30d:r1(S.ppw),momentumVsPrev30dPct:S.ratio===null?null:Math.round((S.ratio-1)*100),longestGapDays:Math.round(S.gap),healthScore:S.score,scoreParts:S.parts.map(p=>({part:p[0],points:Math.round(p[1]),max:p[2]}))},
+    period:{view:PER,days:S.N,label:PERS[PER].now,thisPeriod:{posts:S.per.n,engagement:S.per.sum,typicalRatePct:r1(S.per.er),postsUnder48h:S.per.late},previousPeriod:{posts:S.per.pn,engagement:S.per.psum,typicalRatePct:r1(S.per.per)},trend:S.trend.map(x=>({from:isoDay(x.t),posts:x.n,engagement:x.v})),bestSlotsToday:PER==='day'?S.T.today.map(s=>({day:FULL[s.w],time:slotLbl(s)})):undefined},
+    kpis:{engagementRatePct:r1(S.er),typicalEngagementPerPost:Math.round(S.perPost),postsPerWeekRecent:r1(S.ppw),recentWindowDays:S.W,momentumVsPreviousWindowPct:S.ratio===null?null:Math.round((S.ratio-1)*100),longestGapDays:Math.round(S.gap),healthScore:S.score,scoreParts:S.parts.map(p=>({part:p[0],points:Math.round(p[1]),max:p[2]}))},
     timing:{source:T.src==='audience'?'follower online activity (Instagram)':'own post performance',confidence:T.conf,daysObserved:T.days||null,topSlots:T.slots.map(s=>({day:FULL[s.w],time:slotLbl(s),score:r1(s.v)})),weekdayValues:DAYS.map((D,i)=>({day:D,value:r1(T.dayV[i]),unit:T.src==='audience'?'avg % of followers online per hour':'median likes+comments',n:T.dayN[i]})),peakPctFollowersOnline:T.src==='audience'?r1(T.peakPct):null},
     formats:tbl(S.fmts),weekdays:tbl(S.byDay).map((x,i)=>({...x,name:FULL[i]})),captionLength:tbl(S.capB),hashtags:tbl(S.tagB),
     reachQuality:S.rq.length?{posts:S.rq.length,medianReach:Math.round(med(S.rq.map(p=>p.ins.reach||0))),medianSaves:Math.round(med(S.rq.map(p=>p.ins.saved||0))),medianShares:Math.round(med(S.rq.map(p=>p.ins.shares||0)))}:null,
@@ -665,26 +727,26 @@ function digest(d,S){
 }
 
 /* ---------------- reports ---------------- */
-const REPS=[['full','Full report'],['plan','30-day plan'],['timing','Timing & audience'],['content','Content & captions'],['growth','Growth']];
+const REPS=()=>[['full',PERS[PER].adj+' report'],['plan',PERS[PER].plan],['timing','Timing & audience'],['content','Content & captions'],['growth','Growth']];
 let REP='full',busy=false;
-function drawPills(){$('#pills').innerHTML=REPS.map(([id,n])=>`<button class="pill" type="button" data-rep="${id}" aria-pressed="${id===REP}">${n}</button>`).join('')}
+function drawPills(){$('#repS').textContent=`${PERS[PER].adj} view. Built from every post, the audience data and your account insights.`;$('#pills').innerHTML=REPS().map(([id,n])=>`<button class="pill" type="button" data-rep="${id}" aria-pressed="${id===REP}">${n}</button>`).join('')}
 $('#pills').addEventListener('click',e=>{const b=e.target.closest('[data-rep]');if(!b)return;REP=b.dataset.rep;drawPills();showSaved()});
 function showRep(mdText,meta,name){
   const el=$('#rep');el.hidden=false;
   el.innerHTML=`<div class="repbar"><span class="muted sm">${esc(meta)}</span><span class="acts"><button class="btn ghost sm2" type="button" id="cpy">Copy</button><button class="btn ghost sm2" type="button" id="dl">Download</button></span></div><div class="md">${md(mdText)}</div>`;
   $('#cpy').onclick=async()=>{try{await navigator.clipboard.writeText(mdText);$('#cpy').textContent='Copied'}catch{$('#cpy').textContent='Copy failed'}setTimeout(()=>{const c=$('#cpy');if(c)c.textContent='Copy'},1500)};
-  $('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([mdText],{type:'text/markdown'}));a.download=`vexalytics-${name}-${isoDay(new Date())}.md`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
+  $('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([mdText],{type:'text/markdown'}));a.download=`vexalytics-${name}-${PER}-${isoDay(new Date())}.md`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 }
 function showSaved(){
-  const raw=LS.g('vx-rep-'+REP);if(!raw){$('#rep').hidden=true;return}
+  const raw=LS.g('vx-rep-'+REP+'-'+PER);if(!raw){$('#rep').hidden=true;return}
   try{const o=JSON.parse(raw);showRep(o.md,`${o.src} · saved ${new Date(o.t).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'})}`,REP)}catch{$('#rep').hidden=true}
 }
-function saveRep(md,src){LS.s('vx-rep-'+REP,JSON.stringify({md,src,t:Date.now()}))}
+function saveRep(md,src){LS.s('vx-rep-'+REP+'-'+PER,JSON.stringify({md,src,t:Date.now()}))}
 $('#repAI').onclick=async()=>{
   if(busy||!AI.has)return;busy=true;const b=$('#repAI');b.disabled=true;b.textContent='Reading all your data…';
   $('#rep').hidden=false;$('#rep').innerHTML='<div class="load" style="margin:30px auto"></div><p class="muted sm" style="text-align:center">Gemini is analysing every post. This can take up to a minute.</p>';
   try{
-    const r=await fetch('/api/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:REP,context:SUM})}),j=await r.json();
+    const r=await fetch('/api/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:REP,period:PER,context:SUM})}),j=await r.json();
     if(!r.ok)throw new Error(j.error||'Report failed.');
     saveRep(j.md,'Gemini ('+AI.model+')');showSaved();
   }catch(e){$('#rep').innerHTML=`<p class="err">${esc(e.message)}</p>`}
@@ -692,34 +754,43 @@ $('#repAI').onclick=async()=>{
 };
 $('#repLoc').onclick=()=>{saveRep(localReport(REP),'Instant report');showSaved()};
 function localReport(type){
-  const{F,posts,P,T,byDay,fmts,capB,tagB,R}=S,u=DATA.profile.username,L=[];
+  const{F,posts,P,T,byDay,fmts,capB,tagB,R,per}=S,u=DATA.profile.username,L=[],P0=PERS[PER];
   const row=a=>`| ${a.k} | ${a.n} | ${Math.round(a.med)} | ${Math.round(a.avg)} |`;
   const tb=(h,a)=>[`| ${h} | Posts | Typical (median) | Average |`,'|---|---|---|---|',...a.map(row)];
-  L.push(`# Instant data report for @${u}`,`*${new Date().toLocaleDateString('en-GB',{dateStyle:'long'})} · ${P.length} measurable posts of ${posts.length} loaded · Algeria time*`,'');
-  L.push('## Snapshot','| Metric | Value |','|---|---|',`| Followers | ${F.toLocaleString()} |`,`| Engagement rate (typical, last 20 posts) | ${S.er.toFixed(2)}% |`,`| Typical likes + comments per post | ${Math.round(S.perPost)} |`,`| Posts per week (last 30 days) | ${S.ppw.toFixed(1)} |`,`| Longest recent gap | ${Math.round(S.gap)} days |`,`| Posting health score | ${S.score}/100 |`,'');
-  L.push('## Best times',T.src==='audience'?`Based on ${T.days} days of follower activity (confidence: ${T.conf}).`:`Instagram sent no follower activity, so this uses your own posts (confidence: ${T.conf}).`,'',...T.slots.map((s,i)=>`${i+1}. **${FULL[s.w]} ${slotLbl(s)}**`),'');
+  const pc=(x,y)=>y?`${x>=y?'+':''}${Math.round((x/y-1)*100)}%`:'n/a',rng=s=>s.len===1?hh(s.h):hh(s.h)+'–'+hh(s.h+s.len);
+  L.push(`# ${P0.adj} data report for @${u}`,`*${new Date().toLocaleDateString('en-GB',{dateStyle:'long'})} · ${P.length} measurable posts of ${posts.length} loaded · Algeria time*`,'');
+  L.push(`## ${P0.now} vs ${P0.prev}`,'| Metric | Now | Before | Change |','|---|---|---|---|',`| Posts | ${per.n} | ${per.pn} | ${pc(per.n,per.pn)} |`,`| Engagement (likes + comments) | ${per.sum.toLocaleString()} | ${per.psum.toLocaleString()} | ${pc(per.sum,per.psum)} |`,`| Typical engagement rate | ${per.n?per.er.toFixed(2)+'%':'n/a'} | ${per.pn?per.per.toFixed(2)+'%':'n/a'} | ${pc(per.er,per.per)} |`,'');
+  L.push('## Account snapshot','| Metric | Value |','|---|---|',`| Followers | ${F.toLocaleString()} |`,`| Engagement rate (typical, last 20 posts) | ${S.er.toFixed(2)}% |`,`| Typical likes + comments per post | ${Math.round(S.perPost)} |`,`| Posts per week (last ${S.W} days) | ${S.ppw.toFixed(1)} |`,`| Longest recent gap | ${Math.round(S.gap)} days |`,`| Posting health score | ${S.score}/100 |`,'');
+  L.push('## Best times (all history)',T.src==='audience'?`Based on ${T.days} days of follower activity (confidence: ${T.conf}).`:`Instagram sent no follower activity, so this uses your own posts (confidence: ${T.conf}).`,'',...T.slots.map((s,i)=>`${i+1}. **${FULL[s.w]} ${slotLbl(s)}**`),'');
   L.push('## Formats',...tb('Format',fmts),'','## Weekdays',...tb('Day',byDay.map((x,i)=>({...x,k:FULL[i]}))),'','## Captions',...tb('Caption length',capB),'',...tb('Hashtags',tagB),'');
   L.push('## Top posts','| Date | Format | Likes + comments | Link |','|---|---|---|---|',...[...P].sort((a,b)=>b.e-a.e).slice(0,5).map(p=>`| ${isoDay(p.t)} | ${p.fmt} | ${p.e} | [open](${p.permalink}) |`),'','## Weakest posts','| Date | Format | Likes + comments | Link |','|---|---|---|---|',...[...P].sort((a,b)=>a.e-b.e).slice(0,3).map(p=>`| ${isoDay(p.t)} | ${p.fmt} | ${p.e} | [open](${p.permalink}) |`),'');
   L.push('## What to do',...R.map(r=>`- **${r[0]}**: ${r[1]}`),'');
-  const bf=fmts.filter(x=>x.n>=3).sort((a,b)=>b.med-a.med)[0];
-  L.push('## Starter plan for the next 30 days',`- Post ${Math.max(3,Math.min(5,Math.round(S.ppw)+1))} times a week.`,`- Publish at: ${T.slots.slice(0,3).map(s=>`${DAYS[s.w]} ${s.len===1?hh(s.h-1):hh(s.h)}`).join(', ')||'your best slots once data builds up'}.`,bf?`- Make ${bf.k} your main format (typical ${Math.round(bf.med)} likes + comments).`:'- Test Reels, carousels and photos evenly to find your best format.','- Re-run this report in 30 days and compare.','','*For a deeper analysis written from every post and caption, use "Generate with Gemini".*');
+  const bf=fmts.filter(x=>x.n>=3).sort((a,b)=>b.med-a.med)[0],fm=bf?`Make ${bf.k} your main format (typical ${Math.round(bf.med)} likes + comments).`:'Test Reels, carousels and photos evenly to find your best format.';
+  const tgt=Math.max(3,Math.min(5,Math.round(S.ppw)+1)),days=[...new Map(T.slots.map(s=>[s.w,s])).values()].slice(0,tgt).sort((a,b)=>a.w-b.w);
+  if(PER==='day')L.push(`## ${T.todayL}'s plan`,...(T.today.length?T.today.map(s=>`- Publish ${FULL[s.w]} at **${rng(s)}** (post about an hour before).`):['- No clear slot yet, use your best overall slot above.']),`- ${fm}`,'- Reply to every comment in the first hour.','- Check tonight: engagement on today\'s post versus your typical '+Math.round(S.perPost)+'.');
+  else{
+    L.push(`## Plan for the next ${PER==='week'?'7 days':'30 days'}`,`- Post ${tgt} times a week${PER==='month'?', for about '+Math.round(tgt*30/7)+' posts in total':''}.`,...days.map(s=>`- ${FULL[s.w]} at **${rng(s)}**`),`- ${fm}`);
+    if(PER==='month')L.push('- Review at the end of week 2 and week 4: compare engagement per post with this report.');
+    else L.push('- At the end of the week, compare posts, engagement and rate with the table at the top.');
+  }
+  L.push('','*For a deeper analysis written from every post and caption, use "Generate with Gemini".*');
   return L.join('\n');
 }
 
 /* ---------------- agent chat ---------------- */
 let CHAT=[];try{CHAT=JSON.parse(LS.g('vx-chat')||'[]')}catch{}
-const SUGG=['What should I post this week?','Why did my weakest post underperform?','Which format should I focus on?','Write 5 captions in the style of my best post'];
+const SUGG=[()=>PER==='day'?'What should I post today?':PER==='month'?'Plan my content for this month':'What should I post this week?','Why did my weakest post underperform?','Which format should I focus on?','Write 5 captions in the style of my best post'];
 const saveChat=()=>LS.s('vx-chat',JSON.stringify(CHAT.filter(m=>!m.pending).slice(-40)));
 function drawChat(){
   const el=$('#msgs');
-  if(!CHAT.length){el.innerHTML=`<div class="empty"><div class="ai-ic">Vex</div><p class="muted" style="margin-top:8px">Your analytics agent. It has read every post, your best times and your audience data.</p><div class="sugg">${SUGG.map(s=>`<button type="button" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>`}
+  if(!CHAT.length){el.innerHTML=`<div class="empty"><div class="ai-ic">Vex</div><p class="muted" style="margin-top:8px">Your analytics agent. It has read every post, your best times and your audience data.</p><div class="sugg">${SUGG.map(x=>typeof x==='function'?x():x).map(s=>`<button type="button" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>`}
   else el.innerHTML=CHAT.map(m=>m.role==='user'?`<div class="msg u">${esc(m.content)}</div>`:m.pending?`<div class="msg a"><span class="dots"><i></i><i></i><i></i></span></div>`:m.err?`<div class="msg e">${esc(m.content)}</div>`:`<div class="msg a md">${md(m.content)}</div>`).join('');
   el.scrollTop=el.scrollHeight;
 }
 $('#msgs').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b)ask(b.dataset.s)});
 async function ask(text){
   text=(text||'').trim();if(!text||busy)return;
-  if(!AI.has){tab('set');return}
+  if(!AI.has){openAgent(false);tab('set');return}
   busy=true;$('#send').disabled=true;$('#q').value='';fit();
   const hist=CHAT.filter(m=>!m.err&&!m.pending).slice(-12).map(m=>({role:m.role,content:m.content}));
   CHAT.push({role:'user',content:text});CHAT.push({role:'assistant',pending:true,content:''});drawChat();
