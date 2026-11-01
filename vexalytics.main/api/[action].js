@@ -136,7 +136,7 @@ module.exports = async (req, res) => {
       if (key) {
         // Only reject the obviously unusable (spaces, line breaks, too short). Google's newer keys contain dots, so the real check is the test call below.
         if (!/^[\x21-\x7E]{15,500}$/.test(key)) return json(res, 400, { error: 'The key has spaces or line breaks in it. Copy it again and paste only the key.' });
-        try { await gemini({ key, model, system: 'Reply with the single word OK.', contents: [{ role: 'user', parts: [{ text: 'ping' }] }], maxTokens: 256 }); }
+        try { await gemini({ key, model, plain: true, contents: [{ role: 'user', parts: [{ text: 'Reply with the single word OK.' }] }] }); }
         catch (e) { return json(res, 400, { error: 'Gemini rejected it: ' + e.message }); }
         await setSetting('gemini_key', key); st.gemini_key = key;
       } else if (!(st.gemini_key || envKey)) return json(res, 400, { error: 'Paste your Gemini API key first.' });
