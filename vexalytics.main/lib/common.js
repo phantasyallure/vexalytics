@@ -40,7 +40,7 @@ const delSetting = key => sb('app_settings?key=eq.' + encodeURIComponent(key), {
 const DEFAULT_MODEL = 'gemini-3.8-flash';
 // Old saved models (gemini-1.x / 2.x) are retired for new users, so quietly use the current default instead.
 const fixModel = m => { m = String(m || '').trim().replace(/^models\//, ''); return !m || /^gemini-(1|2)\./.test(m) ? DEFAULT_MODEL : m; };
-async function gemini({ key, model, system, contents, maxTokens = 8192, temperature = 0.5, plain = false }) {
+async function gemini({ key, model, system, contents, maxTokens = 8192, temperature = 0.5, plain = false, budget = 50000, noRetry = false }) {
   model = fixModel(model);
   if (!/^[A-Za-z0-9._-]+$/.test(model)) throw new Error('Invalid model name.');
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
@@ -67,13 +67,13 @@ async function gemini({ key, model, system, contents, maxTokens = 8192, temperat
     return post(JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig }), ms);
   };
   // Total budget stays under Vercel's 60 s function limit, so we always return a readable message instead of Vercel's HTML error page.
-  const t0 = Date.now(), left = () => 50000 - (Date.now() - t0);
+  const t0 = Date.now(), left = () => budget - (Date.now() - t0);
   let out;
   try {
     try { out = await call(!plain, Math.min(28000, left())); }
     catch (e) { if (e.name !== 'TimeoutError' || left() < 6000) throw e; out = await call(false, left()); } // one retry without the thinking option
     // Overloaded (429/5xx) or bad thinking option: one short pause, then one plain retry if time allows
-    if (!out.r.ok && (out.r.status === 400 || out.r.status === 429 || out.r.status >= 500)) {
+    if (!noRetry && !out.r.ok && (out.r.status === 400 || out.r.status === 429 || out.r.status >= 500)) {
       const m = (out.j.error && out.j.error.message) || '';
       if ((/think/i.test(m) || out.r.status >= 500 || out.r.status === 429) && left() > 8000) {
         await new Promise(res => setTimeout(res, out.r.status === 400 ? 0 : 1500));
