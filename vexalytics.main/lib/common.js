@@ -39,7 +39,7 @@ const delSetting = key => sb('app_settings?key=eq.' + encodeURIComponent(key), {
 // Gemini REST call. The key is sent in a header, never in the URL.
 const DEFAULT_MODEL = 'gemini-3.8-flash';
 // Old saved models (gemini-1.x / 2.x) are retired for new users, so quietly use the current default instead.
-const fixModel = m => { m = String(m || '').trim().replace(/^models\//, ''); return !m || /^gemini-(1|2)\./.test(m) ? DEFAULT_MODEL : m; };
+const fixModel = m => { m = String(m || '').trim().replace(/^models\//, ''); return m || DEFAULT_MODEL; };
 async function gemini({ key, model, system, contents, maxTokens = 8192, temperature = 0.5, plain = false, budget = 50000, noRetry = false }) {
   model = fixModel(model);
   if (!/^[A-Za-z0-9._-]+$/.test(model)) throw new Error('Invalid model name.');
