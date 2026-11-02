@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en" data-p="gold" data-m="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0c08">
+<title>Vexalytics</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ================= THEME TOKENS =================
+   Every colour on the page comes from these variables. Each palette has a dark and a light set.
+   Selectors are [data-p][data-m] (not html-only) so the small previews in the Appearance picker can use them too.
+   bg page | g1,g2 background glows | card | ink text | mute secondary text | line borders | a1,a2 accent gradient
+   ona text on accent | ok success | warn warning | bad error | track bars/rings | nav tab bar | field menus/inputs | shadow
+   ================================================= */
+@property --bg{syntax:'<color>';inherits:true;initial-value:#0f0c08}
+@property --g1{syntax:'<color>';inherits:true;initial-value:rgba(207,154,82,.20)}
+@property --g2{syntax:'<color>';inherits:true;initial-value:rgba(236,201,123,.10)}
+@property --card{syntax:'<color>';inherits:true;initial-value:rgba(255,236,196,.055)}
+@property --ink{syntax:'<color>';inherits:true;initial-value:#f7f0e4}
+@property --mute{syntax:'<color>';inherits:true;initial-value:#bdb19c}
+@property --line{syntax:'<color>';inherits:true;initial-value:rgba(236,200,120,.18)}
+@property --a1{syntax:'<color>';inherits:true;initial-value:#ecc97b}
+@property --a2{syntax:'<color>';inherits:true;initial-value:#cf9a52}
+@property --ona{syntax:'<color>';inherits:true;initial-value:#1c1409}
+@property --ok{syntax:'<color>';inherits:true;initial-value:#86dcaa}
+@property --warn{syntax:'<color>';inherits:true;initial-value:#f2b765}
+@property --bad{syntax:'<color>';inherits:true;initial-value:#f39a86}
+@property --track{syntax:'<color>';inherits:true;initial-value:rgba(255,236,196,.10)}
+@property --nav{syntax:'<color>';inherits:true;initial-value:rgba(20,15,9,.84)}
+@property --field{syntax:'<color>';inherits:true;initial-value:#1a140c}
+@property --shadow{syntax:'<color>';inherits:true;initial-value:rgba(0,0,0,.5)}
+:root{--tt:--bg .5s ease,--g1 .5s ease,--g2 .5s ease,--card .5s ease,--ink .5s ease,--mute .5s ease,--line .5s ease,--a1 .5s ease,--a2 .5s ease,--ona .5s ease,--ok .5s ease,--warn .5s ease,--bad .5s ease,--track .5s ease,--nav .5s ease,--field .5s ease,--shadow .5s ease}
+:root,[data-p][data-m]{--grad:linear-gradient(120deg,var(--a1),var(--a2));--ai:linear-gradient(135deg,var(--a1),var(--a2) 62%,var(--ok))}
+/* Noir Gold - dark */
+:root,[data-p=gold][data-m=dark]{--bg:#0f0c08;--g1:rgba(207,154,82,.20);--g2:rgba(236,201,123,.10);--card:rgba(255,236,196,.055);--ink:#f7f0e4;--mute:#bdb19c;--line:rgba(236,200,120,.18);--a1:#ecc97b;--a2:#cf9a52;--ona:#1c1409;--ok:#86dcaa;--warn:#f2b765;--bad:#f39a86;--track:rgba(255,236,196,.10);--nav:rgba(20,15,9,.84);--field:#1a140c;--shadow:rgba(0,0,0,.5);color-scheme:dark}
+/* Noir Gold - light */
+[data-p=gold][data-m=light]{--bg:#faf5ea;--g1:rgba(214,170,90,.30);--g2:rgba(240,214,150,.38);--card:rgba(255,255,255,.74);--ink:#1f180e;--mute:#655842;--line:rgba(120,86,24,.20);--a1:#8f6410;--a2:#6f4a0c;--ona:#fffaf0;--ok:#166a45;--warn:#8f5200;--bad:#a8321f;--track:rgba(111,74,12,.11);--nav:rgba(255,252,244,.88);--field:#fffdf8;--shadow:rgba(110,80,30,.20);color-scheme:light}
+/* Rose Quartz - dark */
+[data-p=rose][data-m=dark]{--bg:#150a11;--g1:rgba(226,123,163,.24);--g2:rgba(246,180,204,.10);--card:rgba(255,214,228,.055);--ink:#fcf0f4;--mute:#c8a9b6;--line:rgba(248,176,205,.19);--a1:#f6b4cc;--a2:#e27ba3;--ona:#2a0e1b;--ok:#8fe0b4;--warn:#f4bb6a;--bad:#ff9aa8;--track:rgba(255,214,228,.10);--nav:rgba(24,10,17,.84);--field:#200f19;--shadow:rgba(0,0,0,.5);color-scheme:dark}
+/* Rose Quartz - light */
+[data-p=rose][data-m=light]{--bg:#fdf3f5;--g1:rgba(226,123,163,.28);--g2:rgba(246,190,208,.38);--card:rgba(255,255,255,.76);--ink:#2b111b;--mute:#75505f;--line:rgba(150,50,95,.20);--a1:#b23a6a;--a2:#8c2452;--ona:#fff7fa;--ok:#17704a;--warn:#8f5200;--bad:#b3261e;--track:rgba(140,36,82,.11);--nav:rgba(255,248,250,.9);--field:#fffafb;--shadow:rgba(140,40,80,.18);color-scheme:light}
+/* Emerald Night - dark */
+[data-p=emerald][data-m=dark]{--bg:#07130f;--g1:rgba(40,170,120,.22);--g2:rgba(211,189,120,.09);--card:rgba(200,255,228,.05);--ink:#effaf4;--mute:#a6c2b5;--line:rgba(120,230,180,.18);--a1:#6fdcab;--a2:#d3bd78;--ona:#05150e;--ok:#7fe0a8;--warn:#f0b95f;--bad:#f59a8a;--track:rgba(200,255,228,.10);--nav:rgba(8,22,17,.84);--field:#0e211a;--shadow:rgba(0,0,0,.5);color-scheme:dark}
+/* Emerald Night - light */
+[data-p=emerald][data-m=light]{--bg:#f3f8f3;--g1:rgba(40,160,115,.22);--g2:rgba(214,196,130,.34);--card:rgba(255,255,255,.76);--ink:#10241b;--mute:#4d665a;--line:rgba(15,100,70,.20);--a1:#0a7752;--a2:#7d6210;--ona:#f4fff9;--ok:#176a43;--warn:#8f5200;--bad:#ab3226;--track:rgba(15,100,70,.11);--nav:rgba(250,253,250,.9);--field:#fbfefb;--shadow:rgba(20,80,60,.18);color-scheme:light}
+/* Midnight Silver - dark */
+[data-p=midnight][data-m=dark]{--bg:#070b16;--g1:rgba(80,120,230,.22);--g2:rgba(200,214,240,.08);--card:rgba(190,208,255,.055);--ink:#eef2fb;--mute:#a5b1c8;--line:rgba(170,196,255,.18);--a1:#d3dbea;--a2:#86a8f0;--ona:#0a1226;--ok:#7fdcab;--warn:#f1bb66;--bad:#f59a9a;--track:rgba(190,208,255,.10);--nav:rgba(10,15,30,.84);--field:#101830;--shadow:rgba(0,0,0,.55);color-scheme:dark}
+/* Midnight Silver - light */
+[data-p=midnight][data-m=light]{--bg:#f3f5f9;--g1:rgba(70,110,200,.20);--g2:rgba(190,200,222,.42);--card:rgba(255,255,255,.78);--ink:#0f1a33;--mute:#525f7a;--line:rgba(40,70,140,.18);--a1:#2b4688;--a2:#56658a;--ona:#f7f9ff;--ok:#17704a;--warn:#8f5200;--bad:#b02a2a;--track:rgba(30,60,130,.11);--nav:rgba(250,251,254,.9);--field:#fbfcfe;--shadow:rgba(30,50,100,.18);color-scheme:light}
+/* Violet Dusk - dark */
+[data-p=violet][data-m=dark]{--bg:#0f0a1b;--g1:rgba(150,100,255,.24);--g2:rgba(241,164,207,.10);--card:rgba(222,205,255,.055);--ink:#f6f1ff;--mute:#b9acd3;--line:rgba(190,160,255,.19);--a1:#c2a9ff;--a2:#f1a4cf;--ona:#170c2b;--ok:#88e0b0;--warn:#f3bb68;--bad:#ff9cae;--track:rgba(222,205,255,.10);--nav:rgba(18,12,32,.84);--field:#1a1230;--shadow:rgba(0,0,0,.5);color-scheme:dark}
+/* Violet Dusk - light */
+[data-p=violet][data-m=light]{--bg:#f8f5fd;--g1:rgba(130,90,230,.20);--g2:rgba(240,170,210,.32);--card:rgba(255,255,255,.78);--ink:#1d1233;--mute:#62547d;--line:rgba(90,50,170,.17);--a1:#5a34b5;--a2:#9a3a8e;--ona:#fbf8ff;--ok:#17704a;--warn:#8f5200;--bad:#b3261e;--track:rgba(90,52,181,.11);--nav:rgba(252,250,255,.9);--field:#fdfcff;--shadow:rgba(70,40,140,.18);color-scheme:light}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box;margin:0}[hidden]{display:none!important}
+button{font-family:inherit}
+html{background:var(--bg);transition:var(--tt)}
+body{color:var(--ink);font:500 15px/1.55 Manrope,system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;background:radial-gradient(900px 620px at 6% -8%,var(--g1),transparent 60%),radial-gradient(800px 600px at 100% 100%,var(--g2),transparent 60%),var(--bg);background-attachment:fixed}
+main{max-width:1100px;margin:0 auto;padding:max(20px,env(safe-area-inset-top)) 20px 60px}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}.g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.num{font-variant-numeric:tabular-nums lining-nums;font-weight:800;letter-spacing:-.02em}
+.muted{color:var(--mute)}.sm{font-size:13.5px}
+h2{font:600 1.65rem/1.15 'Cormorant Garamond',Georgia,serif;margin-bottom:4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--ink) 7%,transparent),0 16px 36px -22px var(--shadow)}
+.grid{display:grid;gap:16px;margin-top:16px}.g2{grid-template-columns:1fr 1fr}
+.btn{display:inline-block;background:var(--grad);color:var(--ona);font:700 15px Manrope,system-ui,sans-serif;border:0;border-radius:99px;padding:12px 26px;text-decoration:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px color-mix(in srgb,var(--a2) 38%,transparent)}
+.btn.ghost{background:none;color:var(--mute);border:1px solid var(--line);padding:9px 18px;font-size:14px;transition:color .25s,border-color .25s,transform .25s}
+.btn.ghost:hover{color:var(--ink);border-color:var(--a1);box-shadow:none}
+:focus-visible{outline:2px solid var(--a1);outline-offset:3px}
+.brandrow{display:flex;align-items:center;gap:10px;min-width:0}
+.mark{width:38px;height:38px;border-radius:12px;flex:none;display:block;box-shadow:0 0 0 1px var(--line),0 8px 20px -10px var(--shadow)}
+.brand{font:600 1.9rem/1 'Cormorant Garamond',Georgia,serif;letter-spacing:.01em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;width:max-content}
+/* auth screens */
+.auth{max-width:440px;margin:14vh auto;text-align:center}
+.auth .mark{width:84px;height:84px;border-radius:26px;margin:0 auto 16px}
+.auth .brand{margin:0 auto 22px;font-size:2.6rem}.auth p{margin-bottom:20px}
+.auth ol{text-align:left;margin:0 0 20px 20px}
+.auth input{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:13px 20px;font:inherit;margin-bottom:12px;text-align:center}
+.auth input::placeholder{color:var(--mute);opacity:1}
+.auth .btn{width:100%}
+.err{color:var(--bad)}
+.load{height:3px;width:120px;margin:0 auto;border-radius:9px;background:var(--line);overflow:hidden}.load:after{content:"";display:block;height:100%;width:40%;background:var(--grad);animation:sl 1.2s ease-in-out infinite}
+@keyframes sl{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
+/* welcome splash */
+#hi{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:var(--bg);animation:hi 2.4s ease forwards}
+#hi .hero-ic{animation:rise 1.2s cubic-bezier(.2,.8,.2,1) both}
+#hi h1{font-size:clamp(2.8rem,9vw,5.5rem);font-weight:500;font-style:italic;animation:rise 1.2s .12s cubic-bezier(.2,.8,.2,1) both}
+@keyframes hi{0%,75%{opacity:1}100%{opacity:0;visibility:hidden}}@keyframes rise{from{opacity:0;transform:translateY(16px);letter-spacing:.06em}to{opacity:1;transform:none}}
+/* header + hero */
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tools{display:flex;align-items:center;gap:8px;min-width:0}
+.ibtn{position:relative;flex:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:grid;place-items:center;transition:border-color .25s,transform .25s}
+.ibtn:hover{border-color:var(--a1);transform:translateY(-1px)}
+.ibtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#thm svg{position:absolute;inset:0;margin:auto;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .3s}
+html[data-m=dark] #thm .i-moon{opacity:0;transform:rotate(-90deg) scale(.4)}
+html[data-m=light] #thm .i-sun{opacity:0;transform:rotate(90deg) scale(.4)}
+.chip{display:flex;align-items:center;gap:10px;padding:5px 16px 5px 5px;border:1px solid var(--line);border-radius:99px;background:var(--card);min-width:0}
+.chip img{width:36px;height:36px;border-radius:50%;object-fit:cover;background:var(--line)}.chip b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero{display:flex;align-items:center;gap:28px;margin:44px 0 6px}
+.hero h1{font:600 clamp(2.9rem,8vw,5rem)/1 'Cormorant Garamond',Georgia,serif;padding-bottom:6px}
+.hero p{font-size:1.1rem;margin-top:10px;max-width:60ch}.hero p b{color:var(--a1)}
+.hero-ic{flex:none;display:block;width:clamp(96px,13vw,132px);aspect-ratio:1;border-radius:30%;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 22px 44px -16px var(--shadow),0 0 70px -12px color-mix(in srgb,var(--a2) 55%,transparent);animation:float 7s ease-in-out infinite}
+.hero-ic img{width:100%;height:100%;display:block}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi small{color:var(--mute);font-size:14px}.kpi b{display:block;font-size:2.4rem;line-height:1.15;margin:4px 0}.kpi span{font-size:13px;color:var(--mute)}.kpi .up{color:var(--ok)}.kpi .dn{color:var(--warn)}
+.big{font-size:clamp(2.6rem,6vw,3.6rem);line-height:1.05;font-weight:600;margin:6px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chips span{border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:14px;font-weight:700;background:var(--track)}
+.score{display:flex;align-items:center;gap:22px;margin-top:10px}.score svg{flex:none}
+.ring{stroke-dasharray:327;stroke-dashoffset:327;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
+.ring-track{stroke:var(--track)}.ring-num{fill:var(--ink)}
+.s1{stop-color:var(--a1)}.s2{stop-color:var(--a2)}
+/* bars */
+.bar{display:grid;grid-template-columns:50px 1fr 58px;gap:12px;align-items:center;margin:12px 0;font-size:14.5px}
+.bar i{display:block;height:11px;border-radius:9px;background:var(--track);overflow:hidden}
+.bar i span{display:block;height:100%;width:0;border-radius:9px;background:var(--grad);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bar.top b{color:var(--a1)}.bar .num{text-align:right;color:var(--mute);font-weight:700}
+/* heatmap */
+.heat{display:grid;grid-template-columns:34px repeat(24,minmax(0,1fr));gap:3px;margin-top:18px}
+.heat b{font-weight:600;font-size:12.5px;color:var(--mute);align-self:center}
+.heat u{aspect-ratio:1;border-radius:5px;background:var(--a1);min-height:11px}.heat u.bx{outline:2px solid var(--a2);outline-offset:1px}
+.hl{font-size:11px;color:var(--mute);text-align:center;white-space:nowrap;min-width:0}
+select{background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:5px 8px;font:inherit}
+/* chart (all colours come from tokens) */
+.cl-grid{stroke:var(--line)}.cl-t{fill:var(--mute)}.cl-pk{fill:var(--a1)}.cl-dot{fill:var(--bg);stroke:var(--a1)}
+/* content */
+.rec{padding:14px 0;border-top:1px solid var(--line)}.rec:first-of-type{border:0;padding-top:6px}.rec b{display:block;font-size:16px}.rec span{color:var(--mute)}
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-top:16px}
+.posts a{color:inherit;text-decoration:none}.posts img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;background:var(--line);display:block;margin-bottom:8px;transition:transform .35s}
+.posts a:hover img{transform:scale(1.03)}.posts .num{font-size:1.25rem;display:block}.posts small{color:var(--mute)}
+.foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:30px}
+/* AI / chat sparkle: reserved token so a Gemini chat icon can use the palette, e.g. fill:var(--ai) */
+.ai-ic{background:var(--ai);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ibtn.s{width:36px;height:36px}
+.aplb{font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:16px 0 8px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:99px;background:var(--track);border:1px solid var(--line)}
+.seg button{border:0;background:none;color:var(--mute);font:700 14px Manrope,system-ui,sans-serif;padding:9px 6px;border-radius:99px;cursor:pointer;transition:background .3s,color .3s}
+.seg button:hover{color:var(--ink)}.seg button[aria-checked=true]{background:var(--grad);color:var(--ona)}
+.pals{display:grid;gap:10px}
+.pal{display:grid;grid-template-columns:78px 1fr 22px;align-items:center;gap:14px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:9px 14px 9px 9px;color:var(--ink);font:600 15px Manrope,system-ui,sans-serif;cursor:pointer;transition:border-color .25s,transform .25s}
+.pal:hover{transform:translateY(-1px);border-color:var(--mute)}
+.pal small{display:block;color:var(--mute);font-size:12.5px;font-weight:500}
+.pal[aria-checked=true]{border-color:var(--a1);box-shadow:0 0 0 1px var(--a1)}
+.pal .ck{width:20px;height:20px;border-radius:50%;background:var(--grad);display:grid;place-items:center;opacity:0;transform:scale(.5);transition:opacity .25s,transform .3s}
+.pal[aria-checked=true] .ck{opacity:1;transform:none}
+.ck svg{width:12px;height:12px;fill:none;stroke:var(--ona);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.pv{position:relative;width:78px;height:54px;border-radius:13px;overflow:hidden;color:var(--ink);background:radial-gradient(70px 44px at 0 0,var(--g1),transparent 75%),var(--bg);border:1px solid var(--line)}
+.pv i{position:absolute;display:block}
+.pv .a{left:8px;top:8px;width:30px;height:7px;border-radius:9px;background:var(--grad)}
+.pv .b{left:8px;right:8px;top:21px;bottom:8px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
+.pv .c{left:14px;top:28px;width:26px;height:4px;border-radius:9px;background:var(--ink)}
+.pv .d{left:14px;top:36px;width:16px;height:4px;border-radius:9px;background:var(--mute)}
+.pv .e{right:14px;top:29px;width:9px;height:9px;border-radius:50%;background:var(--a1);box-shadow:-11px 0 0 var(--a2)}
+.apnote{margin-top:16px}
+/* ---------- menu bar (top on desktop, bottom tab bar on phones) ---------- */
+.mbar{position:sticky;top:0;z-index:30;display:block}
+.mbar:before{content:"";position:absolute;inset:0;z-index:-1;background:var(--nav);border-bottom:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.mbar-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 20px;padding-top:max(10px,env(safe-area-inset-top))}
+.mbar .brand{font-size:1.65rem}
+#app main,main{padding-top:24px}
+/* shared bits */
+.bar b small{display:block;color:var(--mute);font-weight:500;font-size:11.5px;line-height:1.15}
+.bar.dim{opacity:.5}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 11px;font-size:12.5px;font-weight:700;color:var(--mute);background:var(--track)}
+.tag.ok{color:var(--ok)}.tag.warn{color:var(--warn)}
+.mini{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.mini div{border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--track)}
+.mini small{display:block;color:var(--mute);font-size:13px}.mini b{display:block;font-size:1.6rem;margin-top:2px}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px;margin-top:6px}
+.demo h3{font:700 13px Manrope,system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:14px 0 2px}
+/* markdown output (reports + chat) */
+.md{overflow-wrap:anywhere}
+.md>*:first-child{margin-top:0}
+.md h1{font:600 1.9rem/1.15 'Cormorant Garamond',Georgia,serif;margin:6px 0 10px}
+.md h2{font:600 1.4rem/1.2 'Cormorant Garamond',Georgia,serif;margin:22px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.md h3,.md h4{font:800 1rem/1.3 Manrope,system-ui,sans-serif;margin:16px 0 6px;color:var(--a1)}
+.md p{margin:8px 0}.md ul,.md ol{margin:8px 0 8px 22px}.md li{margin:3px 0}
+.md hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+.md code{background:var(--track);border-radius:6px;padding:1px 6px;font-size:.92em}
+.md a{color:var(--a1)}
+.md .tw{overflow-x:auto;margin:10px 0}
+.md table{border-collapse:collapse;width:100%;font-size:14px}
+.md th,.md td{border:1px solid var(--line);padding:7px 11px;text-align:left;vertical-align:top}
+.md th{background:var(--track);font-weight:800;white-space:nowrap}
+/* reports */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.pill{border:1px solid var(--line);background:var(--track);color:var(--mute);border-radius:99px;padding:8px 16px;font:700 14px Manrope,system-ui,sans-serif;cursor:pointer;transition:color .25s,border-color .25s}
+.pill:hover{color:var(--ink);border-color:var(--a1)}
+.pill[aria-pressed=true]{background:var(--grad);color:var(--ona);border-color:transparent}
+.acts{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.sm2{padding:9px 18px;font-size:14px}
+#rep{margin-top:18px}
+.repbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+/* chat */
+.msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:2px 2px 14px}
+.msg{max-width:min(740px,94%);padding:12px 16px;border-radius:18px;border:1px solid var(--line);background:var(--track)}
+.msg.u{align-self:flex-end;background:var(--grad);color:var(--ona);border-color:transparent;font-weight:600;white-space:pre-wrap;overflow-wrap:anywhere}
+.team .own{display:none!important}
+.tnew{margin-top:12px;padding:16px;border:1px dashed var(--line);border-radius:16px}.tnew b{display:block;font:800 1.45rem/1.25 Manrope,system-ui,sans-serif;letter-spacing:.05em;margin:6px 0 12px;overflow-wrap:anywhere}
+.trow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}.trow small{display:block;color:var(--mute)}
+.via{font-size:12.5px;color:var(--mute);margin-top:10px}.msg.a{align-self:flex-start}.msg.e{align-self:flex-start;border-color:var(--bad);color:var(--bad)}
+.empty{margin:auto;text-align:center;max-width:460px}
+.empty .ai-ic{font:600 2.4rem/1 'Cormorant Garamond',Georgia,serif}
+.sugg{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.sugg button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 15px;font:600 13.5px Manrope,system-ui,sans-serif;cursor:pointer}
+.sugg button:hover{border-color:var(--a1)}
+.composer{flex:none;display:flex;gap:10px;align-items:flex-end;padding-top:12px;border-top:1px solid var(--line)}
+.composer textarea,.fld input,.fld select{background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:12px 16px;font:inherit;width:100%}
+.composer textarea{resize:none;max-height:140px;min-height:46px;flex:1;border-radius:20px}
+.composer .btn{padding:12px 22px;flex:none}
+.dots{display:inline-flex;gap:5px;padding:4px 0}.dots i{width:7px;height:7px;border-radius:50%;background:var(--a1);animation:bl 1.1s infinite ease-in-out both}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes bl{0%,80%,100%{opacity:.25;transform:scale(.7)}40%{opacity:1;transform:none}}
+.banner{border:1px dashed var(--line);border-radius:16px;padding:12px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+/* settings */
+.set{display:grid;gap:16px;max-width:760px}
+.set .card h2{margin-bottom:2px}
+.fld{margin-top:14px}.fld label{display:block;font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:7px}
+.fld input,.fld select{border-radius:14px}
+.stat{margin-top:10px;font-size:13.5px;min-height:1.4em}.stat.ok{color:var(--ok)}.stat.bad{color:var(--bad)}
+/* ---------- sidebar + agent drawers ---------- */
+.seg.per{width:auto;display:inline-grid;grid-template-columns:repeat(3,auto);padding:3px;margin-left:auto}
+.seg.per button{padding:7px 16px;font-size:13.5px}
+.tools{margin-left:0}
+#scrim{position:fixed;inset:0;z-index:50;background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+#side,#agent{position:fixed;z-index:60;top:0;bottom:0;background:var(--field);color:var(--ink);display:flex;flex-direction:column;visibility:hidden;transition:transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s .38s}
+#side{left:0;width:min(300px,86vw);border-right:1px solid var(--line);box-shadow:24px 0 60px -24px var(--shadow);transform:translateX(-104%);padding:max(18px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom))}
+#agent{right:0;width:min(440px,100vw);border-left:1px solid var(--line);box-shadow:-24px 0 60px -24px var(--shadow);transform:translateX(104%);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom))}
+body.side-open #side,body.agent-open #agent{transform:none;visibility:visible;transition:transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s}
+#side .sh{display:flex;align-items:center;justify-content:space-between;padding:2px 6px 18px}
+.menu{display:grid;gap:4px}
+.menu button{display:flex;align-items:center;gap:14px;border:0;background:none;color:var(--mute);font:700 15.5px Manrope,system-ui,sans-serif;padding:13px 14px;border-radius:14px;cursor:pointer;text-align:left;transition:color .25s,background .25s}
+.menu button:hover{color:var(--ink);background:var(--track)}
+.menu button svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.menu button[aria-selected=true]{background:var(--grad);color:var(--ona)}
+#side .sf{margin-top:auto;padding:16px 8px 0;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;min-width:0}
+#side .sf img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--line);flex:none}
+.ah{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+.ah .acts{gap:12px}
+#agent .msgs{min-height:0}
+@media(min-width:900px){body.agent-open #agent{box-shadow:-24px 0 60px -24px var(--shadow)}}
+@media(max-width:760px){
+  .g2{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr;gap:12px}.kpi b{font-size:2rem}.mini{grid-template-columns:1fr 1fr}.demo{grid-template-columns:1fr}
+  .mbar-in{gap:8px;padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top))}.seg.per button{padding:7px 11px;font-size:13px}.mbar .brand{display:none}
+  main{padding:18px 14px calc(50px + env(safe-area-inset-bottom))}
+  .card{padding:18px;border-radius:20px}.grid{gap:12px}.hero{margin-top:6px}
+  .heat{grid-template-columns:30px repeat(24,minmax(0,1fr));gap:2px}.heat u{min-height:9px;border-radius:3px}.hl{font-size:10px}.hl.x{visibility:hidden}
+  .score{flex-direction:column;align-items:flex-start}.auth{margin:9vh auto}
+  .posts{grid-template-columns:1fr 1fr}.bar{grid-template-columns:48px 1fr 52px;gap:10px}
+}
+@media(max-width:560px){
+  .hero{flex-direction:column;align-items:flex-start;gap:18px}.hero-ic{width:92px}
+  .brand,.mbar .brand{font-size:1.5rem}.mark{width:34px;height:34px;border-radius:11px}.brandrow{gap:8px}
+  .ibtn{width:40px;height:40px}.tools{gap:6px}.mbar .mark{display:none}
+}
+@media(pointer:coarse){input,select,textarea{font-size:16px!important}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+<script>
+/* Theme engine. Runs before first paint so there is no flash. Mode: auto (follows device) | light | dark. */
+window.TH=(function(){
+  var KP='vx-palette',KM='vx-mode',d=document.documentElement,mq=matchMedia('(prefers-color-scheme: dark)'),ls=[];
+  var LIST=[['gold','Noir Gold','Black and champagne'],['rose','Rose Quartz','Plum and soft pink'],['emerald','Emerald Night','Deep green and champagne'],['midnight','Midnight Silver','Navy and silver'],['violet','Violet Dusk','Amethyst and rose']];
+  function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function put(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  var pal=get(KP),pref=get(KM);
+  if(!LIST.some(function(x){return x[0]===pal}))pal='gold';
+  if(['auto','light','dark'].indexOf(pref)<0)pref='auto';
+  function eff(){return pref==='auto'?(mq.matches?'dark':'light'):pref}
+  function meta(){var m=document.querySelector('meta[name=theme-color]'),v=getComputedStyle(d).getPropertyValue('--bg').trim();if(m&&v)m.setAttribute('content',v)}
+  function apply(){
+    d.setAttribute('data-p',pal);d.setAttribute('data-m',eff());
+    meta();setTimeout(meta,520);
+    ls.forEach(function(f){f()});
+  }
+  var rm=function(){return matchMedia('(prefers-reduced-motion: reduce)').matches};
+  var api={list:LIST,pal:function(){return pal},pref:function(){return pref},eff:eff,rm:rm,
+    setPal:function(p){pal=p;put(KP,p);apply()},
+    setMode:function(m){pref=m;put(KM,m);apply()},
+    on:function(f){ls.push(f)}};
+  (mq.addEventListener?mq.addEventListener('change',function(){if(pref==='auto')apply()}):mq.addListener(function(){if(pref==='auto')apply()}));
+  apply();
+  return api;
+})();
+</script>
+</head>
+<body>
+<div id="hi" hidden>
+  <div class="hero-ic"><picture><source srcset="/vexalytics-icon.webp" type="image/webp"><img src="/vexalytics-icon.png" width="512" height="512" alt=""></picture></div>
+  <h1 class="serif g">Welcome back, Imad.</h1>
+</div>
+
+<!-- ===== top bar ===== -->
+<header class="mbar" id="mbar" hidden><div class="mbar-in">
+  <button class="ibtn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="side" title="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <div class="brandrow"><img class="mark" src="/icon-192.png" width="38" height="38" alt=""><div class="brand">Vexalytics</div></div>
+  <div class="seg per" id="per" role="radiogroup" aria-label="Time range">
+    <button type="button" role="radio" data-per="day" aria-checked="false">Day</button>
+    <button type="button" role="radio" data-per="week" aria-checked="true">Week</button>
+    <button type="button" role="radio" data-per="month" aria-checked="false">Month</button>
+  </div>
+  <div class="tools">
+    <button class="ibtn" id="agentBtn" type="button" aria-label="Open AI agent" aria-expanded="false" aria-controls="agent" title="AI agent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg></button>
+    <button class="ibtn" id="thm" type="button" aria-label="Switch to light mode" title="Light / dark">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </div>
+</div></header>
+
+<!-- ===== sidebar (left) ===== -->
+<div id="scrim" hidden></div>
+<aside id="side" aria-label="Menu" aria-hidden="true">
+  <div class="sh"><div class="brandrow"><img class="mark" src="/icon-192.png" width="38" height="38" alt=""><div class="brand">Vexalytics</div></div>
+    <button class="ibtn s" id="sideClose" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <nav class="menu" role="tablist" aria-label="Sections">
+    <button role="tab" data-t="over" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
+    <button role="tab" data-t="aud" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.4c2.2.7 3.5 2.6 3.5 5.6"/></svg><span>Audience</span></button>
+    <button role="tab" data-t="con" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-5-5L5 21"/></svg><span>Content</span></button>
+    <button role="tab" data-t="str" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg><span>Strategy</span></button>
+    <button role="tab" data-t="set" class="own" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></svg><span>Settings</span></button>
+  </nav>
+  <div class="sf" id="chip"><img id="av" alt=""><div style="min-width:0"><b id="hd" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></b><span class="muted sm">Instagram connected</span></div></div>
+</aside>
+
+<!-- ===== AI agent (right, beside the sidebar) ===== -->
+<aside id="agent" aria-label="AI agent" aria-hidden="true">
+  <div class="ah"><div><div class="ai-ic serif" style="font-size:1.7rem;line-height:1">Vex</div><span class="muted sm">Your analytics agent</span></div>
+    <span class="acts"><a href="#" id="clr" class="muted sm">Clear</a><button class="ibtn s" id="agentClose" type="button" aria-label="Close agent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span></div>
+  <div class="banner" id="aiBan" hidden><span class="muted sm">Add your Gemini API key in Settings to chat with your agent.</span><button class="btn sm2" type="button" data-go="set">Open Settings</button></div>
+  <div class="msgs" id="msgs" aria-live="polite"></div>
+  <div class="composer"><textarea id="q" rows="1" placeholder="Ask about your account…" aria-label="Message"></textarea><button class="btn" id="send" type="button">Send</button></div>
+</aside>
+
+<main>
+<section id="loading" class="auth"><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">Reading your account…</p><div class="load"></div></section>
+<section id="setup" class="auth" hidden><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">One-time setup</p>
+  <ol class="muted"><li>In Vercel, open Settings → Environment Variables.</li><li>Add META_APP_ID, META_APP_SECRET, SUPABASE_URL, SUPABASE_SERVICE_KEY and DASH_PASSWORD.</li><li>Redeploy, then refresh this page.</li></ol></section>
+<section id="pw" class="auth" hidden><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">Enter your password or access code.</p>
+  <p id="pwErr" class="err"></p>
+  <input id="pwIn" type="password" autocomplete="current-password" placeholder="Password or access code" aria-label="Password or access code"><button class="btn" onclick="signIn()">Sign in</button></section>
+<section id="connect" class="auth" hidden><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">Connect the Instagram account linked to your Facebook Page. Everything stays private to you.</p>
+  <p id="err" class="err"></p><a class="btn" href="/api/login">Connect with Meta</a></section>
+
+<section id="app" hidden>
+
+  <!-- ===== OVERVIEW ===== -->
+  <div class="panel" id="t-over">
+    <div class="hero">
+      <div class="hero-ic"><picture><source srcset="/vexalytics-icon.webp" type="image/webp"><img src="/vexalytics-icon.png" width="512" height="512" alt="Vexalytics"></picture></div>
+      <div><h1 class="g">Welcome back, Imad.</h1><p class="muted" id="insight"></p></div>
+    </div>
+    <p class="muted sm" id="perNote" style="margin-top:20px"></p>
+    <div class="kpis" id="kpis" style="margin-top:10px"></div>
+    <div class="grid g2">
+      <div class="card"><div class="hd"><p class="muted">Best time to post</p><span class="tag" id="btTag"></span></div><div class="big serif g" id="bt"></div><p class="muted sm">Algeria time (UTC+1)</p><div class="chips" id="chips"></div><p class="muted sm" id="btN" style="margin-top:12px"></p></div>
+      <div class="card"><h2>Posting health</h2><div class="score">
+        <svg viewBox="0 0 120 120" width="136" height="136" aria-hidden="true"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="s1"/><stop offset="1" class="s2"/></linearGradient></defs>
+          <circle class="ring-track" cx="60" cy="60" r="52" fill="none" stroke-width="9"/>
+          <circle class="ring" id="ring" cx="60" cy="60" r="52" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          <text id="sc" class="ring-num" x="60" y="70" text-anchor="middle" font-size="34" font-weight="800" font-family="Manrope">0</text></svg>
+        <div><b id="scT" style="font-size:1.2rem"></b><p class="muted sm" id="scS" style="margin-top:6px"></p></div></div></div>
+    </div>
+    <div class="card" style="margin-top:16px"><h2 id="chartT">Engagement</h2><p class="muted sm" id="chartS"></p><div id="chart"></div></div>
+    <div class="card" style="margin-top:16px"><h2>Do this next</h2><div id="recs3"></div></div>
+  </div>
+
+  <!-- ===== AUDIENCE ===== -->
+  <div class="panel" id="t-aud" hidden>
+    <div class="card"><div class="hd"><div><h2 id="hT"></h2><p class="muted sm" id="hS"></p></div><span class="tag" id="hTag"></span></div>
+      <div class="heat" id="heat"></div>
+      <p class="muted sm" id="hN" style="margin-top:14px"></p></div>
+    <div class="grid g2"><div class="card"><h2>Audience by day</h2><p class="muted sm" id="d1S"></p><div id="d1"></div></div>
+      <div class="card"><h2>Top time slots</h2><p class="muted sm" id="slotS"></p><div id="slots"></div></div></div>
+    <div class="card" id="demoC" style="margin-top:16px" hidden><h2>Who your followers are</h2><p class="muted sm">Share of followers with known demographics, last 30 days.</p>
+      <div class="demo"><div><h3>Age</h3><div id="dAge"></div><h3>Gender</h3><div id="dGen"></div></div><div><h3>Top cities</h3><div id="dCity"></div><h3>Top countries</h3><div id="dCtry"></div></div></div></div>
+  </div>
+
+  <!-- ===== CONTENT ===== -->
+  <div class="panel" id="t-con" hidden>
+    <div class="grid g2" style="margin-top:0"><div class="card"><h2>By format</h2><p class="muted sm">Typical (median) likes plus comments</p><div id="fmt"></div></div>
+      <div class="card"><h2>Your posts by day</h2><p class="muted sm">Typical (median) likes plus comments</p><div id="d2"></div></div></div>
+    <div class="grid g2"><div class="card"><h2>Caption length</h2><p class="muted sm">Typical (median) likes plus comments</p><div id="capL"></div></div>
+      <div class="card"><h2>Hashtags</h2><p class="muted sm">Typical (median) likes plus comments</p><div id="capH"></div></div></div>
+    <div class="card" id="rqC" style="margin-top:16px" hidden><h2>Reach quality</h2><p class="muted sm" id="rqS"></p><div class="mini" id="rq"></div></div>
+    <div class="card" style="margin-top:16px"><h2>Your best posts</h2><p class="muted sm" id="bestS"></p><div class="posts" id="best"></div></div>
+  </div>
+
+  <!-- ===== STRATEGY ===== -->
+  <div class="panel" id="t-str" hidden>
+    <div class="grid g2" style="margin-top:0"><div class="card"><h2>Score breakdown</h2><p class="muted sm">What makes up your posting health</p><div id="parts"></div></div>
+      <div class="card"><h2>All recommendations</h2><div id="recs"></div></div></div>
+    <div class="card" style="margin-top:16px"><h2>Reports</h2><p class="muted sm" id="repS">Built from every post, the audience data and your account insights.</p>
+      <div class="pills" id="pills" role="group" aria-label="Report type"></div>
+      <div class="acts"><button class="btn sm2" id="repAI" type="button">Generate with AI</button><button class="btn ghost" id="repLoc" type="button">Instant report (no AI)</button><span class="muted sm" id="repHint"></span></div>
+      <div id="rep" hidden></div></div>
+  </div>
+
+  <!-- ===== SETTINGS ===== -->
+  <div class="panel own" id="t-set" hidden>
+    <div class="set">
+      <div class="card"><h2>Gemini</h2><p class="muted sm">Powers the Agent chat and the AI reports. Your key is stored on your server and never sent back to the browser.</p>
+        <div class="fld"><label for="gkey">Gemini API key</label><input id="gkey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key from Google AI Studio"></div>
+        <div class="fld"><label for="gmodel">Model</label><select id="gmodel"></select></div>
+        <div class="fld"><label for="gbackup">Backup model (used automatically if the first one hits its limit)</label><select id="gbackup"></select></div>
+        <p class="muted sm" style="margin-top:8px">Flash models are fast and great for chat. Pro models think longer, so they suit deeper reports but are slower.</p>
+        <div class="acts" style="margin-top:16px"><button class="btn sm2" id="gsave" type="button">Save and test</button><button class="btn ghost" id="gload" type="button">Refresh model list</button><button class="btn ghost" id="gclear" type="button" hidden>Remove key</button></div>
+        <p class="stat" id="gstat" role="status"></p></div>
+      <div class="card own"><h2>Team access</h2><p class="muted sm">Give a team member a personal code. They sign in with it on the same page and can see the dashboard and reports, but cannot open Settings, change keys or disconnect Instagram. Revoke a code any time and they are signed out.</p>
+        <div class="fld"><label for="tname">Name</label><input id="tname" maxlength="40" autocomplete="off" placeholder="For example: Sara"></div>
+        <div class="fld"><label for="trole">Access level</label><select id="trole"><option value="viewer">View only</option><option value="viewer_ai">View + AI agent and AI reports</option></select></div>
+        <div class="acts" style="margin-top:16px"><button class="btn sm2" id="tadd" type="button">Create access code</button></div>
+        <p class="stat" id="tstat" role="status"></p><div class="tnew" id="tnew" hidden></div><div id="tlist"></div></div>
+      <div class="card"><h2>Appearance</h2>
+        <div class="aplb">Mode</div>
+        <div class="seg" role="radiogroup" aria-label="Mode" id="seg">
+          <button type="button" role="radio" data-mode="auto" aria-checked="false">Auto</button>
+          <button type="button" role="radio" data-mode="light" aria-checked="false">Light</button>
+          <button type="button" role="radio" data-mode="dark" aria-checked="false">Dark</button>
+        </div>
+        <div class="aplb">Theme</div>
+        <div class="pals" role="radiogroup" aria-label="Colour theme" id="pals"></div>
+        <p class="muted sm apnote">Saved on this device. Auto follows your phone or computer setting.</p></div>
+      <div class="card"><h2>Data accuracy</h2><p class="muted sm">Instagram reports follower activity in US Pacific time. Vexalytics converts every hour to Algeria time automatically, including daylight saving changes.</p>
+        <div class="fld"><label for="align">Follower-activity day alignment</label><select id="align"><option value="end">Day ends at Instagram's timestamp (default)</option><option value="start">Day starts at Instagram's timestamp</option></select></div>
+        <p class="muted sm" style="margin-top:8px">Hours are always right. Change this only if the weekday of your peak looks shifted by one day.</p></div>
+      <div class="card"><h2>Account</h2><p class="muted sm" id="acct"></p>
+        <div class="acts" style="margin-top:14px"><button class="btn ghost" type="button" onclick="location.reload()">Refresh data</button><a class="btn ghost own" href="/api/logout">Disconnect Instagram</a><a class="btn ghost" href="/api/signout">Sign out</a></div></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],FULL=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const TZ='Africa/Algiers',fmtDT=new Intl.DateTimeFormat('en-US',{timeZone:TZ,weekday:'short',hour:'numeric',hourCycle:'h23'});
+const WK={Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
+const dz=d=>{const p=fmtDT.formatToParts(d);return{w:WK[p.find(x=>x.type==='weekday').value],h:+p.find(x=>x.type==='hour').value%24}};
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+const med=a=>{if(!a.length)return 0;const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const hh=h=>String(((h%24)+24)%24).padStart(2,'0')+':00',r1=x=>Math.round(x*10)/10;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dshort=d=>d.toLocaleDateString('en-GB',{timeZone:TZ,day:'numeric',month:'short'});
+const isoDay=d=>new Intl.DateTimeFormat('en-CA',{timeZone:TZ}).format(d);
+const LS={g:k=>{try{return localStorage.getItem(k)}catch{return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
+const PERS={day:{n:1,adj:'Daily',now:'Today',unit:'day',prev:'yesterday',plan:"Daily plan",nb:14},week:{n:7,adj:'Weekly',now:'This week',unit:'week',prev:'the previous 7 days',plan:'Weekly plan',nb:8},month:{n:30,adj:'Monthly',now:'This month',unit:'month',prev:'the previous 30 days',plan:'Monthly plan',nb:6}};
+let PER=PERS[LS.g('vx-per')]?LS.g('vx-per'):'week';
+let ME={role:'owner'},DATA,S,SUM,CUR='over',AI={has:false,model:'gemini-3.8-flash',masked:'',fromEnv:false};
+const show=id=>{['loading','setup','pw','connect','app'].forEach(s=>$('#'+s).hidden=s!==id);$('#mbar').hidden=id!=='app'};
+
+/* ---------------- navigation ---------------- */
+function grow(root){
+  root.querySelectorAll('[data-w]').forEach(e=>{e.style.width='0'});
+  const r=$('#ring'),L=root.querySelector('[data-draw]');
+  if(root.id==='t-over'){r.style.strokeDashoffset=327}
+  if(L){L.style.transition='none';L.style.strokeDashoffset=1}
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    root.querySelectorAll('[data-w]').forEach(e=>e.style.width=e.dataset.w+'%');
+    if(root.id==='t-over')r.style.strokeDashoffset=327*(1-(+r.dataset.p||0)/100);
+    if(L){L.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)';L.style.strokeDashoffset=0}
+  }));
+}
+function tab(t){
+  CUR=t;$$('.menu button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
+  $$('.panel').forEach(p=>p.hidden=p.id!=='t-'+t);grow($('#t-'+t));scrollTo(0,0);openSide(false);
+}
+$$('.menu button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+function layers(){
+  const sd=document.body.classList.contains('side-open'),ag=document.body.classList.contains('agent-open');
+  $('#scrim').hidden=!(sd||(ag&&innerWidth<900));
+  $('#side').setAttribute('aria-hidden',!sd);$('#agent').setAttribute('aria-hidden',!ag);
+  $('#menuBtn').setAttribute('aria-expanded',sd);$('#agentBtn').setAttribute('aria-expanded',ag);
+}
+function openSide(o){document.body.classList.toggle('side-open',o);if(o)document.body.classList.remove('agent-open');layers();if(o)setTimeout(()=>{const c=$('#side [aria-selected=true]');c&&c.focus()},380)}
+function openAgent(o){document.body.classList.toggle('agent-open',o);if(o){document.body.classList.remove('side-open');drawChat()}layers();if(o)setTimeout(()=>$('#q').focus(),380)}
+$('#menuBtn').onclick=()=>openSide(!document.body.classList.contains('side-open'));
+$('#sideClose').onclick=()=>openSide(false);
+$('#agentBtn').onclick=()=>openAgent(!document.body.classList.contains('agent-open'));
+$('#agentClose').onclick=()=>openAgent(false);
+$('#scrim').onclick=()=>{openSide(false);openAgent(false)};
+addEventListener('keydown',e=>{if(e.key==='Escape'){openSide(false);openAgent(false)}});
+addEventListener('resize',layers);
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){openAgent(false);tab(g.dataset.go)}});
+// day / week / month switch
+function perSync(){$$('#per button').forEach(b=>b.setAttribute('aria-checked',b.dataset.per===PER))}
+$('#per').addEventListener('click',e=>{const b=e.target.closest('[data-per]');if(!b||b.dataset.per===PER)return;PER=b.dataset.per;LS.s('vx-per',PER);perSync();drawPills();showSaved();if(DATA)render(DATA)});
+$('#per').addEventListener('keydown',e=>{const k={ArrowRight:1,ArrowLeft:-1}[e.key];if(!k)return;const r=[...$$('#per button')],i=r.findIndex(x=>x.dataset.per===PER),n=r[(i+k+r.length)%r.length];n.click();n.focus()});
+perSync();
+
+$('#pwIn').addEventListener('keydown',e=>e.key==='Enter'&&signIn());
+async function signIn(){const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('#pwIn').value})});if(r.ok)location.reload();else $('#pwErr').textContent=(await r.json().catch(()=>({}))).error||'Wrong password.'}
+(async function boot(){
+  const st=await(await fetch('/api/status')).json();
+  if(!st.configured)return show('setup');
+  if(!st.authed)return show('pw');
+  ME=st;
+  if(st.role!=='owner'){document.body.classList.add('team');$('#agentBtn').style.display=st.canAI?'':'none';
+    document.querySelectorAll('#hi h1,#app h1.g').forEach(x=>x.textContent='Welcome, '+(st.name||'there')+'.')}
+  if(!st.connected){if(st.role!=='owner'){$('#err').textContent='Instagram is not connected yet. Ask the owner to connect it.';const cb=$('#connect .btn');if(cb)cb.hidden=true}return show('connect')}
+  const r=await fetch('/api/data'),d=await r.json();
+  if(!r.ok){$('#err').textContent=d.error;return show('connect')}
+  render(d);show('app');tab('over');drawChat();
+  if(st.role==='owner'){fetch('/api/settings').then(x=>x.json()).then(a=>{if(!a.error){AI=a;aiSync();loadModels(true)}}).catch(()=>{});teamCall().then(j=>drawTeam(j.members)).catch(()=>{})}
+  else{AI={...AI,has:!!st.canAI,gemini:{has:false}};aiSync()}
+  try{if(!sessionStorage.getItem('hi')){sessionStorage.setItem('hi',1);const h=$('#hi');h.hidden=false;setTimeout(()=>h.remove(),2500)}}catch{}
+})();
+
+/* ---------------- time zones ---------------- */
+// Instagram's online_followers hours are US Pacific. We convert each hour to a real instant, then to Algeria time (UTC+1, no DST).
+const LAF=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',timeZoneName:'shortOffset'});
+const LAD=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'});
+const laOff=ms=>{const m=LAF.formatToParts(new Date(ms)).find(x=>x.type==='timeZoneName').value.match(/GMT([+-]\d+)/);return m?+m[1]:-8};
+const laDate=ms=>LAD.format(new Date(ms)).split('-').map(Number);
+function onlineGrid(online){
+  const align=LS.g('vx-align')==='start'?'start':'end',sum=Array.from({length:7},()=>Array(24).fill(0)),cnt=Array.from({length:7},()=>Array(24).fill(0));
+  online.forEach(v=>{
+    if(!v||!v.value)return;const end=Date.parse(v.end_time);if(isNaN(end))return;
+    const[Y,M,D]=laDate(align==='start'?end+36e5:end-36e5);
+    for(const k in v.value){const h=+k,loc=Date.UTC(Y,M-1,D,h),utc=loc-laOff(loc+8*36e5)*36e5,a=new Date(utc+36e5),w=(a.getUTCDay()+6)%7,H=a.getUTCHours();sum[w][H]+=v.value[k];cnt[w][H]++}
+  });
+  return sum.map((r,w)=>r.map((x,h)=>cnt[w][h]?x/cnt[w][h]:0));
+}
+function smooth(g){const f=g.flat(),n=f.length;return f.map((_,i)=>.25*f[(i+n-1)%n]+.5*f[i]+.25*f[(i+1)%n])}
+function peaks(f,k){const idx=f.map((_,i)=>i).sort((a,b)=>f[b]-f[a]),out=[];for(const i of idx){if(out.length>=k)break;if(f[i]<=0)break;if(out.every(j=>{const dd=Math.abs(i-j);return Math.min(dd,f.length-dd)>2}))out.push(i)}return out}
+
+/* ---------------- analysis (everything the UI and the AI see comes from here) ---------------- */
+function analyze(d){
+  const F=d.profile.followers_count||1,now=Date.now(),DAY=864e5;
+  const posts=d.media.map(m=>{
+    const t=new Date(m.timestamp),hid=m.like_count==null,likes=m.like_count||0,com=m.comments_count||0,cap=m.caption||'';
+    const fmt=m.media_product_type==='REELS'?'Reels':m.media_type==='CAROUSEL_ALBUM'?'Carousel':m.media_type==='VIDEO'?'Video':'Photo';
+    return{...m,t,likes,com,hid,e:likes+com,fmt,age:(now-t)/DAY,mature:now-t>=2*DAY,capLen:cap.length,tags:(cap.match(/#[\p{L}\p{N}_]+/gu)||[]).length,wz:dz(t),ins:m.ins||null};
+  }).sort((a,b)=>b.t-a.t);
+  // Performance stats only use posts older than 48h whose like count is visible, and use the median so one viral post cannot distort them.
+  const P=posts.filter(p=>p.mature&&!p.hid),hidden=posts.filter(p=>p.hid).length;
+  const grp=(keys,test)=>keys.map(k=>{const a=P.filter(p=>test(p,k));return{k,n:a.length,med:med(a.map(p=>p.e)),avg:avg(a.map(p=>p.e))}});
+  const byDay=grp([0,1,2,3,4,5,6],(p,k)=>p.wz.w===k);
+  const fmts=grp(['Reels','Carousel','Photo','Video'],(p,k)=>p.fmt===k).filter(x=>x.n>0);
+  const capDefs=[['Short (under 60)',p=>p.capLen<60],['Medium (60 to 200)',p=>p.capLen>=60&&p.capLen<=200],['Long (over 200)',p=>p.capLen>200]];
+  const capB=capDefs.map(([k,f])=>{const a=P.filter(f);return{k,n:a.length,med:med(a.map(p=>p.e)),avg:avg(a.map(p=>p.e))}});
+  const tagDefs=[['No hashtags',p=>p.tags===0],['1 to 5',p=>p.tags>=1&&p.tags<=5],['6 or more',p=>p.tags>=6]];
+  const tagB=tagDefs.map(([k,f])=>{const a=P.filter(f);return{k,n:a.length,med:med(a.map(p=>p.e)),avg:avg(a.map(p=>p.e))}});
+
+  // ----- timing -----
+  const T={src:'posts',grid:null,slots:[],bw:0,bh:0,len:3,conf:'low',days:0,dayV:[],dayN:[],peakPct:0,peakN:0};
+  if(d.online&&d.online.length&&d.online.some(v=>v&&v.value&&Object.keys(v.value).length)){
+    const g=onlineGrid(d.online),sm=smooth(g),pk=peaks(sm,5);
+    T.src='audience';T.grid=sm;T.days=d.online.length;T.len=1;T.conf=T.days>=14?'good':'limited';
+    T.slots=pk.map(i=>({w:Math.floor(i/24),h:i%24,len:1,v:sm[i]}));
+    T.bw=T.slots[0].w;T.bh=T.slots[0].h;T.peakN=Math.round(sm[pk[0]]);T.peakPct=sm[pk[0]]/F*100;
+    T.dayV=g.map(r=>avg(r)/F*100);T.dayN=g.map(()=>T.days);
+  }else{
+    const cell=Array.from({length:7},()=>Array.from({length:8},()=>[]));
+    P.forEach(p=>cell[p.wz.w][Math.floor(p.wz.h/3)].push(p.e));
+    const flat=[];cell.forEach((r,w)=>r.forEach((a,s)=>{if(a.length)flat.push({w,h:s*3,len:3,n:a.length,v:med(a)})}));
+    const okc=flat.filter(c=>c.n>=2),use=(okc.length?okc:flat).sort((a,b)=>b.v-a.v);
+    T.slots=use.slice(0,5);T.grid=cell.flat().flatMap(a=>[0,1,2].map(()=>a.length?med(a):0));
+    if(T.slots.length){T.bw=T.slots[0].w;T.bh=T.slots[0].h}
+    T.conf=P.length>=40?'moderate':'low';T.dayV=byDay.map(x=>x.med);T.dayN=byDay.map(x=>x.n);
+  }
+  // ----- health score -----
+  // The Day / Week / Month switch decides the window. Scores use at least 7 days so one quiet day cannot wreck them.
+  const N=PERS[PER].n,W=Math.max(N,7),inW=(a,b)=>posts.filter(p=>p.age>=a&&p.age<b),vis=a=>a.filter(p=>!p.hid),sumE=a=>vis(a).reduce((x,p)=>x+p.e,0);
+  const cur=inW(0,N),prv=inW(N,2*N),curW=inW(0,W);
+  const M30=P.filter(p=>p.age<W),M60=P.filter(p=>p.age>=W&&p.age<2*W);
+  const ppw=curW.length/(W/7),er=med(P.slice(0,20).map(p=>p.e/F*100)),perPost=med(P.slice(0,20).map(p=>p.e));
+  const per={n:cur.length,pn:prv.length,sum:sumE(cur),psum:sumE(prv),er:med(vis(cur).map(p=>p.e/F*100)),per:med(vis(prv).map(p=>p.e/F*100)),late:cur.filter(p=>!p.mature).length,from:new Date(now-N*DAY)};
+  const trend=[];for(let k=PERS[PER].nb-1;k>=0;k--){const a=inW(k*N,(k+1)*N);trend.push({v:sumE(a),n:a.length,t:new Date(now-(k+1)*N*DAY),m:k>0})}
+  // best slots for today (or tomorrow once today's have passed), used by the Day view
+  const nz=dz(new Date(now));let tw=nz.w,tl='Today';
+  const dayPk=w=>T.src==='audience'?peaks(T.grid.slice(w*24,w*24+24),3).map(h=>({w,h,len:1,v:T.grid[w*24+h]})):T.slots.filter(x=>x.w===w);
+  T.today=dayPk(tw).filter(x=>x.h+x.len>nz.h);if(!T.today.length){tw=(tw+1)%7;tl='Tomorrow';T.today=dayPk(tw)}T.todayW=tw;T.todayL=tl;
+  const m30=med(M30.map(p=>p.e)),m60=med(M60.map(p=>p.e)),ratio=M30.length>=2&&M60.length>=2&&m60?m30/m60:null;
+  let gap=0;for(let i=0;i<Math.min(posts.length-1,15);i++)gap=Math.max(gap,(posts[i].t-posts[i+1].t)/DAY);
+  const types=new Set(posts.slice(0,15).map(p=>p.fmt)).size;
+  const parts=[['Frequency',Math.min(1,ppw/3.5)*30,30],['Engagement',Math.min(1,er/3)*30,30],['Momentum',ratio===null?10:Math.max(0,Math.min(1,(ratio-.7)/.6))*20,20],['Consistency',gap<=7?10:gap<=14?5:0,10],['Variety',Math.min(1,types/3)*10,10]];
+  const score=Math.round(parts.reduce((a,p)=>a+p[1],0));
+  const rq=P.filter(p=>p.ins&&p.ins.reach);
+  const S={F,posts,P,hidden,byDay,fmts,capB,tagB,T,ppw,er,perPost,ratio,gap,types,parts,score,rq,now,DAY,N,W,per,trend};
+  S.R=recs(S);return S;
+}
+function recs(S){
+  const{T,byDay,fmts,ppw,gap,types,er,ratio,P,capB,W}=S,R=[],okD=byDay.filter(x=>x.n>=3),bestPost=okD.length?okD.reduce((a,b)=>b.med>a.med?b:a):null;
+  if(PER==='day'&&S.per.n===0&&T.slots.length)R.push(['Nothing posted yet today',`Your best ${T.todayL.toLowerCase()} slot is ${slotLbl(T.today[0]||T.slots[0])}. Post an hour before it.`]);
+  if(P.length<12)R.push(['Small sample',`Only ${P.length} posts are old enough to measure. Treat day, format and caption findings as hints, not rules.`]);
+  if(ppw<2)R.push(['Post more often',`You averaged ${ppw.toFixed(1)} posts a week over the last ${W} days. Aim for 3 to 4.`]);
+  else if(ppw>7)R.push(['Protect quality',`${ppw.toFixed(1)} posts a week is a lot. Check whether engagement per post is dropping.`]);
+  if(gap>7)R.push(['Close the gaps',`Your longest break was ${Math.round(gap)} days. Long silences cost reach, so batch your content to stay steady.`]);
+  const fOk=fmts.filter(x=>x.n>=3);
+  if(fOk.length>1){const b=fOk.reduce((a,c)=>c.med>a.med?c:a);R.push([`Lean into ${b.k}`,`${b.k} earns a typical ${Math.round(b.med)} likes plus comments per post (n=${b.n}), the highest of your formats. Make it a larger share of your mix.`])}
+  if(types<2)R.push(['Mix your formats','You post almost one format only. Test Reels and carousels.']);
+  if(T.slots.length){const s=T.slots[0],when=`${FULL[s.w]} ${slotLbl(s)}`;
+    R.push([`Publish on ${FULL[s.w]} around ${hh(s.h)}`,T.src==='audience'?(bestPost&&bestPost.k!==s.w?`Your audience peaks on ${FULL[s.w]}, but your posts have done best on ${FULL[bestPost.k]} (n=${bestPost.n}). Test both for a month. Post about an hour before the peak so the post is fresh when followers arrive.`:`Your audience peak and your best-performing day agree. Post about an hour before ${hh(s.h)}.`):`Based on your own posts (${when}). Instagram sent no audience data, so confidence is ${T.conf}.`])}
+  const cb=capB.filter(x=>x.n>=3);if(cb.length>1){const b=cb.reduce((a,c)=>c.med>a.med?c:a);R.push(['Caption length',`${b.k.split(' (')[0]} captions do best for you (typical ${Math.round(b.med)}, n=${b.n}).`])}
+  if(er<1)R.push(['Boost interaction',`Engagement is ${er.toFixed(2)}% of followers. End posts with a question and reply to comments in the first hour.`]);
+  if(ratio!==null&&ratio<.85)R.push(['Engagement is slipping',`The last ${W} days earn ${Math.round((1-ratio)*100)}% less per post than the ${W} before. Revisit what your best posts had in common.`]);
+  if(ratio!==null&&ratio>1.15)R.push(['Momentum is up',`Engagement rose ${Math.round((ratio-1)*100)}% versus the previous ${W} days. Repeat what you changed.`]);
+  return R;
+}
+const slotLbl=s=>s.len===1?hh(s.h):hh(s.h)+' to '+hh(s.h+s.len);
+
+/* ---------------- drawing helpers ---------------- */
+function bars(el,labels,vals,fmt=v=>v.toFixed(0),ns,w){
+  const ok=vals.map((_,i)=>!ns||ns[i]>=3),cand=vals.map((v,i)=>ok[i]?v:-1),mx=Math.max(...vals,1),top=cand.indexOf(Math.max(...cand));
+  el.innerHTML=labels.map((l,i)=>`<div class="bar ${i===top&&cand[top]>0?'top':''} ${ok[i]?'':'dim'}" ${w?`style="grid-template-columns:${w}px 1fr 58px"`:''}><b>${l}${ns?`<small>n=${ns[i]}${ok[i]?'':' · too few'}</small>`:''}</b><i><span data-w="${vals[i]/mx*100}"></span></i><span class="num">${fmt(vals[i])}</span></div>`).join('');
+}
+function chart(el,pts){
+  if(pts.length<2){el.innerHTML='<p class="muted">Publish a few more posts to see your trend.</p>';return}
+  const W=640,H=230,P=18,B=26,mx=Math.max(...pts.map(p=>p.v),1);
+  const x=i=>P+i*(W-2*P)/(pts.length-1),y=v=>H-B-(v/mx)*(H-B-P-14);
+  let d=`M${x(0)},${y(pts[0].v)}`;
+  for(let i=1;i<pts.length;i++){const c=(x(i-1)+x(i))/2;d+=`C${c},${y(pts[i-1].v)} ${c},${y(pts[i].v)} ${x(i)},${y(pts[i].v)}`}
+  const bi=pts.findIndex(p=>p.v===mx),tx='class="cl-t" font-family="Manrope"';
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Engagement per post"><defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="s2" stop-opacity=".38"/><stop offset="1" class="s2" stop-opacity="0"/></linearGradient><linearGradient id="ln" x1="0" x2="1"><stop offset="0" class="s1"/><stop offset="1" class="s2"/></linearGradient></defs>
+  ${[0,.5,1].map(f=>`<line class="cl-grid" x1="${P}" x2="${W-P}" y1="${y(mx*f)}" y2="${y(mx*f)}"/>`).join('')}
+  <path d="${d}L${x(pts.length-1)},${H-B}L${x(0)},${H-B}Z" fill="url(#ar)"/>
+  <path d="${d}" data-draw pathLength="1" stroke-dasharray="1" fill="none" stroke="url(#ln)" stroke-width="3.5" stroke-linecap="round"/>
+  ${pts.map((p,i)=>p.m?'':`<circle class="cl-dot" cx="${x(i)}" cy="${y(p.v)}" r="5" stroke-width="2.5"/>`).join('')}
+  <circle class="cl-dot" cx="${x(bi)}" cy="${y(mx)}" r="6" stroke-width="3"/>
+  <text class="cl-pk" x="${Math.min(Math.max(x(bi),34),W-34)}" y="${y(mx)-14}" text-anchor="middle" font-size="15" font-weight="800" font-family="Manrope">${mx.toLocaleString()}</text>
+  <text x="${P}" y="${H-6}" font-size="13" ${tx}>${dshort(pts[0].t)}</text><text x="${W-P}" y="${H-6}" text-anchor="end" font-size="13" ${tx}>${dshort(pts[pts.length-1].t)}</text></svg>`;
+}
+function md(src){
+  const inl=t=>esc(t).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|[^*\w])\*([^*\n]+)\*(?!\w)/g,'$1<i>$2</i>').replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const L=String(src).replace(/\r/g,'').split('\n'),o=[];let i=0,para=[];
+  const flush=()=>{if(para.length){o.push('<p>'+inl(para.join(' '))+'</p>');para=[]}};
+  const cells=l=>l.trim().replace(/^\||\|$/g,'').split('|').map(c=>c.trim());
+  while(i<L.length){
+    const l=L[i];let m;
+    if(!l.trim()){flush();i++;continue}
+    if(m=l.match(/^(#{1,4})\s+(.*)$/)){flush();o.push(`<h${m[1].length}>${inl(m[2])}</h${m[1].length}>`);i++;continue}
+    if(/^\s*(-{3,}|\*{3,})\s*$/.test(l)){flush();o.push('<hr>');i++;continue}
+    if(l.trim().startsWith('|')&&i+1<L.length&&/^\s*\|?[\s:|-]+\|[\s:|-]*$/.test(L[i+1])){
+      flush();const h=cells(l);i+=2;const rows=[];while(i<L.length&&L[i].trim().startsWith('|')){rows.push(cells(L[i]));i++}
+      o.push(`<div class="tw"><table><thead><tr>${h.map(c=>`<th>${inl(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${inl(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`);continue}
+    if(/^\s*([-*•])\s+/.test(l)||/^\s*\d+[.)]\s+/.test(l)){
+      flush();const ord=/^\s*\d+[.)]\s+/.test(l),it=[];
+      while(i<L.length&&(ord?/^\s*\d+[.)]\s+/.test(L[i]):/^\s*([-*•])\s+/.test(L[i]))){it.push(L[i].replace(/^\s*(?:[-*•]|\d+[.)])\s+/,''));i++}
+      o.push(`<${ord?'ol':'ul'}>${it.map(x=>`<li>${inl(x)}</li>`).join('')}</${ord?'ol':'ul'}>`);continue}
+    para.push(l.trim());i++;
+  }
+  flush();return o.join('');
+}
+
+/* ---------------- render ---------------- */
+function render(d){
+  DATA=d;S=analyze(d);const{F,posts,P,T,byDay,fmts,capB,tagB}=S;
+  $('#av').src=d.profile.profile_picture_url||'';$('#hd').textContent='@'+d.profile.username;$('#chip').title='@'+d.profile.username;
+  $('#acct').textContent=`Connected as @${d.profile.username}. ${posts.length} posts loaded.`;
+  $('#align').value=LS.g('vx-align')==='start'?'start':'end';
+
+  // ----- timing: overview + audience -----
+  const aud=T.src==='audience',top=T.slots[0],dayView=PER==='day'&&T.today.length,tp=dayView?T.today[0]:top,rng=s=>s.len===1?hh(s.h):hh(s.h)+'–'+hh(s.h+s.len);
+  if(top){
+    $('#bt').textContent=dayView?`${T.todayL}, ${aud?hh(tp.h):slotLbl(tp)}`:`${FULL[top.w]}, ${aud?hh(top.h):slotLbl(top)}`;
+    $('#chips').innerHTML=(dayView?T.today:T.slots.slice(0,3)).map(s=>`<span>${dayView?'':DAYS[s.w]+' '}${rng(s)}</span>`).join('');
+    $('#insight').innerHTML=dayView?`${T.todayL} (${FULL[T.todayW]}) ${aud?'your followers are most active around':'your posts do best around'} <b>${aud?hh(tp.h):slotLbl(tp)}</b>.`:aud?`Your followers are most active on <b>${FULL[top.w]}</b> around <b>${hh(top.h)}</b>. At the peak about <b>${r1(T.peakPct)}%</b> of them (~${T.peakN.toLocaleString()}) are online.`:`Your posts performed best on <b>${FULL[top.w]}</b>, ${slotLbl(top)}.`;
+  }else{$('#bt').textContent='Not enough data';$('#chips').innerHTML='';$('#insight').textContent='Publish a few more posts to unlock timing insights.'}
+  $('#btTag').textContent=(aud?'From follower activity':'From your posts')+(dayView?' · '+T.todayL.toLowerCase():'');$('#btTag').className='tag '+(T.conf==='good'?'ok':T.conf==='low'?'warn':'');
+  $('#btN').textContent=aud?`Post about an hour before the peak so your post is fresh when followers arrive. Based on ${T.days} days of activity, smoothed over 3 hours. ${T.conf==='good'?'':'Fewer than 14 days available, so confidence is limited.'}`:`Instagram sent no follower-activity data (needs 100+ followers), so this uses your ${P.length} measurable posts in 3-hour windows. Confidence: ${T.conf}.`;
+  $('#hT').textContent=aud?'When your followers are online':'When your posts performed best';
+  $('#hS').textContent='Algeria time (UTC+1). '+(aud?`Average of the last ${T.days} days, smoothed over 3 hours.`:'Median engagement of posts published in each 3-hour window.');
+  $('#hTag').textContent=aud?(T.conf==='good'?'Good data':'Limited data'):'Low volume';$('#hTag').className='tag '+(T.conf==='good'?'ok':'warn');
+  const g=T.grid||Array(168).fill(0),mx=Math.max(...g,1);
+  $('#heat').innerHTML='<b></b>'+[...Array(24).keys()].map(h=>`<span class="hl ${h%6?'x':''}">${h%3?'':h}</span>`).join('')+
+    DAYS.map((D,w)=>`<b>${D}</b>`+[...Array(24).keys()].map(h=>{const v=g[w*24+h]||0,pk=top&&(aud?(w===top.w&&h===top.h):(w===top.w&&h>=top.h&&h<top.h+3));return`<u class="${pk?'bx':''}" title="${D} ${hh(h)}${aud?' · ~'+Math.round(v).toLocaleString()+' online':''}" style="opacity:${.09+.91*v/mx}"></u>`}).join('')).join('');
+  $('#hN').textContent=aud?'Brighter squares mean more followers online. Instagram reports this in US Pacific time; every hour is converted to Algeria time, including daylight saving.':'Brighter squares mean higher typical engagement for posts published in that window. Empty squares mean no posts there.';
+  $('#d1S').textContent=aud?'Average share of your followers online per hour':'Typical engagement of your posts (follower data unavailable)';
+  bars($('#d1'),DAYS,T.dayV,aud?v=>v.toFixed(1)+'%':v=>v.toFixed(0),aud?null:T.dayN);
+  $('#slotS').textContent=aud?'Your five best hours, with neighbouring hours merged into one':'Your five best 3-hour windows by typical engagement';
+  $('#slots').innerHTML=T.slots.length?T.slots.map((s,i)=>`<div class="bar ${i?'':'top'}" style="grid-template-columns:1fr 1fr"><b>${FULL[s.w]}</b><span class="num" style="text-align:right;color:var(--ink)">${s.len===1?hh(s.h):hh(s.h)+'–'+hh(s.h+s.len)}</span></div>`).join(''):'<p class="muted">Not enough posts yet.</p>';
+  // demographics
+  const dm=d.insights||{},sumOf=a=>a.reduce((x,y)=>x+y.v,0)||1,dbar=(el,a,map=x=>x)=>{if(!a||!a.length){el.innerHTML='<p class="muted sm">Not available.</p>';return}const t=sumOf(a);bars(el,a.slice(0,6).map(x=>esc(map(x.k))),a.slice(0,6).map(x=>x.v/t*100),v=>v.toFixed(0)+'%',null,96)};
+  const has=['age','gender','city','country'].some(k=>dm[k]&&dm[k].length);$('#demoC').hidden=!has;
+  if(has){dbar($('#dAge'),dm.age);dbar($('#dGen'),dm.gender,k=>({F:'Women',M:'Men',U:'Unknown'}[k]||k));dbar($('#dCity'),dm.city);dbar($('#dCtry'),dm.country)}
+
+  // ----- content -----
+  bars($('#d2'),DAYS,byDay.map(x=>x.med),v=>v.toFixed(0),byDay.map(x=>x.n));
+  bars($('#fmt'),fmts.map(x=>x.k),fmts.map(x=>x.med),v=>v.toFixed(0),fmts.map(x=>x.n),96);
+  if(!fmts.length)$('#fmt').innerHTML='<p class="muted">Not enough posts yet.</p>';
+  bars($('#capL'),capB.map(x=>x.k),capB.map(x=>x.med),v=>v.toFixed(0),capB.map(x=>x.n),120);
+  bars($('#capH'),tagB.map(x=>x.k),tagB.map(x=>x.med),v=>v.toFixed(0),tagB.map(x=>x.n),120);
+  const rq=S.rq,ins=a=>med(rq.map(p=>p.ins[a]||0));$('#rqC').hidden=!rq.length;
+  if(rq.length){$('#rqS').textContent=`From Instagram's own post insights for your ${rq.length} most recent measurable posts.`;
+    $('#rq').innerHTML=[['Typical reach',Math.round(ins('reach')).toLocaleString()],['Reach vs followers',r1(ins('reach')/F*100)+'%'],['Typical saves',Math.round(ins('saved')).toLocaleString()],['Typical shares',rq.some(p=>p.ins.shares!=null)?Math.round(ins('shares')).toLocaleString():'n/a']].map(([a,b])=>`<div><small>${a}</small><b class="num">${b}</b></div>`).join('')}
+  $('#bestS').textContent=`Ranked by likes plus comments, only posts older than 48 hours${S.hidden?` (${S.hidden} with hidden likes left out)`:''}.`;
+  $('#best').innerHTML=[...P].sort((a,b)=>b.e-a.e).slice(0,6).map(p=>`<a href="${esc(p.permalink)}" target="_blank" rel="noopener"><img src="${esc(p.thumbnail_url||p.media_url)}" alt="" loading="lazy"><b class="num">${p.e.toLocaleString()}</b><small>${p.fmt} · ${dshort(p.t)}${p.ins&&p.ins.reach?' · reach '+p.ins.reach.toLocaleString():''}</small></a>`).join('')||'<p class="muted">Not enough posts yet.</p>';
+
+  // ----- score + kpis -----
+  const{score,parts,ratio,ppw,er,perPost}=S;
+  $('#sc').textContent=score;$('#ring').dataset.p=score;
+  $('#scT').textContent=score>=70?'Your strategy is working':score>=45?'A solid base with room to grow':'Needs attention';
+  $('#scS').textContent=score>=70?'Keep your rhythm and double down on what works.':'The tips below will move your score the most.';
+  bars($('#parts'),parts.map(p=>p[0]),parts.map(p=>p[1]/p[2]*100),v=>v.toFixed(0)+'%',null,104);
+  const P0=PERS[PER],per=S.per,pc=(x,y)=>y?Math.round((x/y-1)*100):null;
+  const dtxt=(x,y,l)=>{const c=pc(x,y);return c===null?`No ${l} ${P0.prev} to compare`:`${c>=0?'▲':'▼'} ${Math.abs(c)}% vs ${P0.prev}`},dcls=(x,y)=>{const c=pc(x,y);return c===null?'':c>=0?'up':'dn'};
+  const k=(l,v,s,c='')=>`<div class="card kpi"><small>${l}</small><b class="num">${v}</b><span class="${c}">${s}</span></div>`;
+  $('#perNote').textContent=`${P0.now}: ${PER==='day'?'last 24 hours':dshort(per.from)+' to '+dshort(new Date())}, compared with ${P0.prev}.${per.late?` ${per.late} post${per.late>1?'s are':' is'} under 48 hours old and still collecting engagement.`:''}`;
+  $('#kpis').innerHTML=k('Followers',F.toLocaleString(),`${posts.length} posts analysed`)
+    +k(`Posts ${P0.now.toLowerCase()}`,per.n,dtxt(per.n,per.pn,'posts'),dcls(per.n,per.pn))
+    +k('Engagement',per.sum.toLocaleString(),dtxt(per.sum,per.psum,'engagement')+' · likes + comments',dcls(per.sum,per.psum))
+    +k('Engagement rate',per.n?per.er.toFixed(2)+'%':'—','Typical post, per follower',dcls(per.er,per.per));
+  $('#chartT').textContent=`Engagement by ${P0.unit}`;
+  $('#chartS').textContent=`Total likes plus comments per ${P0.unit}, oldest to newest. The hollow dot is the current ${P0.unit}, still collecting.`;
+  chart($('#chart'),S.trend);
+  const rh=a=>a.map(r=>`<div class="rec"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join('');
+  $('#recs3').innerHTML=rh(S.R.slice(0,3));$('#recs').innerHTML=rh(S.R);
+  SUM=digest(d,S);
+  if(!$('#app').hidden)grow($('#t-'+CUR));
+}
+
+/* ---------------- digest: the whole dataset in compact form, sent to Gemini ---------------- */
+function digest(d,S){
+  const{F,posts,P,T}=S,ia=d.insights||{},sum=a=>a?a.reduce((x,y)=>x+(y.v||0),0):null,pst=posts.slice(0,150);
+  const tbl=a=>a.map(x=>({name:x.k,n:x.n,median:Math.round(x.med),average:Math.round(x.avg)}));
+  return{
+    today:isoDay(new Date()),timezone:'Africa/Algiers (UTC+1)',
+    account:{username:d.profile.username,name:d.profile.name,followers:F,totalMedia:d.profile.media_count,postsAnalysed:posts.length,measurablePosts:P.length,postsWithHiddenLikes:S.hidden,oldestPost:isoDay(posts[posts.length-1].t),newestPost:isoDay(posts[0].t)},
+    period:{view:PER,days:S.N,label:PERS[PER].now,thisPeriod:{posts:S.per.n,engagement:S.per.sum,typicalRatePct:r1(S.per.er),postsUnder48h:S.per.late},previousPeriod:{posts:S.per.pn,engagement:S.per.psum,typicalRatePct:r1(S.per.per)},trend:S.trend.map(x=>({from:isoDay(x.t),posts:x.n,engagement:x.v})),bestSlotsToday:PER==='day'?S.T.today.map(s=>({day:FULL[s.w],time:slotLbl(s)})):undefined},
+    kpis:{engagementRatePct:r1(S.er),typicalEngagementPerPost:Math.round(S.perPost),postsPerWeekRecent:r1(S.ppw),recentWindowDays:S.W,momentumVsPreviousWindowPct:S.ratio===null?null:Math.round((S.ratio-1)*100),longestGapDays:Math.round(S.gap),healthScore:S.score,scoreParts:S.parts.map(p=>({part:p[0],points:Math.round(p[1]),max:p[2]}))},
+    timing:{source:T.src==='audience'?'follower online activity (Instagram)':'own post performance',confidence:T.conf,daysObserved:T.days||null,topSlots:T.slots.map(s=>({day:FULL[s.w],time:slotLbl(s),score:r1(s.v)})),weekdayValues:DAYS.map((D,i)=>({day:D,value:r1(T.dayV[i]),unit:T.src==='audience'?'avg % of followers online per hour':'median likes+comments',n:T.dayN[i]})),peakPctFollowersOnline:T.src==='audience'?r1(T.peakPct):null},
+    formats:tbl(S.fmts),weekdays:tbl(S.byDay).map((x,i)=>({...x,name:FULL[i]})),captionLength:tbl(S.capB),hashtags:tbl(S.tagB),
+    reachQuality:S.rq.length?{posts:S.rq.length,medianReach:Math.round(med(S.rq.map(p=>p.ins.reach||0))),medianSaves:Math.round(med(S.rq.map(p=>p.ins.saved||0))),medianShares:Math.round(med(S.rq.map(p=>p.ins.shares||0)))}:null,
+    demographics:{age:ia.age||null,gender:ia.gender||null,topCities:ia.city||null,topCountries:ia.country||null},
+    accountLast28Days:{reach:ia.reach??null,views:ia.views??null,interactions:ia.interactions??null,accountsEngaged:ia.accountsEngaged??null,profileViews:ia.profileViews??null,websiteClicks:ia.websiteClicks??null,netFollowerChange:ia.followerDays?sum(ia.followerDays):null,avgDailyReach:ia.reachDays&&ia.reachDays.length?Math.round(sum(ia.reachDays)/ia.reachDays.length):null},
+    recommendationsAlreadyShown:S.R.map(r=>r[0]),
+    posts:pst.map(p=>({date:isoDay(p.t),day:DAYS[p.wz.w],hour:p.wz.h,format:p.fmt,e:p.e,likes:p.hid?null:p.likes,comments:p.com,reach:p.ins&&p.ins.reach||undefined,saves:p.ins&&p.ins.saved||undefined,shares:p.ins&&p.ins.shares||undefined,views:p.ins&&p.ins.views||undefined,mature:p.mature,captionLength:p.capLen,hashtags:p.tags,caption:(p.caption||'').replace(/\s+/g,' ').slice(0,140)}))
+  };
+}
+
+/* ---------------- reports ---------------- */
+const REPS=()=>[['full',PERS[PER].adj+' report'],['plan',PERS[PER].plan],['timing','Timing & audience'],['content','Content & captions'],['growth','Growth']];
+let REP='full',busy=false;
+function drawPills(){$('#repS').textContent=`${PERS[PER].adj} view. Built from every post, the audience data and your account insights.`;$('#pills').innerHTML=REPS().map(([id,n])=>`<button class="pill" type="button" data-rep="${id}" aria-pressed="${id===REP}">${n}</button>`).join('')}
+$('#pills').addEventListener('click',e=>{const b=e.target.closest('[data-rep]');if(!b)return;REP=b.dataset.rep;drawPills();showSaved()});
+function showRep(mdText,meta,name){
+  const el=$('#rep');el.hidden=false;
+  el.innerHTML=`<div class="repbar"><span class="muted sm">${esc(meta)}</span><span class="acts"><button class="btn ghost sm2" type="button" id="cpy">Copy</button><button class="btn ghost sm2" type="button" id="dl">Download</button></span></div><div class="md">${md(mdText)}</div>`;
+  $('#cpy').onclick=async()=>{try{await navigator.clipboard.writeText(mdText);$('#cpy').textContent='Copied'}catch{$('#cpy').textContent='Copy failed'}setTimeout(()=>{const c=$('#cpy');if(c)c.textContent='Copy'},1500)};
+  $('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([mdText],{type:'text/markdown'}));a.download=`vexalytics-${name}-${PER}-${isoDay(new Date())}.md`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
+}
+function showSaved(){
+  const raw=LS.g('vx-rep-'+REP+'-'+PER);if(!raw){$('#rep').hidden=true;return}
+  try{const o=JSON.parse(raw);showRep(o.md,`${o.src} · saved ${new Date(o.t).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'})}`,REP)}catch{$('#rep').hidden=true}
+}
+function saveRep(md,src){LS.s('vx-rep-'+REP+'-'+PER,JSON.stringify({md,src,t:Date.now()}))}
+$('#repAI').onclick=async()=>{
+  if(busy||!AI.has)return;busy=true;const b=$('#repAI');b.disabled=true;b.textContent='Reading all your data…';
+  $('#rep').hidden=false;$('#rep').innerHTML='<div class="load" style="margin:30px auto"></div><p class="muted sm" style="text-align:center">The AI is analysing every post. This can take up to a minute.</p>';
+  try{
+    const r=await fetch('/api/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:REP,period:PER,context:SUM})}),j=await r.json();
+    if(!r.ok)throw new Error(j.error||'Report failed.');
+    saveRep(j.md,j.via||'AI');showSaved();
+  }catch(e){$('#rep').innerHTML=`<p class="err">${esc(e.message)}</p>`}
+  busy=false;b.disabled=false;b.textContent='Generate with AI';
+};
+$('#repLoc').onclick=()=>{saveRep(localReport(REP),'Instant report');showSaved()};
+function localReport(type){
+  const{F,posts,P,T,byDay,fmts,capB,tagB,R,per}=S,u=DATA.profile.username,L=[],P0=PERS[PER];
+  const row=a=>`| ${a.k} | ${a.n} | ${Math.round(a.med)} | ${Math.round(a.avg)} |`;
+  const tb=(h,a)=>[`| ${h} | Posts | Typical (median) | Average |`,'|---|---|---|---|',...a.map(row)];
+  const pc=(x,y)=>y?`${x>=y?'+':''}${Math.round((x/y-1)*100)}%`:'n/a',rng=s=>s.len===1?hh(s.h):hh(s.h)+'–'+hh(s.h+s.len);
+  L.push(`# ${P0.adj} data report for @${u}`,`*${new Date().toLocaleDateString('en-GB',{dateStyle:'long'})} · ${P.length} measurable posts of ${posts.length} loaded · Algeria time*`,'');
+  L.push(`## ${P0.now} vs ${P0.prev}`,'| Metric | Now | Before | Change |','|---|---|---|---|',`| Posts | ${per.n} | ${per.pn} | ${pc(per.n,per.pn)} |`,`| Engagement (likes + comments) | ${per.sum.toLocaleString()} | ${per.psum.toLocaleString()} | ${pc(per.sum,per.psum)} |`,`| Typical engagement rate | ${per.n?per.er.toFixed(2)+'%':'n/a'} | ${per.pn?per.per.toFixed(2)+'%':'n/a'} | ${pc(per.er,per.per)} |`,'');
+  L.push('## Account snapshot','| Metric | Value |','|---|---|',`| Followers | ${F.toLocaleString()} |`,`| Engagement rate (typical, last 20 posts) | ${S.er.toFixed(2)}% |`,`| Typical likes + comments per post | ${Math.round(S.perPost)} |`,`| Posts per week (last ${S.W} days) | ${S.ppw.toFixed(1)} |`,`| Longest recent gap | ${Math.round(S.gap)} days |`,`| Posting health score | ${S.score}/100 |`,'');
+  L.push('## Best times (all history)',T.src==='audience'?`Based on ${T.days} days of follower activity (confidence: ${T.conf}).`:`Instagram sent no follower activity, so this uses your own posts (confidence: ${T.conf}).`,'',...T.slots.map((s,i)=>`${i+1}. **${FULL[s.w]} ${slotLbl(s)}**`),'');
+  L.push('## Formats',...tb('Format',fmts),'','## Weekdays',...tb('Day',byDay.map((x,i)=>({...x,k:FULL[i]}))),'','## Captions',...tb('Caption length',capB),'',...tb('Hashtags',tagB),'');
+  L.push('## Top posts','| Date | Format | Likes + comments | Link |','|---|---|---|---|',...[...P].sort((a,b)=>b.e-a.e).slice(0,5).map(p=>`| ${isoDay(p.t)} | ${p.fmt} | ${p.e} | [open](${p.permalink}) |`),'','## Weakest posts','| Date | Format | Likes + comments | Link |','|---|---|---|---|',...[...P].sort((a,b)=>a.e-b.e).slice(0,3).map(p=>`| ${isoDay(p.t)} | ${p.fmt} | ${p.e} | [open](${p.permalink}) |`),'');
+  L.push('## What to do',...R.map(r=>`- **${r[0]}**: ${r[1]}`),'');
+  const bf=fmts.filter(x=>x.n>=3).sort((a,b)=>b.med-a.med)[0],fm=bf?`Make ${bf.k} your main format (typical ${Math.round(bf.med)} likes + comments).`:'Test Reels, carousels and photos evenly to find your best format.';
+  const tgt=Math.max(3,Math.min(5,Math.round(S.ppw)+1)),days=[...new Map(T.slots.map(s=>[s.w,s])).values()].slice(0,tgt).sort((a,b)=>a.w-b.w);
+  if(PER==='day')L.push(`## ${T.todayL}'s plan`,...(T.today.length?T.today.map(s=>`- Publish ${FULL[s.w]} at **${rng(s)}** (post about an hour before).`):['- No clear slot yet, use your best overall slot above.']),`- ${fm}`,'- Reply to every comment in the first hour.','- Check tonight: engagement on today\'s post versus your typical '+Math.round(S.perPost)+'.');
+  else{
+    L.push(`## Plan for the next ${PER==='week'?'7 days':'30 days'}`,`- Post ${tgt} times a week${PER==='month'?', for about '+Math.round(tgt*30/7)+' posts in total':''}.`,...days.map(s=>`- ${FULL[s.w]} at **${rng(s)}**`),`- ${fm}`);
+    if(PER==='month')L.push('- Review at the end of week 2 and week 4: compare engagement per post with this report.');
+    else L.push('- At the end of the week, compare posts, engagement and rate with the table at the top.');
+  }
+  L.push('','*For a deeper analysis written from every post and caption, use "Generate with AI".*');
+  return L.join('\n');
+}
+
+/* ---------------- agent chat ---------------- */
+let CHAT=[];try{CHAT=JSON.parse(LS.g('vx-chat')||'[]')}catch{}
+const SUGG=[()=>PER==='day'?'What should I post today?':PER==='month'?'Plan my content for this month':'What should I post this week?','Why did my weakest post underperform?','Which format should I focus on?','Write 5 captions in the style of my best post'];
+const saveChat=()=>LS.s('vx-chat',JSON.stringify(CHAT.filter(m=>!m.pending).slice(-40)));
+function drawChat(){
+  const el=$('#msgs');
+  if(!CHAT.length){el.innerHTML=`<div class="empty"><div class="ai-ic">Vex</div><p class="muted" style="margin-top:8px">Your analytics agent. It has read every post, your best times and your audience data.</p><div class="sugg">${SUGG.map(x=>typeof x==='function'?x():x).map(s=>`<button type="button" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>`}
+  else el.innerHTML=CHAT.map(m=>m.role==='user'?`<div class="msg u">${esc(m.content)}</div>`:m.pending?`<div class="msg a"><span class="dots"><i></i><i></i><i></i></span></div>`:m.err?`<div class="msg e">${esc(m.content)}</div>`:`<div class="msg a md">${md(m.content)}${m.fb?`<div class="via">Answered by ${esc(m.via)} because your main model was unavailable.</div>`:''}</div>`).join('');
+  el.scrollTop=el.scrollHeight;
+}
+$('#msgs').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b)ask(b.dataset.s)});
+async function ask(text){
+  text=(text||'').trim();if(!text||busy)return;
+  if(!AI.has){openAgent(false);tab('set');return}
+  busy=true;$('#send').disabled=true;$('#q').value='';fit();
+  const hist=CHAT.filter(m=>!m.err&&!m.pending).slice(-12).map(m=>({role:m.role,content:m.content}));
+  CHAT.push({role:'user',content:text});CHAT.push({role:'assistant',pending:true,content:''});drawChat();
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...hist,{role:'user',content:text}],context:SUM})}),j=await r.json();
+    CHAT.pop();if(!r.ok)throw new Error(j.error||'The agent could not answer.');
+    CHAT.push({role:'assistant',content:j.reply,via:j.via,fb:j.fb});
+  }catch(e){CHAT.pop();CHAT.push({role:'assistant',err:1,content:e.message})}
+  busy=false;$('#send').disabled=false;saveChat();drawChat();
+}
+const fit=()=>{const q=$('#q');q.style.height='auto';q.style.height=Math.min(q.scrollHeight,140)+'px'};
+$('#q').addEventListener('input',fit);
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();ask($('#q').value)}});
+$('#send').onclick=()=>ask($('#q').value);
+$('#clr').onclick=e=>{e.preventDefault();CHAT=[];saveChat();drawChat()};
+
+/* ---------------- settings: Gemini ---------------- */
+function aiSync(){
+  const G=AI.gemini&&AI.gemini.has;
+  fillModels();$('#gkey').placeholder=G?(AI.fromEnv?'Using the GEMINI_API_KEY set in Vercel':'Saved ('+AI.masked+'). Paste a new key to replace it'):'Paste your key from Google AI Studio';
+  $('#gclear').hidden=!G||AI.fromEnv;
+  $('#aiBan').hidden=AI.has;$('#repAI').disabled=!AI.has;
+  $('#repHint').textContent=AI.has?'':(ME.role==='owner'?'Add a Gemini key in Settings for AI reports.':'AI reports are not part of your access.');
+}
+function gstat(t,c){const s=$('#gstat');s.textContent=t;s.className='stat '+(c||'')}
+$('#gsave').onclick=async()=>{
+  const b=$('#gsave');b.disabled=true;gstat('Testing your key…');
+  try{
+    const r=await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:$('#gkey').value.trim(),model:$('#gmodel').value,backup:$('#gbackup').value})}),j=await r.json();
+    if(!r.ok)throw new Error(j.error||'Could not save.');
+    AI=j;$('#gkey').value='';aiSync();loadModels(true);gstat(j.warn?'Saved, but '+j.warn+'. Pick a different model if this continues.':'Saved. Your agent is ready.','ok');
+  }catch(e){gstat(e.message,'bad')}
+  b.disabled=false;
+};
+$('#gclear').onclick=async()=>{
+  if(!confirm('Remove the saved Gemini key?'))return;
+  try{const r=await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clear:true})}),j=await r.json();if(!r.ok)throw new Error(j.error);AI=j;aiSync();gstat('Key removed.')}catch(e){gstat(e.message,'bad')}
+};
+let MODELS=[];
+function fillModels(){
+  const opts=(sel,none)=>{const all=[...(sel&&!MODELS.some(m=>m.id===sel)?[{id:sel,label:sel}]:[]),...MODELS];
+    return (none?'<option value="">No backup</option>':'')+all.map(m=>`<option value="${esc(m.id)}"${m.id===sel?' selected':''}>${esc(m.label&&m.label!==m.id?m.label+' ('+m.id+')':m.id)}</option>`).join('')};
+  const cm=$('#gmodel').value||AI.model||'gemini-3.8-flash',cb=$('#gbackup').options.length?$('#gbackup').value:(AI.backup||'');
+  $('#gmodel').innerHTML=opts(cm,false);$('#gbackup').innerHTML=opts(cb,true);
+}
+async function loadModels(quiet){
+  const typed=$('#gkey').value.trim();
+  if(!typed&&!(AI.gemini&&AI.gemini.has)){MODELS=[];fillModels();return}
+  if(!quiet)gstat('Loading the models your key can use…');
+  try{const r=await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({list:true,key:typed})}),j=await r.json();
+    if(!r.ok)throw new Error(j.error||'Could not load the list.');
+    MODELS=j.models||[];fillModels();if(!quiet)gstat(MODELS.length?MODELS.length+' models found. Pick one, then Save and test.':'No models found for this key.',MODELS.length?'ok':'bad')}
+  catch(e){fillModels();gstat(e.message,'bad')}
+}
+$('#gkey').addEventListener('change',()=>{if($('#gkey').value.trim().length>15)loadModels(false)});
+$('#gkey').addEventListener('paste',()=>setTimeout(()=>{if($('#gkey').value.trim().length>15)loadModels(false)},80));
+$('#gload').onclick=()=>loadModels(false);
+/* ---------------- team access (owner) ---------------- */
+function tstat(t,c){const s=$('#tstat');s.textContent=t;s.className='stat '+(c||'')}
+async function teamCall(b){const r=await fetch('/api/team',{method:b?'POST':'GET',headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined}),j=await r.json();if(!r.ok)throw new Error(j.error||'Something went wrong.');return j}
+function drawTeam(m){$('#tlist').innerHTML=m.length?m.map(x=>`<div class="trow"><div><b>${esc(x.name)}</b><small>${x.role==='viewer_ai'?'View + AI':'View only'} · last used ${x.last_used?new Date(x.last_used).toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'never'}</small></div><button class="btn ghost" data-rev="${x.id}" type="button">Revoke</button></div>`).join(''):'<p class="muted sm" style="margin-top:12px">No team members yet.</p>'}
+$('#tadd').onclick=async()=>{
+  const n=$('#tname').value.trim();if(!n){tstat('Give this person a name first.','bad');return}
+  try{const j=await teamCall({name:n,role:$('#trole').value});$('#tname').value='';drawTeam(j.members);
+    const b=$('#tnew');b.hidden=false;b.innerHTML=`<span class="muted sm">Access code for ${esc(n)}. Copy it now: it is shown only once.</span><b>${esc(j.code)}</b><button class="btn sm2" type="button" id="tcopy">Copy code</button>`;
+    $('#tcopy').onclick=()=>navigator.clipboard.writeText(j.code).then(()=>tstat('Copied.','ok'),()=>tstat('Select the code and copy it by hand.','bad'));tstat('')}
+  catch(e){tstat(e.message,'bad')}
+};
+$('#tlist').addEventListener('click',async e=>{const b=e.target.closest('[data-rev]');if(!b||!confirm('Revoke this access code? That person is signed out right away.'))return;try{drawTeam((await teamCall({del:b.dataset.rev})).members)}catch(er){tstat(er.message,'bad')}});
+$('#align').onchange=function(){LS.s('vx-align',this.value);render(DATA)};
+
+/* ---------------- settings: appearance (mode + themes) ---------------- */
+(function(){
+  const pals=$('#pals'),seg=$('#seg'),thm=$('#thm');
+  const CK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+  pals.innerHTML=TH.list.map(([id,name,tag])=>`<button type="button" class="pal" role="radio" data-pal="${id}" aria-checked="false"><span class="pv" data-p="${id}" data-m="dark" aria-hidden="true"><i class="a"></i><i class="b"></i><i class="c"></i><i class="d"></i><i class="e"></i></span><span>${name}<small>${tag}</small></span><span class="ck">${CK}</span></button>`).join('');
+  function sync(){
+    const e=TH.eff();
+    thm.setAttribute('aria-label',e==='dark'?'Switch to light mode':'Switch to dark mode');
+    $$('#seg button').forEach(b=>b.setAttribute('aria-checked',b.dataset.mode===TH.pref()));
+    $$('.pal').forEach(b=>b.setAttribute('aria-checked',b.dataset.pal===TH.pal()));
+    $$('.pv').forEach(p=>p.dataset.m=e);
+  }
+  TH.on(sync);sync();
+  thm.onclick=()=>TH.setMode(TH.eff()==='dark'?'light':'dark');
+  seg.addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)TH.setMode(b.dataset.mode)});
+  pals.addEventListener('click',e=>{const b=e.target.closest('[data-pal]');if(b)TH.setPal(b.dataset.pal)});
+  [seg,pals].forEach(g=>g.addEventListener('keydown',e=>{
+    const k={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(!k)return;
+    const r=[...g.querySelectorAll('[role=radio]')],i=r.indexOf(document.activeElement);if(i<0)return;
+    e.preventDefault();const n=r[(i+k+r.length)%r.length];n.focus();n.click();
+  }));
+})();
+drawPills();showSaved();aiSync();
+</script>
+</body>
+</html>
