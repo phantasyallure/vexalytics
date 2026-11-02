@@ -823,7 +823,7 @@ $('#gsave').onclick=async()=>{
   try{
     const r=await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:$('#gkey').value.trim(),model:$('#gmodel').value,backup:$('#gbackup').value})}),j=await r.json();
     if(!r.ok)throw new Error(j.error||'Could not save.');
-    AI=j;$('#gkey').value='';aiSync();loadModels(true);gstat('Saved. Your agent is ready.','ok');
+    AI=j;$('#gkey').value='';aiSync();loadModels(true);gstat(j.warn?'Saved, but '+j.warn+'. Pick a different model if this continues.':'Saved. Your agent is ready.','ok');
   }catch(e){gstat(e.message,'bad')}
   b.disabled=false;
 };
@@ -835,15 +835,20 @@ let MODELS=[];
 function fillModels(){
   const opts=(sel,none)=>{const all=[...(sel&&!MODELS.some(m=>m.id===sel)?[{id:sel,label:sel}]:[]),...MODELS];
     return (none?'<option value="">No backup</option>':'')+all.map(m=>`<option value="${esc(m.id)}"${m.id===sel?' selected':''}>${esc(m.label&&m.label!==m.id?m.label+' ('+m.id+')':m.id)}</option>`).join('')};
-  $('#gmodel').innerHTML=opts(AI.model||'gemini-3.8-flash',false);$('#gbackup').innerHTML=opts(AI.backup||'',true);
+  const cm=$('#gmodel').value||AI.model||'gemini-3.8-flash',cb=$('#gbackup').options.length?$('#gbackup').value:(AI.backup||'');
+  $('#gmodel').innerHTML=opts(cm,false);$('#gbackup').innerHTML=opts(cb,true);
 }
 async function loadModels(quiet){
-  if(!(AI.gemini&&AI.gemini.has)){MODELS=[];fillModels();return}
+  const typed=$('#gkey').value.trim();
+  if(!typed&&!(AI.gemini&&AI.gemini.has)){MODELS=[];fillModels();return}
   if(!quiet)gstat('Loading the models your key can use…');
-  try{const j=await(await fetch('/api/settings?models=1')).json();MODELS=j.models||[];fillModels();
-    if(!MODELS.length)gstat(j.modelsError||'Could not load the list. You can still use the saved model.','bad');else if(!quiet)gstat(MODELS.length+' models found.','ok')}
-  catch{fillModels();gstat('Could not load the list.','bad')}
+  try{const r=await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({list:true,key:typed})}),j=await r.json();
+    if(!r.ok)throw new Error(j.error||'Could not load the list.');
+    MODELS=j.models||[];fillModels();if(!quiet)gstat(MODELS.length?MODELS.length+' models found. Pick one, then Save and test.':'No models found for this key.',MODELS.length?'ok':'bad')}
+  catch(e){fillModels();gstat(e.message,'bad')}
 }
+$('#gkey').addEventListener('change',()=>{if($('#gkey').value.trim().length>15)loadModels(false)});
+$('#gkey').addEventListener('paste',()=>setTimeout(()=>{if($('#gkey').value.trim().length>15)loadModels(false)},80));
 $('#gload').onclick=()=>loadModels(false);
 $('#align').onchange=function(){LS.s('vx-align',this.value);render(DATA)};
 
