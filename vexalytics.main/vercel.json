@@ -1,1 +1,0 @@
-{ "functions": { "api/[action].js": { "maxDuration": 60 } } }
