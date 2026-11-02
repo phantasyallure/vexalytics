@@ -134,6 +134,11 @@ module.exports = async (req, res) => {
       }
       const b = req.body || {};
       try {
+        if (b.list) {
+          const lk = String(b.key || '').trim().replace(/^["']+|["']+$/g, '') || st.gemini_key || process.env.GEMINI_API_KEY;
+          if (!lk) return json(res, 400, { error: 'Paste your Gemini API key first.' });
+          try { return json(res, 200, { models: await listModels(lk) }); } catch (e) { return json(res, 400, { error: 'Google rejected the key: ' + e.message }); }
+        }
         if (b.clear) { await delSetting('gemini_key'); delete st.gemini_key; return json(res, 200, aiView(st)); }
         const ok = m => /^[A-Za-z0-9._-]{3,60}$/.test(m);
         const model = fixModel(b.model || st.gemini_model);
@@ -143,15 +148,19 @@ module.exports = async (req, res) => {
         if (gk && !/^[\x21-\x7E]{15,500}$/.test(gk)) return json(res, 400, { error: 'The key has spaces or line breaks in it. Copy it again and paste only the key.' });
         const key = gk || st.gemini_key || process.env.GEMINI_API_KEY;
         if (!key) return json(res, 400, { error: 'Paste your Gemini API key first.' });
+        const warn = [];
         for (const m of [model, backup].filter(Boolean)) {
           try { await gemini({ key, model: m, plain: true, contents: [{ role: 'user', parts: [{ text: 'Reply with the single word OK.' }] }] }); }
-          catch (e) { return json(res, 400, { error: 'Gemini rejected ' + m + ': ' + e.message }); }
+          catch (e) {
+            if (/demand|overload|unavailable|quota|rate.?limit|429|503|exhaust|busy/i.test(e.message)) { warn.push(m + ' is busy right now'); continue; } // the key is fine, the model is just busy
+            return json(res, 400, { error: 'Gemini rejected ' + m + ': ' + e.message });
+          }
         }
         if (gk) { await setSetting('gemini_key', gk); st.gemini_key = gk; }
         await setSetting('gemini_model', model); st.gemini_model = model;
         if (backup) await setSetting('gemini_backup', backup); else await delSetting('gemini_backup');
         st.gemini_backup = backup;
-        return json(res, 200, aiView(st));
+        return json(res, 200, { ...aiView(st), warn: warn.join('; ') });
       } catch (e) { return json(res, 400, { error: e.message }); }
     }
 
