@@ -1,3 +1,4 @@
+const { askAI, testKey, view: aiView, normOrder, list: mlist, LABEL, DEF } = require('../lib/ai');
 const { graph, getSession, saveSession, clearSession, getSettings, setSetting, delSetting, gemini, fixModel, sig, authed, passwordOk } = require('../lib/common');
 
 const redirect = (res, to) => { res.statusCode = 302; res.setHeader('Location', to); res.end(); };
@@ -123,44 +124,55 @@ module.exports = async (req, res) => {
 
     if (action === 'logout') { await clearSession(); return redirect(res, '/'); }
 
-    /* ---------- Gemini settings (the key never goes back to the browser) ---------- */
+    /* ---------- AI settings: Gemini, ChatGPT, Claude (keys never go back to the browser) ---------- */
     if (action === 'settings') {
-      const st = await getSettings(), envKey = process.env.GEMINI_API_KEY || '';
-      const view = () => { const k = st.gemini_key || envKey; return { has: !!k, masked: k ? '••••' + k.slice(-4) : '', model: fixModel(st.gemini_model), fromEnv: !st.gemini_key && !!envKey }; };
-      if (req.method !== 'POST') return json(res, 200, view());
-      const b = req.body || {};
-      if (b.clear) { await delSetting('gemini_key'); delete st.gemini_key; return json(res, 200, view()); }
-      const model = fixModel(b.model || st.gemini_model);
-      if (!/^[A-Za-z0-9._-]{3,60}$/.test(model)) return json(res, 400, { error: 'Model name looks invalid.' });
-      const key = String(b.key || '').trim().replace(/^["']+|["']+$/g, '');
-      if (key) {
-        // Only reject the obviously unusable (spaces, line breaks, too short). Google's newer keys contain dots, so the real check is the test call below.
-        if (!/^[\x21-\x7E]{15,500}$/.test(key)) return json(res, 400, { error: 'The key has spaces or line breaks in it. Copy it again and paste only the key.' });
-        try { await gemini({ key, model, plain: true, contents: [{ role: 'user', parts: [{ text: 'Reply with the single word OK.' }] }] }); }
-        catch (e) { return json(res, 400, { error: 'Gemini rejected it: ' + e.message }); }
-        await setSetting('gemini_key', key); st.gemini_key = key;
-      } else if (!(st.gemini_key || envKey)) return json(res, 400, { error: 'Paste your Gemini API key first.' });
-      await setSetting('gemini_model', model); st.gemini_model = model;
-      return json(res, 200, view());
+      const st = await getSettings();
+      if (req.method !== 'POST') return json(res, 200, aiView(st));
+      const b = req.body || {}, clean = v => String(v || '').trim().replace(/^["']+|["']+$/g, '');
+      try {
+        for (const [f, k] of [['clear', 'gemini_key'], ['clearOpenai', 'openai_key'], ['clearClaude', 'claude_key']])
+          if (b[f]) { await delSetting(k); delete st[k]; return json(res, 200, aiView(st)); }
+        const model = fixModel(b.model || st.gemini_model);
+        if (!/^[A-Za-z0-9._-]{3,60}$/.test(model)) return json(res, 400, { error: 'Model name looks invalid.' });
+        const gk = clean(b.key);
+        if (gk) {
+          if (!/^[\x21-\x7E]{15,500}$/.test(gk)) return json(res, 400, { error: 'The key has spaces or line breaks in it. Copy it again and paste only the key.' });
+          try { await gemini({ key: gk, model, plain: true, contents: [{ role: 'user', parts: [{ text: 'Reply with the single word OK.' }] }] }); }
+          catch (e) { return json(res, 400, { error: 'Gemini rejected it: ' + e.message }); }
+          await setSetting('gemini_key', gk); st.gemini_key = gk;
+        }
+        for (const [p, kf, mf, bk, bm] of [['openai', 'openai_key', 'openai_models', 'openaiKey', 'openaiModels'], ['claude', 'claude_key', 'claude_models', 'claudeKey', 'claudeModels']]) {
+          const models = mlist(b[bm] || st[mf] || DEF[p]), k = clean(b[bk]);
+          if (!models.length || models.some(m => !/^[A-Za-z0-9._:-]{3,80}$/.test(m))) return json(res, 400, { error: 'A model name for ' + LABEL[p] + ' looks invalid.' });
+          if (k) {
+            if (!/^[\x21-\x7E]{15,500}$/.test(k)) return json(res, 400, { error: LABEL[p] + ' key has spaces or line breaks in it. Copy it again and paste only the key.' });
+            await testKey(p, k, models); await setSetting(kf, k); st[kf] = k;
+          }
+          if (b[bm]) { await setSetting(mf, models.join(', ')); st[mf] = models.join(', '); }
+        }
+        if (b.order) { const o = normOrder(b.order).join(','); await setSetting('ai_order', o); st.ai_order = o; }
+        await setSetting('gemini_model', model); st.gemini_model = model;
+        const v = aiView(st); if (!v.has) return json(res, 400, { error: 'Paste at least one API key first.' });
+        return json(res, 200, v);
+      } catch (e) { return json(res, 400, { error: e.message }); }
     }
 
-    /* ---------- AI chat and reports ---------- */
+    /* ---------- AI chat and reports (tries the best option first, falls back automatically) ---------- */
     if ((action === 'chat' || action === 'report') && req.method === 'POST') {
-      const st = await getSettings(), key = st.gemini_key || process.env.GEMINI_API_KEY;
-      if (!key) return json(res, 400, { error: 'Add your Gemini API key in Settings first.' });
-      const model = fixModel(st.gemini_model), b = req.body || {};
+      const st = await getSettings(), b = req.body || {};
+      if (!aiView(st).has) return json(res, 400, { error: 'Add an AI key in Settings first.' });
       const data = clip(JSON.stringify(b.context || {}), 150000);
       try {
         if (action === 'report') {
           const R = reportSpec(b.type, b.period); if (!R) return json(res, 400, { error: 'Unknown report type.' });
-          const md = await gemini({ key, model, maxTokens: 16384, temperature: 0.4, system: BASE + '\n\nDATA:\n' + data,
+          const o = await askAI(st, { maxTokens: 16384, temperature: 0.4, cap: 45000, system: BASE + '\n\nDATA:\n' + data,
             contents: [{ role: 'user', parts: [{ text: R[1] + ' Start with a single H1 title: "' + R[0] + '".' }] }] });
-          return json(res, 200, { md, title: R[0] });
+          return json(res, 200, { md: o.text, title: R[0], via: o.via, fb: o.fb });
         }
         const contents = cleanMsgs(b.messages);
         if (!contents.length || contents[contents.length - 1].role !== 'user') return json(res, 400, { error: 'Empty message.' });
-        const reply = await gemini({ key, model, maxTokens: 8192, system: BASE + '\nIn chat, keep answers short (under 180 words) unless asked for detail.\n\nDATA:\n' + data, contents });
-        return json(res, 200, { reply });
+        const o = await askAI(st, { maxTokens: 8192, cap: 25000, system: BASE + '\nIn chat, keep answers short (under 180 words) unless asked for detail.\n\nDATA:\n' + data, contents });
+        return json(res, 200, { reply: o.text, via: o.via, fb: o.fb });
       } catch (e) { return json(res, 400, { error: e.message }); }
     }
 
