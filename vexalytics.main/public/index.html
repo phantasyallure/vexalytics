@@ -320,6 +320,38 @@ body.agent-open{overscroll-behavior:contain}
   .prow{grid-template-columns:46px minmax(0,1fr) auto;gap:10px}.prow img{width:46px;height:46px}
   .tbl{font-size:13px}.tbl th,.tbl td{padding:6px 8px}
 }
+/* ---------- platforms page ---------- */
+.glcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:16px}
+.gcard{text-align:left;color:inherit;font:inherit;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;transition:border-color .25s,transform .25s;display:block;width:100%}
+.gcard:hover{border-color:var(--a1);transform:translateY(-2px)}
+.gcard .top{display:flex;align-items:center;justify-content:space-between;gap:10px}.gcard .top b{display:flex;align-items:center;gap:8px;font-size:1.05rem}
+.gcard .sc{font-size:2.6rem;line-height:1;margin:12px 0 2px}.gcard .sc small{font-size:.9rem;color:var(--mute);font-weight:600}
+.gcard .st2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:14px}.gcard .st2 small{display:block;color:var(--mute);font-size:12px}.gcard .st2 b{font-size:1.05rem}
+.up{color:var(--ok)}.dn{color:var(--warn)}
+.gcard .hb{height:8px;border-radius:9px;background:var(--track);overflow:hidden;margin-top:6px}.gcard .hb span{display:block;height:100%;background:var(--grad);border-radius:9px}
+/* ---------- chat sessions ---------- */
+.hist{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 0 12px}
+.hist h4{font:800 12px Manrope,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:14px 4px 8px}
+.hi{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:4px 4px 4px 14px;margin-bottom:8px}
+.hi.on{border-color:var(--a1)}
+.hi button.open{all:unset;cursor:pointer;display:block;min-width:0;padding:9px 0}
+.hi b{display:block;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hi small{color:var(--mute);font-size:12.5px}
+.hi .del{width:40px;height:40px;border-radius:12px;border:0;background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center}.hi .del:hover{color:var(--bad)}
+.hi .del svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#agent.showhist .msgs,#agent.showhist .composer,#agent.showhist #aiBan{display:none}
+.ah .acts{gap:6px}
+.msg{overflow-wrap:break-word;word-break:normal}.msg a{overflow-wrap:anywhere}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media(max-width:760px){
+  .ibtn.s{width:42px;height:42px}.ah .acts{gap:4px}
+  .msg.u{max-width:90%}
+  .hi button.open{padding:11px 0}
+  .gcard{padding:18px;border-radius:20px}
+}
+@media(max-width:400px){
+  #agent{padding-left:10px;padding-right:10px}.msg{padding:10px 12px;font-size:14px}.msg.a.md h2{font-size:1.05rem}
+  .msg.a.md ul,.msg.a.md ol{margin-left:16px}
+}
 </style>
 <script>
 /* Theme engine. Runs before first paint so there is no flash. Mode: auto (follows device) | light | dark. */
@@ -380,6 +412,7 @@ window.TH=(function(){
     <button class="ibtn s" id="sideClose" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
   <nav class="menu" role="tablist" aria-label="Sections">
     <button role="tab" data-t="over" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
+    <button role="tab" data-t="plat" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg><span>Platforms</span></button>
     <button role="tab" data-t="aud" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.4c2.2.7 3.5 2.6 3.5 5.6"/></svg><span>Audience</span></button>
     <button role="tab" data-t="con" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-5-5L5 21"/></svg><span>Content</span></button>
     <button role="tab" data-t="str" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg><span>Strategy</span></button>
@@ -391,8 +424,9 @@ window.TH=(function(){
 <!-- ===== AI agent (right, beside the sidebar) ===== -->
 <aside id="agent" aria-label="AI agent" aria-hidden="true">
   <div class="ah"><div><div class="ai-ic serif" style="font-size:1.7rem;line-height:1">Vex</div><span class="muted sm">Your analytics agent</span></div>
-    <span class="acts"><a href="#" id="clr" class="muted sm">Clear</a><button class="ibtn s" id="agentClose" type="button" aria-label="Close agent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span></div>
+    <span class="acts"><button class="ibtn s" id="newChat" type="button" aria-label="New chat" title="New chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button><button class="ibtn s" id="histBtn" type="button" aria-label="Chat history" aria-pressed="false" title="Chat history"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button><button class="ibtn s" id="agentClose" type="button" aria-label="Close agent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span></div>
   <div class="banner" id="aiBan" hidden><span class="muted sm">Add your Gemini API key in Settings to chat with your agent.</span><button class="btn sm2" type="button" data-go="set">Open Settings</button></div>
+  <div class="hist" id="hist" hidden></div>
   <div class="msgs" id="msgs" aria-live="polite"></div>
   <div class="composer"><textarea id="q" rows="1" placeholder="Ask about your accounts…" aria-label="Message"></textarea><button class="btn" id="send" type="button" aria-label="Send"><span class="st">Send</span><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
 </aside>
@@ -430,6 +464,14 @@ window.TH=(function(){
     </div>
     <div class="card" style="margin-top:16px"><h2 id="chartT">Engagement</h2><p class="muted sm" id="chartS"></p><div id="chart"></div></div>
     <div class="card" style="margin-top:16px"><h2>Do this next</h2><div id="recs3"></div></div>
+  </div>
+
+  <!-- ===== PLATFORMS (all side by side) ===== -->
+  <div class="panel" id="t-plat" hidden>
+    <h2>Platforms</h2><p class="muted sm" id="glS"></p>
+    <div class="card" id="glAll" style="margin-top:16px"></div>
+    <div class="glcards" id="glCards"></div>
+    <div class="card" style="margin-top:16px"><h2>Side by side</h2><p class="muted sm">Same period for every platform. Tap a platform above to open its full dashboard.</p><div class="tw" style="margin-top:12px"><table class="tbl" id="glT"></table></div><p class="muted sm" id="glN" style="margin-top:12px"></p></div>
   </div>
 
   <!-- ===== AUDIENCE ===== -->
@@ -547,7 +589,7 @@ function layers(){
   $('#menuBtn').setAttribute('aria-expanded',sd);$('#agentBtn').setAttribute('aria-expanded',ag);
 }
 function openSide(o){document.body.classList.toggle('side-open',o);if(o)document.body.classList.remove('agent-open');layers();if(o)setTimeout(()=>{const c=$('#side [aria-selected=true]');c&&c.focus()},380)}
-function openAgent(o){document.body.classList.toggle('agent-open',o);if(o){document.body.classList.remove('side-open');drawChat()}layers();vvFit();if(o&&innerWidth>=900)setTimeout(()=>$('#q').focus(),380)} // no auto-focus on phones: the keyboard would cover the chat
+function openAgent(o){document.body.classList.toggle('agent-open',o);if(o&&!$('#hist').hidden)showHist(false);if(o){document.body.classList.remove('side-open');drawChat()}layers();vvFit();if(o&&innerWidth>=900)setTimeout(()=>$('#q').focus(),380)} // no auto-focus on phones: the keyboard would cover the chat
 // On phones the on-screen keyboard shrinks the visual viewport: size the drawer to it so the composer stays visible.
 function vvFit(){const a=$('#agent'),vv=window.visualViewport;
   if(!vv||innerWidth>=900||!document.body.classList.contains('agent-open')){a.style.height='';a.style.top='';return}
@@ -855,7 +897,7 @@ function render(d){
   chart($('#chart'),S.trend);
   const rh=a=>a.map(r=>`<div class="rec"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join('');
   $('#recs3').innerHTML=rh(S.R.slice(0,3));$('#recs').innerHTML=rh(S.R);
-  SUM=buildSUM();
+  SUM=buildSUM();drawGlance();
   if(!$('#app').hidden)grow($('#t-'+CUR));
 }
 
@@ -867,6 +909,31 @@ function buildView(pl){
   return{platform:'all',profile:{username:'All platforms',name:'All platforms',followers_count:F,media_count:media.length,profile_picture_url:''},media,online:null,insights:null,overrides:(parts[0]&&parts[0].overrides)||{},fetchedAt:new Date().toISOString()};
 }
 const refresh=()=>render(buildView(PLAT));
+let ANA={};
+function setPlat(k){PLAT=k;LS.s('vx-plat',k);drawPlats();drawPills();refresh();showSaved()}
+function drawGlance(){
+  const ks=Object.keys(RAW).filter(k=>ANA[k]),P0=PERS[PER];
+  const dl=(x,y)=>y?`<span class="${x>=y?'up':'dn'}">${x>=y?'▲':'▼'} ${Math.abs(Math.round((x/y-1)*100))}%</span>`:'<span class="muted">—</span>';
+  const R=ks.map(k=>{const a=ANA[k],pe=a.per,inP=a.posts.filter(p=>p.age<a.N),pr=inP.filter(p=>p.promo.status!=='organic').length,rq=a.P.filter(p=>p.rch>0).slice(0,20),top=a.T.slots[0],pa=a.posts.filter(p=>p.mature&&!p.hid),prA=pa.filter(p=>p.promo.status!=='organic').length;
+    return{k,a,pe,pr,inN:inP.length,F:a.F,kind:rq.length&&rq.every(p=>p.rk==='views')?'views':'reach',reach:rq.length?Math.round(med(rq.map(p=>p.rch))):null,best:top?FULL[top.w].slice(0,3)+' '+slotLbl(top):'—',share:pa.length?Math.round(prA/pa.length*100):null,prA,paN:pa.length}});
+  $('#glS').textContent=ks.length?`${P0.now} vs ${P0.prev}. Switch Day / Week / Month at the top. Each platform keeps its own score and its own definition of engagement.`:'Nothing loaded yet.';
+  const tot=R.reduce((o,r)=>({F:o.F+r.F,n:o.n+r.pe.n,pn:o.pn+r.pe.pn,s:o.s+r.pe.sum,ps:o.ps+r.pe.psum,pr:o.pr+r.pr,inN:o.inN+r.inN}),{F:0,n:0,pn:0,s:0,ps:0,pr:0,inN:0});
+  const avgScore=R.length?Math.round(R.reduce((x,r)=>x+r.a.score,0)/R.length):0;
+  $('#glAll').innerHTML=R.length?`<div class="hd"><div><h2>All platforms together</h2><p class="muted sm">${R.map(r=>PN[r.k]).join(' + ')}</p></div><button class="btn ghost sm2" type="button" data-open="all">Open combined dashboard</button></div>
+    <div class="mini"><div><small>Followers</small><b class="num">${tot.F.toLocaleString()}</b></div><div><small>Posts</small><b class="num">${tot.n}</b><small>${dl(tot.n,tot.pn)}</small></div><div><small>Engagement</small><b class="num">${tot.s.toLocaleString()}</b><small>${dl(tot.s,tot.ps)}</small></div><div><small>Average health score</small><b class="num">${avgScore}<small>/100</small></b><small>${R.length} platform${R.length>1?'s':''}</small></div></div>
+    <p class="muted sm" style="margin-top:12px">${tot.pr} of ${tot.inN} posts in this period were promoted or likely promoted.</p>`:'';
+  $('#glCards').innerHTML=R.map(r=>{const a=r.a,e=a.per;
+    return`<button type="button" class="gcard" data-open="${r.k}"><div class="top"><b><span class="pd ${r.k}"></span>${PN[r.k]}</b><span class="muted sm">Open ›</span></div>
+    <div class="sc num g">${a.score}<small> / 100</small></div><div class="muted sm">${a.score>=70?'Working well':a.score>=45?'Solid base, room to grow':'Needs attention'}</div><div class="hb"><span style="width:${a.score}%"></span></div>
+    <div class="st2"><div><small>Followers</small><b class="num">${r.F.toLocaleString()}</b></div><div><small>Posts</small><b class="num">${e.n}</b> ${dl(e.n,e.pn)}</div><div><small>Engagement</small><b class="num">${e.sum.toLocaleString()}</b> ${dl(e.sum,e.psum)}</div><div><small>Engagement rate</small><b class="num">${e.n?e.er.toFixed(2)+'%':'—'}</b></div><div><small>Typical ${r.kind}</small><b class="num">${r.reach==null?'—':r.reach.toLocaleString()}</b></div><div><small>Promoted</small><b class="num">${r.pr}</b><small class="muted"> of ${r.inN}</small></div></div></button>`}).join('');
+  const row=(l,f)=>`<tr><td><b>${l}</b></td>${R.map(r=>`<td class="n">${f(r)}</td>`).join('')}</tr>`;
+  $('#glT').innerHTML=R.length?`<thead><tr><th></th>${R.map(r=>`<th><span class="pd ${r.k}"></span> ${PN[r.k]}</th>`).join('')}</tr></thead><tbody>${[
+    row('Health score',r=>r.a.score+'/100'),row('Followers',r=>r.F.toLocaleString()),row('Posts this period',r=>r.pe.n),row('Engagement',r=>r.pe.sum.toLocaleString()),row('Engagement rate',r=>r.pe.n?r.pe.er.toFixed(2)+'%':'—'),
+    row('Posts per week',r=>r1(r.a.ppw)),row('Typical reach / views',r=>r.reach==null?'—':r.reach.toLocaleString()+' '+r.kind),row('Promoted share (all measurable posts)',r=>r.share==null?'—':r.share+'% ('+r.prA+'/'+r.paN+')'),
+    row('Best time',r=>r.best),row('Best time source',r=>r.a.T.src==='audience'?'Follower activity':'Own posts'),row('Top format',r=>{const f=r.a.fmts.filter(x=>x.n>=3).sort((x,y)=>y.med-x.med)[0];return f?f.k:'—'})].join('')}</tbody>`:'';
+  $('#glN').textContent='Engagement is likes + comments on Instagram, and reactions + comments + shares on Facebook and TikTok, so compare trends within a platform rather than raw numbers across platforms. Promoted share is confirmed for Instagram and Facebook when Meta ad data is available, and estimated for TikTok.';
+}
+document.addEventListener('click',e=>{const o=e.target.closest('#t-plat [data-open]');if(!o)return;const k=o.dataset.open;if(k!=='all'&&!RAW[k])return;setPlat(k);tab('over')});
 function drawPlats(){
   const av=Object.keys(RAW),items=[...(av.length>1?[['all','All']]:[]),...['ig','fb','tt'].map(k=>[k,PN[k]])];
   $('#plats').innerHTML=items.map(([k,n])=>{const on=k==='all'||!!RAW[k];return`<button type="button" class="plat${on?'':' off'}" data-p="${k}" aria-pressed="${k===PLAT}"><i></i>${n}${on?'':(ERR[k]?' · error':' · connect')}</button>`}).join('');
@@ -876,7 +943,7 @@ function drawPlats(){
 $('#plats').addEventListener('click',e=>{
   const b=e.target.closest('[data-p]');if(!b)return;const k=b.dataset.p;
   if(k!=='all'&&!RAW[k]){if(ME.role==='owner')tab('set');else{$('#platNote').hidden=false;$('#platNote').textContent=PN[k]+' is not connected. Ask the owner to connect it.'}return}
-  PLAT=k;LS.s('vx-plat',k);drawPlats();drawPills();refresh();showSaved();
+  setPlat(k);
 });
 function drawPromo(){
   const R=S.promo,conf=R[1].n,est=R[2].n;
@@ -952,7 +1019,7 @@ function digestOne(d,S,withPosts){
 }
 function buildSUM(){
   const platforms={};
-  Object.keys(RAW).forEach(k=>{const v=buildView(k);platforms[PNK[k]]=digestOne(v,k===PLAT?S:analyze(v),true)});
+  ANA={};Object.keys(RAW).forEach(k=>{const v=buildView(k),a=k===PLAT?S:analyze(v);ANA[k]=a;platforms[PNK[k]]=digestOne(v,a,true)});
   return{today:isoDay(new Date()),timezone:'Africa/Algiers (UTC+1)',view:PLAT,viewName:PN[PLAT],connectedPlatforms:Object.keys(RAW).map(k=>PN[k]),platformsThatFailedToLoad:Object.keys(ERR).map(k=>PN[k]+': '+ERR[k]),
     definitions:{engagement:'Instagram: likes + comments. Facebook and TikTok: reactions/likes + comments + shares.',reach:'Unique accounts reached (Instagram, Facebook). TikTok exposes views only.',promo:'promo.status paid = promoted (confirmed when source is meta_ads, meta_insights or manual); likely_paid = statistical estimate; organic = not promoted (confirmed only when source is not estimate).',mature:'Posts under 48 hours old are still collecting engagement and are excluded from performance stats.',statsBasis:S.basis==='all'?'all posts':S.basis==='strict'?'organic posts only (likely-promoted estimates also excluded)':'organic posts (confirmed promoted posts excluded)'},
     activeView:digestOne(DATA,S,false),platforms};
@@ -1013,9 +1080,28 @@ function localReport(type){
 }
 
 /* ---------------- agent chat ---------------- */
-let CHAT=[];try{CHAT=JSON.parse(LS.g('vx-chat')||'[]')}catch{}
+/* Chat sessions: every visit starts a fresh chat. Older chats are kept (on this device) and can be reopened from the history button. */
+let SESS=[],CHAT=[],CS={id:'',t:0,title:'New chat',msgs:[]};
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const titleOf=m=>{const u=(m||[]).find(x=>x.role==='user');return u?u.content.replace(/\s+/g,' ').trim().slice(0,60):'New chat'};
+function loadSess(){
+  try{SESS=JSON.parse(LS.g('vx-sessions')||'[]')}catch{SESS=[]}
+  if(!Array.isArray(SESS))SESS=[];
+  try{const old=JSON.parse(LS.g('vx-chat')||'[]');if(old.length){SESS.push({id:newId(),t:Date.now()-1,title:titleOf(old),msgs:old});LS.s('vx-chat','[]');persistSess()}}catch{}
+}
+function persistSess(){
+  SESS=SESS.filter(x=>x.msgs&&x.msgs.length).sort((a,b)=>b.t-a.t).slice(0,40);
+  for(let n=SESS.length;n>=0;n--){try{localStorage.setItem('vx-sessions',JSON.stringify(SESS.slice(0,n)));break}catch{}}
+}
+function newSession(){CS={id:newId(),t:Date.now(),title:'New chat',msgs:[]};CHAT=CS.msgs}
+function openSession(id){const x=SESS.find(y=>y.id===id);if(!x)return;CS=x;CHAT=x.msgs;showHist(false);drawChat()}
+loadSess();newSession();
 const SUGG=[()=>PER==='day'?'What should I post today?':PER==='month'?'Plan my content for this month':'What should I post this week?','Which posts were promoted, and did it pay off?','Why did my weakest post underperform?','Which format should I focus on?','Write 5 captions in the style of my best post'];
-const saveChat=()=>LS.s('vx-chat',JSON.stringify(CHAT.filter(m=>!m.pending).slice(-40)));
+function saveChat(sess,msgs){
+  sess=sess||CS;msgs=(msgs||sess.msgs).filter(m=>!m.pending).slice(-60);sess.msgs=msgs;sess.t=Date.now();sess.title=titleOf(msgs);
+  if(msgs.length&&!SESS.includes(sess))SESS.unshift(sess);
+  persistSess();
+}
 function drawChat(){
   const el=$('#msgs');
   if(!CHAT.length){el.innerHTML=`<div class="empty"><div class="ai-ic">Vex</div><p class="muted" style="margin-top:8px">Your analytics agent. It has read every post on every connected platform, including which ones were promoted.</p><div class="sugg">${SUGG.map(x=>typeof x==='function'?x():x).map(s=>`<button type="button" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>`}
@@ -1027,20 +1113,36 @@ async function ask(text){
   text=(text||'').trim();if(!text||busy)return;
   if(!AI.has){openAgent(false);tab('set');return}
   busy=true;$('#send').disabled=true;$('#q').value='';fit();
-  const hist=CHAT.filter(m=>!m.err&&!m.pending).slice(-12).map(m=>({role:m.role,content:m.content}));
-  CHAT.push({role:'user',content:text});CHAT.push({role:'assistant',pending:true,content:''});drawChat();
+  const sess=CS,mine=sess.msgs,hist=mine.filter(m=>!m.err&&!m.pending).slice(-12).map(m=>({role:m.role,content:m.content}));
+  mine.push({role:'user',content:text});mine.push({role:'assistant',pending:true,content:''});saveChat(sess,mine);sess.msgs=mine;CHAT=CS===sess?mine:CHAT;drawChat();
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...hist,{role:'user',content:text}],context:SUM})}),j=await r.json();
-    CHAT.pop();if(!r.ok)throw new Error(j.error||'The agent could not answer.');
-    CHAT.push({role:'assistant',content:j.reply,via:j.via,fb:j.fb});
-  }catch(e){CHAT.pop();CHAT.push({role:'assistant',err:1,content:e.message})}
-  busy=false;$('#send').disabled=false;saveChat();drawChat();
+    mine.pop();if(!r.ok)throw new Error(j.error||'The agent could not answer.');
+    mine.push({role:'assistant',content:j.reply,via:j.via,fb:j.fb});
+  }catch(e){mine.pop();mine.push({role:'assistant',err:1,content:e.message})}
+  busy=false;$('#send').disabled=false;saveChat(sess,mine);if(CS===sess)drawChat();else if(!$('#hist').hidden)drawHist();
 }
 const fit=()=>{const q=$('#q');q.style.height='auto';q.style.height=Math.min(q.scrollHeight,140)+'px'};
 $('#q').addEventListener('input',fit);
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();ask($('#q').value)}});
 $('#send').onclick=()=>ask($('#q').value);
-$('#clr').onclick=e=>{e.preventDefault();CHAT=[];saveChat();drawChat()};
+function showHist(o){const a=$('#agent');a.classList.toggle('showhist',o);$('#hist').hidden=!o;$('#histBtn').setAttribute('aria-pressed',o);if(o)drawHist();else{const m=$('#msgs');m.scrollTop=m.scrollHeight}}
+function drawHist(){
+  const el=$('#hist'),d0=new Date().setHours(0,0,0,0),grp=t=>t>=d0?'Today':t>=d0-864e5?'Yesterday':t>=d0-6*864e5?'Last 7 days':'Older';
+  if(!SESS.length){el.innerHTML='<p class="muted" style="text-align:center;margin-top:40px">No earlier chats yet.<br>Every time you open the agent you start a fresh one.</p>';return}
+  let last='',h='';
+  SESS.forEach(x=>{const g=grp(x.t);if(g!==last){h+=`<h4>${g}</h4>`;last=g}
+    const n=x.msgs.filter(m=>m.role==='user').length;
+    h+=`<div class="hi${x.id===CS.id?' on':''}"><button class="open" type="button" data-open="${x.id}"><b>${esc(x.title)}</b><small>${new Date(x.t).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})} · ${n} question${n===1?'':'s'}</small></button><button class="del" type="button" data-del="${x.id}" aria-label="Delete chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button></div>`});
+  el.innerHTML=h;
+}
+$('#hist').addEventListener('click',e=>{
+  const o=e.target.closest('[data-open]'),d=e.target.closest('[data-del]');
+  if(o)openSession(o.dataset.open);
+  if(d){const id=d.dataset.del;if(!confirm('Delete this chat?'))return;SESS=SESS.filter(x=>x.id!==id);persistSess();if(CS.id===id)newSession();drawHist();drawChat()}
+});
+$('#histBtn').onclick=()=>showHist($('#hist').hidden);
+$('#newChat').onclick=()=>{if(busy)return;newSession();showHist(false);drawChat();if(innerWidth>=900)$('#q').focus()};
 
 /* ---------------- settings: Gemini ---------------- */
 function aiSync(){
