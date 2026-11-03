@@ -134,4 +134,49 @@ async function teamAdd(name, role) {
 }
 const teamDel = id => sb('team_codes?id=eq.' + Number(id), { method: 'DELETE' });
 
-module.exports = { who, teamByCode, tokenFor, teamTouch, teamList, teamAdd, teamDel, graph, getSession, saveSession, clearSession, getSettings, setSetting, delSetting, gemini, fixModel, DEFAULT_MODEL, sig, authed, passwordOk };
+// ---- Facebook Page (stored in app_settings, so no new table is needed) ----
+async function getFb() {
+  const s = await getSettings();
+  return s.fb_page_id && s.fb_page_token ? { id: s.fb_page_id, token: s.fb_page_token, name: s.fb_page_name || '' } : null;
+}
+async function saveFb(p) { await setSetting('fb_page_id', p.id); await setSetting('fb_page_token', p.token); await setSetting('fb_page_name', p.name || ''); }
+async function clearFb() { for (const k of ['fb_page_id', 'fb_page_token', 'fb_page_name', 'meta_perms']) await delSetting(k); }
+
+// ---- TikTok (Login Kit v2 + Display API). Tokens live in app_settings. ----
+const TT = 'https://open.tiktokapis.com/v2';
+async function ttToken(body) {
+  const r = await fetch(TT + '/oauth/token/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Cache-Control': 'no-cache' }, body: new URLSearchParams(body), signal: AbortSignal.timeout(15000) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error || !j.access_token) throw new Error('TikTok: ' + (j.error_description || j.error || 'status ' + r.status));
+  return j;
+}
+async function ttSaveTokens(j) {
+  const now = Date.now();
+  await setSetting('tt_access', j.access_token);
+  if (j.refresh_token) await setSetting('tt_refresh', j.refresh_token);
+  if (j.open_id) await setSetting('tt_open_id', j.open_id);
+  await setSetting('tt_exp', new Date(now + (Number(j.expires_in) || 86400) * 1000).toISOString());
+  if (j.scope) await setSetting('tt_scope', j.scope);
+}
+async function ttClear() { for (const k of ['tt_access', 'tt_refresh', 'tt_open_id', 'tt_exp', 'tt_scope']) await delSetting(k); }
+// Returns a valid access token, refreshing it (they last 24 h) when it is about to expire.
+async function ttAccess() {
+  const s = await getSettings();
+  if (!s.tt_access && !s.tt_refresh) return null;
+  let tok = s.tt_access;
+  if (!tok || !(Date.parse(s.tt_exp) - Date.now() > 300000)) {
+    if (!s.tt_refresh) return null;
+    const j = await ttToken({ client_key: process.env.TIKTOK_CLIENT_KEY, client_secret: process.env.TIKTOK_CLIENT_SECRET, grant_type: 'refresh_token', refresh_token: s.tt_refresh });
+    await ttSaveTokens(j); tok = j.access_token;
+  }
+  return { token: tok, scope: s.tt_scope || '' };
+}
+async function ttApi(path, { method = 'GET', token, body } = {}) {
+  const r = await fetch(TT + path, { method, headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json; charset=UTF-8' }, body: body ? JSON.stringify(body) : undefined, signal: AbortSignal.timeout(15000) });
+  const j = await r.json().catch(() => ({}));
+  const code = j.error && j.error.code;
+  if (!r.ok || (code && code !== 'ok')) throw new Error('TikTok: ' + ((j.error && j.error.message) || code || 'status ' + r.status));
+  return j.data || {};
+}
+
+module.exports = { getFb, saveFb, clearFb, ttToken, ttSaveTokens, ttClear, ttAccess, ttApi, who, teamByCode, tokenFor, teamTouch, teamList, teamAdd, teamDel, graph, getSession, saveSession, clearSession, getSettings, setSetting, delSetting, gemini, fixModel, DEFAULT_MODEL, sig, authed, passwordOk };
