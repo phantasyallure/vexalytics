@@ -266,6 +266,60 @@ body.side-open #side,body.agent-open #agent{transform:none;visibility:visible;tr
 }
 @media(pointer:coarse){input,select,textarea{font-size:16px!important}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}}
+/* ---------- platforms, promoted/organic, connections ---------- */
+.kpis{grid-template-columns:repeat(3,1fr)}
+.plats{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.plats::-webkit-scrollbar{display:none}
+.plat{flex:none;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--mute);border-radius:99px;padding:8px 16px;font:700 14px Manrope,system-ui,sans-serif;cursor:pointer;white-space:nowrap;transition:color .25s,border-color .25s}
+.plat:hover{color:var(--ink);border-color:var(--a1)}
+.plat i,.pd{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--mute);flex:none}
+.plat[data-p=ig] i,.pd.ig{background:#e1306c}.plat[data-p=fb] i,.pd.fb{background:#1877f2}.plat[data-p=tt] i,.pd.tt{background:#25c4be}.plat[data-p=all] i{background:var(--a1)}
+.plat[aria-pressed=true]{background:var(--grad);color:var(--ona);border-color:transparent}
+.plat[aria-pressed=true] i{background:var(--ona)}
+.plat.off{opacity:.65;border-style:dashed}
+.bdg{display:inline-block;border-radius:99px;padding:1px 9px;font-size:11.5px;font-weight:800;letter-spacing:.02em;border:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.bdg.paid{color:var(--warn);border-color:var(--warn)}.bdg.lik{color:var(--warn);border-style:dashed}.bdg.org{color:var(--ok)}
+.tbl{border-collapse:collapse;width:100%;font-size:14px}.tbl th,.tbl td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}.tbl th{background:var(--track);font-weight:800}.tbl td.n{text-align:right;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prow{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.prow:first-child{border:0}
+.prow img{width:54px;height:54px;border-radius:12px;object-fit:cover;background:var(--line);display:block}
+.prow .pi{min-width:0}.prow .pi b{display:block;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.prow .pi small{display:block;color:var(--mute);font-size:12.5px;line-height:1.5}
+.prow .pr{text-align:right;font-size:1.05rem}.prow select{margin-top:6px;font-size:13px;max-width:120px}
+.err2{color:var(--warn)}
+.conn small{overflow-wrap:anywhere}
+/* ---------- agent chat: phone friendly ---------- */
+#agent{height:100vh;height:100dvh;bottom:auto}
+body.agent-open{overscroll-behavior:contain}
+.msgs{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.msg{min-width:0;line-height:1.6}
+.msg.a{width:fit-content}
+/* tables keep their natural width and scroll sideways instead of crushing words letter by letter */
+.md table{width:max-content;min-width:100%;max-width:none}
+.md td,.md th{overflow-wrap:normal;word-break:normal;min-width:70px}.md td{max-width:280px}
+.md li[data-l="1"]{margin-left:18px}.md li[data-l="2"]{margin-left:36px}.md li[data-l="3"]{margin-left:54px}
+.md p,.md li{overflow-wrap:break-word}
+.composer .si{display:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:760px){
+  .kpis{grid-template-columns:1fr 1fr}
+  body.agent-open{overflow:hidden}
+  #agent{width:100vw;border-left:0;padding:max(12px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom))}
+  .ah{padding-bottom:10px;margin-bottom:10px}
+  .msgs{gap:14px;padding:2px 0 12px}
+  .msg{padding:11px 13px;border-radius:16px;font-size:14.5px;line-height:1.62}
+  .msg.u{max-width:88%}.msg.a{max-width:100%}
+  .msg.a.md h1{font-size:1.3rem;margin:2px 0 8px}
+  .msg.a.md h2{font-size:1.12rem;margin:16px 0 6px;padding-top:10px}
+  .msg.a.md h3,.msg.a.md h4{font-size:.95rem;margin:12px 0 4px}
+  .msg.a.md p{margin:9px 0}.msg.a.md ul,.msg.a.md ol{margin:8px 0 8px 18px}.msg.a.md li{margin:5px 0}
+  .msg.a.md table{font-size:12.5px}.msg.a.md th,.msg.a.md td{padding:5px 8px;min-width:56px}.msg.a.md td{max-width:200px}
+  .msg.a.md .tw{margin:10px 0;border-radius:10px}
+  .empty{max-width:100%}.sugg{flex-direction:column;align-items:stretch;gap:8px}.sugg button{text-align:left;border-radius:14px;padding:11px 14px;font-size:14px}
+  .composer{gap:8px;padding-top:10px}.composer textarea{min-height:44px;padding:11px 14px}
+  .composer .btn{width:46px;height:46px;padding:0;border-radius:50%;display:grid;place-items:center}.composer .st{display:none}.composer .si{display:block}
+  .prow{grid-template-columns:46px minmax(0,1fr) auto;gap:10px}.prow img{width:46px;height:46px}
+  .tbl{font-size:13px}.tbl th,.tbl td{padding:6px 8px}
+}
 </style>
 <script>
 /* Theme engine. Runs before first paint so there is no flash. Mode: auto (follows device) | light | dark. */
@@ -331,7 +385,7 @@ window.TH=(function(){
     <button role="tab" data-t="str" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg><span>Strategy</span></button>
     <button role="tab" data-t="set" class="own" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></svg><span>Settings</span></button>
   </nav>
-  <div class="sf" id="chip"><img id="av" alt=""><div style="min-width:0"><b id="hd" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></b><span class="muted sm">Instagram connected</span></div></div>
+  <div class="sf" id="chip"><img id="av" alt=""><div style="min-width:0"><b id="hd" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></b><span class="muted sm" id="chipSub">Connected</span></div></div>
 </aside>
 
 <!-- ===== AI agent (right, beside the sidebar) ===== -->
@@ -340,7 +394,7 @@ window.TH=(function(){
     <span class="acts"><a href="#" id="clr" class="muted sm">Clear</a><button class="ibtn s" id="agentClose" type="button" aria-label="Close agent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span></div>
   <div class="banner" id="aiBan" hidden><span class="muted sm">Add your Gemini API key in Settings to chat with your agent.</span><button class="btn sm2" type="button" data-go="set">Open Settings</button></div>
   <div class="msgs" id="msgs" aria-live="polite"></div>
-  <div class="composer"><textarea id="q" rows="1" placeholder="Ask about your account…" aria-label="Message"></textarea><button class="btn" id="send" type="button">Send</button></div>
+  <div class="composer"><textarea id="q" rows="1" placeholder="Ask about your accounts…" aria-label="Message"></textarea><button class="btn" id="send" type="button" aria-label="Send"><span class="st">Send</span><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
 </aside>
 
 <main>
@@ -350,10 +404,12 @@ window.TH=(function(){
 <section id="pw" class="auth" hidden><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">Enter your password or access code.</p>
   <p id="pwErr" class="err"></p>
   <input id="pwIn" type="password" autocomplete="current-password" placeholder="Password or access code" aria-label="Password or access code"><button class="btn" onclick="signIn()">Sign in</button></section>
-<section id="connect" class="auth" hidden><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">Connect the Instagram account linked to your Facebook Page. Everything stays private to you.</p>
-  <p id="err" class="err"></p><a class="btn" href="/api/login">Connect with Meta</a></section>
+<section id="connect" class="auth" hidden><img class="mark" src="/icon-192.png" width="84" height="84" alt=""><div class="brand">Vexalytics</div><p class="muted">Connect your Facebook Page and the Instagram account linked to it. TikTok can be added in Settings afterwards. Everything stays private to you.</p>
+  <p id="err" class="err"></p><a class="btn" href="/api/login">Connect with Meta</a><p class="muted sm" style="margin-top:16px"><a href="/api/login?basic=1" style="color:var(--a1)">Meta rejected the permissions? Connect with basic permissions</a></p></section>
 
 <section id="app" hidden>
+  <div class="plats" id="plats" role="group" aria-label="Platform"></div>
+  <p class="muted sm err2" id="platNote" hidden></p>
 
   <!-- ===== OVERVIEW ===== -->
   <div class="panel" id="t-over">
@@ -394,7 +450,9 @@ window.TH=(function(){
     <div class="grid g2"><div class="card"><h2>Caption length</h2><p class="muted sm">Typical (median) likes plus comments</p><div id="capL"></div></div>
       <div class="card"><h2>Hashtags</h2><p class="muted sm">Typical (median) likes plus comments</p><div id="capH"></div></div></div>
     <div class="card" id="rqC" style="margin-top:16px" hidden><h2>Reach quality</h2><p class="muted sm" id="rqS"></p><div class="mini" id="rq"></div></div>
+    <div class="card" id="promoC" style="margin-top:16px"><div class="hd"><div><h2>Promoted vs organic</h2><p class="muted sm" id="promoS"></p></div><span class="tag" id="promoTag"></span></div><div class="tw" style="margin-top:12px"><table class="tbl" id="promoT"></table></div><p class="muted sm" id="promoN" style="margin-top:12px"></p></div>
     <div class="card" style="margin-top:16px"><h2>Your best posts</h2><p class="muted sm" id="bestS"></p><div class="posts" id="best"></div></div>
+    <div class="card" id="postsC" style="margin-top:16px"><h2>Recent posts</h2><p class="muted sm" id="postsS"></p><div id="prows"></div></div>
   </div>
 
   <!-- ===== STRATEGY ===== -->
@@ -410,6 +468,7 @@ window.TH=(function(){
   <!-- ===== SETTINGS ===== -->
   <div class="panel own" id="t-set" hidden>
     <div class="set">
+      <div class="card own"><h2>Connections</h2><p class="muted sm">Instagram and Facebook connect together through Meta. TikTok connects separately.</p><div id="conns"></div></div>
       <div class="card"><h2>Gemini</h2><p class="muted sm">Powers the Agent chat and the AI reports. Your key is stored on your server and never sent back to the browser.</p>
         <div class="fld"><label for="gkey">Gemini API key</label><input id="gkey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key from Google AI Studio"></div>
         <div class="fld"><label for="gmodel">Model</label><select id="gmodel"></select></div>
@@ -434,9 +493,11 @@ window.TH=(function(){
         <p class="muted sm apnote">Saved on this device. Auto follows your phone or computer setting.</p></div>
       <div class="card"><h2>Data accuracy</h2><p class="muted sm">Instagram reports follower activity in US Pacific time. Vexalytics converts every hour to Algeria time automatically, including daylight saving changes.</p>
         <div class="fld"><label for="align">Follower-activity day alignment</label><select id="align"><option value="end">Day ends at Instagram's timestamp (default)</option><option value="start">Day starts at Instagram's timestamp</option></select></div>
-        <p class="muted sm" style="margin-top:8px">Hours are always right. Change this only if the weekday of your peak looks shifted by one day.</p></div>
+        <p class="muted sm" style="margin-top:8px">Hours are always right. Change this only if the weekday of your peak looks shifted by one day.</p>
+        <div class="fld"><label for="basis">Posts used for best-time, format and caption statistics</label><select id="basis"><option value="organic">Organic posts (leave out confirmed promoted posts)</option><option value="strict">Organic only (also leave out likely-promoted estimates)</option><option value="all">All posts, promoted included</option></select></div>
+        <p class="muted sm" style="margin-top:8px">Promoted posts get paid reach, so they distort when and what works organically. Totals and the Promoted vs organic table always include every post.</p></div>
       <div class="card"><h2>Account</h2><p class="muted sm" id="acct"></p>
-        <div class="acts" style="margin-top:14px"><button class="btn ghost" type="button" onclick="location.reload()">Refresh data</button><a class="btn ghost own" href="/api/logout">Disconnect Instagram</a><a class="btn ghost" href="/api/signout">Sign out</a></div></div>
+        <div class="acts" style="margin-top:14px"><button class="btn ghost" type="button" onclick="location.reload()">Refresh data</button><a class="btn ghost own" href="/api/logout">Disconnect Meta</a><a class="btn ghost" href="/api/signout">Sign out</a></div></div>
     </div>
   </div>
 </section>
@@ -458,6 +519,8 @@ const LS={g:k=>{try{return localStorage.getItem(k)}catch{return null}},s:(k,v)=>
 const PERS={day:{n:1,adj:'Daily',now:'Today',unit:'day',prev:'yesterday',plan:"Daily plan",nb:14},week:{n:7,adj:'Weekly',now:'This week',unit:'week',prev:'the previous 7 days',plan:'Weekly plan',nb:8},month:{n:30,adj:'Monthly',now:'This month',unit:'month',prev:'the previous 30 days',plan:'Monthly plan',nb:6}};
 let PER=PERS[LS.g('vx-per')]?LS.g('vx-per'):'week';
 let ME={role:'owner'},DATA,S,SUM,CUR='over',AI={has:false,model:'gemini-3.8-flash',masked:'',fromEnv:false};
+const PN={ig:'Instagram',fb:'Facebook',tt:'TikTok',all:'All platforms'},PNK={ig:'instagram',fb:'facebook',tt:'tiktok'},r2=x=>Math.round(x*100)/100;
+let RAW={},ERR={},ST={plats:{},names:{},perms:[]},PLAT=LS.g('vx-plat')||'all',PNAME='Instagram';
 const show=id=>{['loading','setup','pw','connect','app'].forEach(s=>$('#'+s).hidden=s!==id);$('#mbar').hidden=id!=='app'};
 
 /* ---------------- navigation ---------------- */
@@ -484,7 +547,13 @@ function layers(){
   $('#menuBtn').setAttribute('aria-expanded',sd);$('#agentBtn').setAttribute('aria-expanded',ag);
 }
 function openSide(o){document.body.classList.toggle('side-open',o);if(o)document.body.classList.remove('agent-open');layers();if(o)setTimeout(()=>{const c=$('#side [aria-selected=true]');c&&c.focus()},380)}
-function openAgent(o){document.body.classList.toggle('agent-open',o);if(o){document.body.classList.remove('side-open');drawChat()}layers();if(o)setTimeout(()=>$('#q').focus(),380)}
+function openAgent(o){document.body.classList.toggle('agent-open',o);if(o){document.body.classList.remove('side-open');drawChat()}layers();vvFit();if(o&&innerWidth>=900)setTimeout(()=>$('#q').focus(),380)} // no auto-focus on phones: the keyboard would cover the chat
+// On phones the on-screen keyboard shrinks the visual viewport: size the drawer to it so the composer stays visible.
+function vvFit(){const a=$('#agent'),vv=window.visualViewport;
+  if(!vv||innerWidth>=900||!document.body.classList.contains('agent-open')){a.style.height='';a.style.top='';return}
+  a.style.height=vv.height+'px';a.style.top=vv.offsetTop+'px';const m=$('#msgs');m.scrollTop=m.scrollHeight}
+if(window.visualViewport){visualViewport.addEventListener('resize',vvFit);visualViewport.addEventListener('scroll',vvFit)}
+addEventListener('orientationchange',()=>setTimeout(vvFit,300));
 $('#menuBtn').onclick=()=>openSide(!document.body.classList.contains('side-open'));
 $('#sideClose').onclick=()=>openSide(false);
 $('#agentBtn').onclick=()=>openAgent(!document.body.classList.contains('agent-open'));
@@ -495,7 +564,7 @@ addEventListener('resize',layers);
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){openAgent(false);tab(g.dataset.go)}});
 // day / week / month switch
 function perSync(){$$('#per button').forEach(b=>b.setAttribute('aria-checked',b.dataset.per===PER))}
-$('#per').addEventListener('click',e=>{const b=e.target.closest('[data-per]');if(!b||b.dataset.per===PER)return;PER=b.dataset.per;LS.s('vx-per',PER);perSync();drawPills();showSaved();if(DATA)render(DATA)});
+$('#per').addEventListener('click',e=>{const b=e.target.closest('[data-per]');if(!b||b.dataset.per===PER)return;PER=b.dataset.per;LS.s('vx-per',PER);perSync();drawPills();showSaved();if(DATA)refresh()});
 $('#per').addEventListener('keydown',e=>{const k={ArrowRight:1,ArrowLeft:-1}[e.key];if(!k)return;const r=[...$$('#per button')],i=r.findIndex(x=>x.dataset.per===PER),n=r[(i+k+r.length)%r.length];n.click();n.focus()});
 perSync();
 
@@ -508,10 +577,14 @@ async function signIn(){const r=await fetch('/api/auth',{method:'POST',headers:{
   ME=st;
   if(st.role!=='owner'){document.body.classList.add('team');$('#agentBtn').style.display=st.canAI?'':'none';
     document.querySelectorAll('#hi h1,#app h1.g').forEach(x=>x.textContent='Welcome, '+(st.name||'there')+'.')}
-  if(!st.connected){if(st.role!=='owner'){$('#err').textContent='Instagram is not connected yet. Ask the owner to connect it.';const cb=$('#connect .btn');if(cb)cb.hidden=true}return show('connect')}
-  const r=await fetch('/api/data'),d=await r.json();
-  if(!r.ok){$('#err').textContent=d.error;return show('connect')}
-  render(d);show('app');tab('over');drawChat();
+  ST=st;
+  if(!st.connected){if(st.role!=='owner'){$('#err').textContent='Nothing is connected yet. Ask the owner to connect an account.';$$('#connect a').forEach(a=>a.hidden=true)}return show('connect')}
+  const jobs=[['ig','/api/data'],['fb','/api/fbdata'],['tt','/api/ttdata']].filter(([k])=>st.plats&&st.plats[k]);
+  const got=await Promise.all(jobs.map(async([k,u])=>{try{const r=await fetch(u),j=await r.json();return r.ok?[k,j,'']:[k,null,j.error||'Could not load.']}catch(e){return[k,null,e.message]}}));
+  got.forEach(([k,j,er])=>{if(j)RAW[k]=j;else ERR[k]=er});
+  if(!Object.keys(RAW).length){$('#err').textContent=Object.values(ERR)[0]||'Could not load your data.';return show('connect')}
+  const av=Object.keys(RAW);if(!(PLAT==='all'?av.length>1:RAW[PLAT]))PLAT=av.length>1?'all':av[0];
+  refresh();show('app');tab('over');drawChat();drawPlats();drawConns();
   if(st.role==='owner'){fetch('/api/settings').then(x=>x.json()).then(a=>{if(!a.error){AI=a;aiSync();loadModels(true)}}).catch(()=>{});teamCall().then(j=>drawTeam(j.members)).catch(()=>{})}
   else{AI={...AI,has:!!st.canAI,gemini:{has:false}};aiSync()}
   try{if(!sessionStorage.getItem('hi')){sessionStorage.setItem('hi',1);const h=$('#hi');h.hidden=false;setTimeout(()=>h.remove(),2500)}}catch{}
@@ -537,17 +610,22 @@ function peaks(f,k){const idx=f.map((_,i)=>i).sort((a,b)=>f[b]-f[a]),out=[];for(
 
 /* ---------------- analysis (everything the UI and the AI see comes from here) ---------------- */
 function analyze(d){
-  const F=d.profile.followers_count||1,now=Date.now(),DAY=864e5;
+  const F=d.profile.followers_count||1,now=Date.now(),DAY=864e5,ov=d.overrides||{};
   const posts=d.media.map(m=>{
-    const t=new Date(m.timestamp),hid=m.like_count==null,likes=m.like_count||0,com=m.comments_count||0,cap=m.caption||'';
-    const fmt=m.media_product_type==='REELS'?'Reels':m.media_type==='CAROUSEL_ALBUM'?'Carousel':m.media_type==='VIDEO'?'Video':'Photo';
-    return{...m,t,likes,com,hid,e:likes+com,fmt,age:(now-t)/DAY,mature:now-t>=2*DAY,capLen:cap.length,tags:(cap.match(/#[\p{L}\p{N}_]+/gu)||[]).length,wz:dz(t),ins:m.ins||null};
+    const t=new Date(m.timestamp),pl=m.platform||'ig',hid=m.like_count==null,likes=m.like_count||0,com=m.comments_count||0,shr=m.shares||0,cap=m.caption||'',ins=m.ins||null;
+    const fmt=m.fmt||(m.media_product_type==='REELS'?'Reels':m.media_type==='CAROUSEL_ALBUM'?'Carousel':m.media_type==='VIDEO'?'Video':'Photo');
+    // reach-like number: unique reach when the platform gives it, otherwise views (TikTok)
+    const rch=ins?(ins.reach!=null?ins.reach:ins.views!=null?ins.views:null):null;
+    return{...m,t,pl,likes,com,shr,hid,e:likes+com+(pl==='ig'?0:shr),fmt,age:(now-t)/DAY,mature:now-t>=2*DAY,capLen:cap.length,tags:(cap.match(/#[\p{L}\p{N}_]+/gu)||[]).length,wz:dz(t),ins,F:m.followers||F,rch,rk:ins&&ins.reach!=null?'reach':'views',sig:m.promo||null};
   }).sort((a,b)=>b.t-a.t);
+  classify(posts,ov);
   // Performance stats only use posts older than 48h whose like count is visible, and use the median so one viral post cannot distort them.
-  const P=posts.filter(p=>p.mature&&!p.hid),hidden=posts.filter(p=>p.hid).length;
+  // Confirmed promoted posts are left out by default (paid reach says nothing about when or what works organically). See Settings > Data accuracy.
+  const basis=basisOf(),inBasis=p=>basis==='all'||(p.promo.status==='paid'?false:basis==='strict'?p.promo.status!=='likely_paid':true);
+  const P=posts.filter(p=>p.mature&&!p.hid&&inBasis(p)),hidden=posts.filter(p=>p.hid).length,leftOut=posts.filter(p=>p.mature&&!p.hid&&!inBasis(p)).length;
   const grp=(keys,test)=>keys.map(k=>{const a=P.filter(p=>test(p,k));return{k,n:a.length,med:med(a.map(p=>p.e)),avg:avg(a.map(p=>p.e))}});
   const byDay=grp([0,1,2,3,4,5,6],(p,k)=>p.wz.w===k);
-  const fmts=grp(['Reels','Carousel','Photo','Video'],(p,k)=>p.fmt===k).filter(x=>x.n>0);
+  const fmts=grp(['Reels','Carousel','Photo','Video','Link','Text','Other'],(p,k)=>p.fmt===k).filter(x=>x.n>0);
   const capDefs=[['Short (under 60)',p=>p.capLen<60],['Medium (60 to 200)',p=>p.capLen>=60&&p.capLen<=200],['Long (over 200)',p=>p.capLen>200]];
   const capB=capDefs.map(([k,f])=>{const a=P.filter(f);return{k,n:a.length,med:med(a.map(p=>p.e)),avg:avg(a.map(p=>p.e))}});
   const tagDefs=[['No hashtags',p=>p.tags===0],['1 to 5',p=>p.tags>=1&&p.tags<=5],['6 or more',p=>p.tags>=6]];
@@ -575,8 +653,8 @@ function analyze(d){
   const N=PERS[PER].n,W=Math.max(N,7),inW=(a,b)=>posts.filter(p=>p.age>=a&&p.age<b),vis=a=>a.filter(p=>!p.hid),sumE=a=>vis(a).reduce((x,p)=>x+p.e,0);
   const cur=inW(0,N),prv=inW(N,2*N),curW=inW(0,W);
   const M30=P.filter(p=>p.age<W),M60=P.filter(p=>p.age>=W&&p.age<2*W);
-  const ppw=curW.length/(W/7),er=med(P.slice(0,20).map(p=>p.e/F*100)),perPost=med(P.slice(0,20).map(p=>p.e));
-  const per={n:cur.length,pn:prv.length,sum:sumE(cur),psum:sumE(prv),er:med(vis(cur).map(p=>p.e/F*100)),per:med(vis(prv).map(p=>p.e/F*100)),late:cur.filter(p=>!p.mature).length,from:new Date(now-N*DAY)};
+  const ppw=curW.length/(W/7),er=med(P.slice(0,20).map(p=>p.e/p.F*100)),perPost=med(P.slice(0,20).map(p=>p.e));
+  const per={n:cur.length,pn:prv.length,sum:sumE(cur),psum:sumE(prv),er:med(vis(cur).map(p=>p.e/p.F*100)),per:med(vis(prv).map(p=>p.e/p.F*100)),late:cur.filter(p=>!p.mature).length,from:new Date(now-N*DAY)};
   const trend=[];for(let k=PERS[PER].nb-1;k>=0;k--){const a=inW(k*N,(k+1)*N);trend.push({v:sumE(a),n:a.length,t:new Date(now-(k+1)*N*DAY),m:k>0})}
   // best slots for today (or tomorrow once today's have passed), used by the Day view
   const nz=dz(new Date(now));let tw=nz.w,tl='Today';
@@ -587,9 +665,57 @@ function analyze(d){
   const types=new Set(posts.slice(0,15).map(p=>p.fmt)).size;
   const parts=[['Frequency',Math.min(1,ppw/3.5)*30,30],['Engagement',Math.min(1,er/3)*30,30],['Momentum',ratio===null?10:Math.max(0,Math.min(1,(ratio-.7)/.6))*20,20],['Consistency',gap<=7?10:gap<=14?5:0,10],['Variety',Math.min(1,types/3)*10,10]];
   const score=Math.round(parts.reduce((a,p)=>a+p[1],0));
-  const rq=P.filter(p=>p.ins&&p.ins.reach);
-  const S={F,posts,P,hidden,byDay,fmts,capB,tagB,T,ppw,er,perPost,ratio,gap,types,parts,score,rq,now,DAY,N,W,per,trend};
+  const rq=P.filter(p=>p.rch>0);
+  const orgPool=P.filter(p=>p.promo.status==='organic'&&p.promo.src!=='estimate'&&p.rch>0&&p.age<=45);
+  const boost=orgPool.length>=4?[...orgPool].sort((a,b)=>b.e/b.rch-a.e/a.rch).slice(0,3):[];
+  const S={pl:d.platform||'ig',promo:promoStats(posts),leftOut,basis,boost,F,posts,P,hidden,byDay,fmts,capB,tagB,T,ppw,er,perPost,ratio,gap,types,parts,score,rq,now,DAY,N,W,per,trend};
   S.R=recs(S);return S;
+}
+/* ---------------- promoted vs organic ---------------- */
+const basisOf=()=>['organic','strict','all'].includes(LS.g('vx-basis'))?LS.g('vx-basis'):'organic';
+// Decides for every post whether it was promoted. Priority: your manual mark, then the platform's own ad data, then a statistical estimate.
+function classify(posts,ov){
+  posts.forEach(p=>{
+    const o=ov[p.pl+':'+p.id],g=p.sig;
+    if(o==='paid'||o==='organic'){p.promo={status:o,src:'manual'};return}
+    if(g&&g.flag!=null){p.promo={status:g.flag?'paid':'organic',src:g.src};return}
+    p.promo={status:'organic',src:'estimate'};
+  });
+  // Estimate for posts the platform gave no ad signal for: reach/views far above the account's own norm for that format, with below-typical engagement per reach.
+  ['ig','fb','tt'].forEach(pl=>{
+    const pool=posts.filter(p=>p.pl===pl&&p.rch>0&&p.mature&&!p.hid);
+    if(pool.length<8)return;
+    posts.filter(p=>p.pl===pl&&p.promo.src==='estimate'&&p.rch>0&&p.mature&&!p.hid).forEach(p=>{
+      const same=pool.filter(x=>x.fmt===p.fmt),grp=same.length>=8?same:pool,R=grp.map(x=>x.rch),M=med(R),mad=med(R.map(x=>Math.abs(x-M)))*1.4826,er=med(grp.map(x=>x.e/x.rch));
+      p.promo.score=M?r1(p.rch/M):0;
+      if(M&&p.rch/M>=4&&p.rch>=M+3*mad&&p.e/p.rch<=.8*er)p.promo.status='likely_paid';
+    });
+  });
+  posts.forEach(p=>{
+    const g=p.sig;
+    if(g&&g.ads&&g.ads.length){p.promo.ads=g.ads.length;p.promo.active=g.ads.some(a=>/active/i.test(a.status));if(g.paid)p.promo.paid=g.paid}
+    if(p.ins&&p.ins.paid_views!=null){p.promo.paidViews=p.ins.paid_views;p.promo.organicViews=p.ins.organic_views}
+  });
+}
+function promoStats(posts){
+  const base=posts.filter(p=>p.mature&&!p.hid);
+  const row=(k,f)=>{const a=base.filter(f),r=a.filter(p=>p.rch>0);return{k,n:a.length,medE:Math.round(med(a.map(p=>p.e))),medRate:a.length?r2(med(a.map(p=>p.e/p.F*100))):null,medReach:r.length?Math.round(med(r.map(p=>p.rch))):null,nReach:r.length,medPerReach:r.length?r2(med(r.map(p=>p.e/p.rch*100))):null,totReach:r.reduce((x,p)=>x+p.rch,0),totE:a.reduce((x,p)=>x+p.e,0)}};
+  const rows=[row('Organic',p=>p.promo.status==='organic'),row('Promoted (confirmed)',p=>p.promo.status==='paid'),row('Likely promoted (estimate)',p=>p.promo.status==='likely_paid')];
+  const T=rows.reduce((x,r)=>x+r.totReach,0);rows.forEach(r=>{r.shareReach=T?r2(r.totReach/T*100):null});
+  return rows;
+}
+function promoBadge(p){
+  const q=p.promo;
+  if(q.status==='paid')return`<span class="bdg paid">Promoted${q.src==='manual'?' · marked by you':''}${q.active?' · live':''}</span>`;
+  if(q.status==='likely_paid')return`<span class="bdg lik" title="Statistical estimate: reach far above normal with low engagement per reach">Likely promoted · estimate</span>`;
+  return q.src==='estimate'?'':`<span class="bdg org">Organic${q.src==='manual'?' · marked by you':''}</span>`;
+}
+function promoMethod(pl){
+  const r=RAW[pl];
+  if(pl==='ig')return r&&r.promoApi?"Promoted posts come from Instagram's own boost data, so they are confirmed.":"Instagram returned no boost data for this connection (it needs the ads_read permission), so promoted posts are estimated from unusual reach. Reconnect with Meta in Settings to confirm them.";
+  if(pl==='fb')return r&&r.promoApi?"Promoted posts come from Meta's paid vs organic views for each post, so they are confirmed. Posts older than September 2024 have no split.":"Facebook returned no paid vs organic split for these posts (it needs the read_insights permission), so promoted posts are estimated from unusual reach.";
+  if(pl==='tt')return"TikTok's API does not say which videos were promoted. Statuses here are estimates; set the real ones yourself under Recent posts.";
+  return'Each platform is detected its own way: Instagram and Facebook from Meta data when permitted, TikTok by estimate. Reach is unique reach where the platform gives it, otherwise views.';
 }
 function recs(S){
   const{T,byDay,fmts,ppw,gap,types,er,ratio,P,capB,W}=S,R=[],okD=byDay.filter(x=>x.n>=3),bestPost=okD.length?okD.reduce((a,b)=>b.med>a.med?b:a):null;
@@ -602,10 +728,12 @@ function recs(S){
   if(fOk.length>1){const b=fOk.reduce((a,c)=>c.med>a.med?c:a);R.push([`Lean into ${b.k}`,`${b.k} earns a typical ${Math.round(b.med)} likes plus comments per post (n=${b.n}), the highest of your formats. Make it a larger share of your mix.`])}
   if(types<2)R.push(['Mix your formats','You post almost one format only. Test Reels and carousels.']);
   if(T.slots.length){const s=T.slots[0],when=`${FULL[s.w]} ${slotLbl(s)}`;
-    R.push([`Publish on ${FULL[s.w]} around ${hh(s.h)}`,T.src==='audience'?(bestPost&&bestPost.k!==s.w?`Your audience peaks on ${FULL[s.w]}, but your posts have done best on ${FULL[bestPost.k]} (n=${bestPost.n}). Test both for a month. Post about an hour before the peak so the post is fresh when followers arrive.`:`Your audience peak and your best-performing day agree. Post about an hour before ${hh(s.h)}.`):`Based on your own posts (${when}). Instagram sent no audience data, so confidence is ${T.conf}.`])}
+    R.push([`Publish on ${FULL[s.w]} around ${hh(s.h)}`,T.src==='audience'?(bestPost&&bestPost.k!==s.w?`Your audience peaks on ${FULL[s.w]}, but your posts have done best on ${FULL[bestPost.k]} (n=${bestPost.n}). Test both for a month. Post about an hour before the peak so the post is fresh when followers arrive.`:`Your audience peak and your best-performing day agree. Post about an hour before ${hh(s.h)}.`):`Based on your own posts (${when}). ${PNAME} sent no audience data, so confidence is ${T.conf}.`])}
   const cb=capB.filter(x=>x.n>=3);if(cb.length>1){const b=cb.reduce((a,c)=>c.med>a.med?c:a);R.push(['Caption length',`${b.k.split(' (')[0]} captions do best for you (typical ${Math.round(b.med)}, n=${b.n}).`])}
   if(er<1)R.push(['Boost interaction',`Engagement is ${er.toFixed(2)}% of followers. End posts with a question and reply to comments in the first hour.`]);
   if(ratio!==null&&ratio<.85)R.push(['Engagement is slipping',`The last ${W} days earn ${Math.round((1-ratio)*100)}% less per post than the ${W} before. Revisit what your best posts had in common.`]);
+  if(S.leftOut>0)R.push(['Promoted posts left out',`${S.leftOut} confirmed promoted post${S.leftOut>1?'s are':' is'} excluded from best-time, format and caption statistics, because paid reach says nothing about what works organically.`]);
+  if(S.boost&&S.boost.length)R.push(['Boost candidates',`Organic posts never promoted that earned the most engagement per person reached: ${S.boost.map(p=>`${PN[p.pl]} ${p.fmt} of ${dshort(p.t)} (${r1(p.e/p.rch*100)}% of ${p.rch.toLocaleString()})`).join(', ')}. These are safer bets to put budget behind.`]);
   if(ratio!==null&&ratio>1.15)R.push(['Momentum is up',`Engagement rose ${Math.round((ratio-1)*100)}% versus the previous ${W} days. Repeat what you changed.`]);
   return R;
 }
@@ -646,9 +774,9 @@ function md(src){
       flush();const h=cells(l);i+=2;const rows=[];while(i<L.length&&L[i].trim().startsWith('|')){rows.push(cells(L[i]));i++}
       o.push(`<div class="tw"><table><thead><tr>${h.map(c=>`<th>${inl(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${inl(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`);continue}
     if(/^\s*([-*•])\s+/.test(l)||/^\s*\d+[.)]\s+/.test(l)){
-      flush();const ord=/^\s*\d+[.)]\s+/.test(l),it=[];
-      while(i<L.length&&(ord?/^\s*\d+[.)]\s+/.test(L[i]):/^\s*([-*•])\s+/.test(L[i]))){it.push(L[i].replace(/^\s*(?:[-*•]|\d+[.)])\s+/,''));i++}
-      o.push(`<${ord?'ol':'ul'}>${it.map(x=>`<li>${inl(x)}</li>`).join('')}</${ord?'ol':'ul'}>`);continue}
+      flush();const isO=x=>/^\s*\d+[.)]\s+/.test(x),isB=x=>/^\s*([-*•])\s+/.test(x),lv=x=>Math.min(3,Math.floor(x.match(/^\s*/)[0].length/2)),ord=isO(l),it=[];
+      while(i<L.length&&((ord?isO(L[i]):isB(L[i]))||(lv(L[i])>0&&(isO(L[i])||isB(L[i]))))){it.push([lv(L[i]),L[i].replace(/^\s*(?:[-*•]|\d+[.)])\s+/,'')]);i++}
+      o.push(`<${ord?'ol':'ul'}>${it.map(x=>`<li${x[0]?` data-l="${x[0]}"`:''}>${inl(x[1])}</li>`).join('')}</${ord?'ol':'ul'}>`);continue}
     para.push(l.trim());i++;
   }
   flush();return o.join('');
@@ -656,9 +784,12 @@ function md(src){
 
 /* ---------------- render ---------------- */
 function render(d){
-  DATA=d;S=analyze(d);const{F,posts,P,T,byDay,fmts,capB,tagB}=S;
-  $('#av').src=d.profile.profile_picture_url||'';$('#hd').textContent='@'+d.profile.username;$('#chip').title='@'+d.profile.username;
-  $('#acct').textContent=`Connected as @${d.profile.username}. ${posts.length} posts loaded.`;
+  DATA=d;PNAME=PN[PLAT]||'Instagram';S=analyze(d);const{F,posts,P,T,byDay,fmts,capB,tagB}=S;
+  const who=PLAT==='all'?'All platforms':'@'+d.profile.username,pic=d.profile.profile_picture_url||Object.values(RAW).map(r=>r.profile.profile_picture_url).find(Boolean)||'';
+  $('#av').src=pic;$('#hd').textContent=who;$('#chip').title=who;
+  $('#chipSub').textContent=PLAT==='all'?Object.keys(RAW).map(k=>PN[k]).join(' · '):PNAME+' connected';
+  $('#acct').textContent=`Showing ${who}. Loaded: ${Object.keys(RAW).map(k=>PN[k]+' '+RAW[k].media.length+' posts').join(' · ')}.`;
+  $('#basis').value=basisOf();
   $('#align').value=LS.g('vx-align')==='start'?'start':'end';
 
   // ----- timing: overview + audience -----
@@ -669,7 +800,7 @@ function render(d){
     $('#insight').innerHTML=dayView?`${T.todayL} (${FULL[T.todayW]}) ${aud?'your followers are most active around':'your posts do best around'} <b>${aud?hh(tp.h):slotLbl(tp)}</b>.`:aud?`Your followers are most active on <b>${FULL[top.w]}</b> around <b>${hh(top.h)}</b>. At the peak about <b>${r1(T.peakPct)}%</b> of them (~${T.peakN.toLocaleString()}) are online.`:`Your posts performed best on <b>${FULL[top.w]}</b>, ${slotLbl(top)}.`;
   }else{$('#bt').textContent='Not enough data';$('#chips').innerHTML='';$('#insight').textContent='Publish a few more posts to unlock timing insights.'}
   $('#btTag').textContent=(aud?'From follower activity':'From your posts')+(dayView?' · '+T.todayL.toLowerCase():'');$('#btTag').className='tag '+(T.conf==='good'?'ok':T.conf==='low'?'warn':'');
-  $('#btN').textContent=aud?`Post about an hour before the peak so your post is fresh when followers arrive. Based on ${T.days} days of activity, smoothed over 3 hours. ${T.conf==='good'?'':'Fewer than 14 days available, so confidence is limited.'}`:`Instagram sent no follower-activity data (needs 100+ followers), so this uses your ${P.length} measurable posts in 3-hour windows. Confidence: ${T.conf}.`;
+  $('#btN').textContent=aud?`Post about an hour before the peak so your post is fresh when followers arrive. Based on ${T.days} days of activity, smoothed over 3 hours. ${T.conf==='good'?'':'Fewer than 14 days available, so confidence is limited.'}`:`${PLAT==='ig'?'Instagram sent no follower-activity data (needs 100+ followers)':PLAT==='all'?'Follower-activity data exists for Instagram only and this view mixes platforms':PNAME+' does not provide follower-activity data'}, so this uses your ${P.length} measurable posts in 3-hour windows. Confidence: ${T.conf}.`;
   $('#hT').textContent=aud?'When your followers are online':'When your posts performed best';
   $('#hS').textContent='Algeria time (UTC+1). '+(aud?`Average of the last ${T.days} days, smoothed over 3 hours.`:'Median engagement of posts published in each 3-hour window.');
   $('#hTag').textContent=aud?(T.conf==='good'?'Good data':'Limited data'):'Low volume';$('#hTag').className='tag '+(T.conf==='good'?'ok':'warn');
@@ -692,11 +823,13 @@ function render(d){
   if(!fmts.length)$('#fmt').innerHTML='<p class="muted">Not enough posts yet.</p>';
   bars($('#capL'),capB.map(x=>x.k),capB.map(x=>x.med),v=>v.toFixed(0),capB.map(x=>x.n),120);
   bars($('#capH'),tagB.map(x=>x.k),tagB.map(x=>x.med),v=>v.toFixed(0),tagB.map(x=>x.n),120);
-  const rq=S.rq,ins=a=>med(rq.map(p=>p.ins[a]||0));$('#rqC').hidden=!rq.length;
-  if(rq.length){$('#rqS').textContent=`From Instagram's own post insights for your ${rq.length} most recent measurable posts.`;
-    $('#rq').innerHTML=[['Typical reach',Math.round(ins('reach')).toLocaleString()],['Reach vs followers',r1(ins('reach')/F*100)+'%'],['Typical saves',Math.round(ins('saved')).toLocaleString()],['Typical shares',rq.some(p=>p.ins.shares!=null)?Math.round(ins('shares')).toLocaleString():'n/a']].map(([a,b])=>`<div><small>${a}</small><b class="num">${b}</b></div>`).join('')}
-  $('#bestS').textContent=`Ranked by likes plus comments, only posts older than 48 hours${S.hidden?` (${S.hidden} with hidden likes left out)`:''}.`;
-  $('#best').innerHTML=[...P].sort((a,b)=>b.e-a.e).slice(0,6).map(p=>`<a href="${esc(p.permalink)}" target="_blank" rel="noopener"><img src="${esc(p.thumbnail_url||p.media_url)}" alt="" loading="lazy"><b class="num">${p.e.toLocaleString()}</b><small>${p.fmt} · ${dshort(p.t)}${p.ins&&p.ins.reach?' · reach '+p.ins.reach.toLocaleString():''}</small></a>`).join('')||'<p class="muted">Not enough posts yet.</p>';
+  const rq=S.rq,medOf=f=>{const a=rq.map(f).filter(v=>v!=null);return a.length?Math.round(med(a)):null},fx=v=>v==null?'n/a':v.toLocaleString();
+  $('#rqC').hidden=!rq.length;
+  if(rq.length){const kind=rq.every(p=>p.rk==='views')?'views':rq.every(p=>p.rk==='reach')?'reach':'reach or views';
+    $('#rqS').textContent=`From ${PLAT==='all'?"each platform's":PNAME+"'s"} own post insights, for your ${rq.length} measurable posts that report ${kind}.`;
+    $('#rq').innerHTML=[[`Typical ${kind}`,fx(medOf(p=>p.rch))],[`${kind==='views'?'Views':'Reach'} vs followers`,r1(med(rq.map(p=>p.rch/p.F*100)))+'%'],['Typical saves',fx(medOf(p=>p.ins&&p.ins.saved))],['Typical shares',fx(medOf(p=>p.ins&&p.ins.shares!=null?p.ins.shares:null))]].filter(x=>x[1]!=='n/a').map(([a,b])=>`<div><small>${a}</small><b class="num">${b}</b></div>`).join('')}
+  $('#bestS').textContent=`Ranked by engagement (likes + comments${PLAT==='ig'?'':', plus shares on Facebook and TikTok'}), only posts older than 48 hours${S.hidden?` (${S.hidden} with hidden likes left out)`:''}${S.leftOut?`. ${S.leftOut} confirmed promoted post${S.leftOut>1?'s are':' is'} left out`:''}.`;
+  $('#best').innerHTML=[...P].sort((a,b)=>b.e-a.e).slice(0,6).map(p=>`<a href="${esc(p.permalink)}" target="_blank" rel="noopener"><img src="${esc(p.thumbnail_url||p.media_url)}" alt="" loading="lazy" referrerpolicy="no-referrer"><b class="num">${p.e.toLocaleString()}</b><small><span class="pd ${p.pl}"></span> ${PLAT==='all'?PN[p.pl]+' · ':''}${p.fmt} · ${dshort(p.t)}${p.rch>0?' · '+p.rk+' '+p.rch.toLocaleString():''}${p.promo.status==='likely_paid'?' · likely promoted':''}</small></a>`).join('')||'<p class="muted">Not enough posts yet.</p>';
 
   // ----- score + kpis -----
   const{score,parts,ratio,ppw,er,perPost}=S;
@@ -708,54 +841,139 @@ function render(d){
   const dtxt=(x,y,l)=>{const c=pc(x,y);return c===null?`No ${l} ${P0.prev} to compare`:`${c>=0?'▲':'▼'} ${Math.abs(c)}% vs ${P0.prev}`},dcls=(x,y)=>{const c=pc(x,y);return c===null?'':c>=0?'up':'dn'};
   const k=(l,v,s,c='')=>`<div class="card kpi"><small>${l}</small><b class="num">${v}</b><span class="${c}">${s}</span></div>`;
   $('#perNote').textContent=`${P0.now}: ${PER==='day'?'last 24 hours':dshort(per.from)+' to '+dshort(new Date())}, compared with ${P0.prev}.${per.late?` ${per.late} post${per.late>1?'s are':' is'} under 48 hours old and still collecting engagement.`:''}`;
-  $('#kpis').innerHTML=k('Followers',F.toLocaleString(),`${posts.length} posts analysed`)
+  const inPer=posts.filter(p=>p.age<S.N),ppN=inPer.filter(p=>p.promo.status!=='organic').length,ppC=inPer.filter(p=>p.promo.status==='paid').length,rqK=S.rq.length&&S.rq.every(p=>p.rk==='views')?'views':'reach',rq20=S.P.filter(p=>p.rch>0).slice(0,20);
+  const fsub=PLAT==='all'?Object.keys(RAW).map(x=>PN[x].slice(0,2).toUpperCase()+' '+(RAW[x].profile.followers_count||0).toLocaleString()).join(' · '):`${posts.length} posts analysed`;
+  $('#kpis').innerHTML=k('Followers',F.toLocaleString(),fsub)
     +k(`Posts ${P0.now.toLowerCase()}`,per.n,dtxt(per.n,per.pn,'posts'),dcls(per.n,per.pn))
     +k('Engagement',per.sum.toLocaleString(),dtxt(per.sum,per.psum,'engagement')+' · likes + comments',dcls(per.sum,per.psum))
-    +k('Engagement rate',per.n?per.er.toFixed(2)+'%':'—','Typical post, per follower',dcls(per.er,per.per));
+    +k('Engagement rate',per.n?per.er.toFixed(2)+'%':'—','Typical post, per follower',dcls(per.er,per.per))
+    +k(`Promoted posts ${P0.now.toLowerCase()}`,`${ppN}<span style="font-size:1rem;font-weight:600;color:var(--mute)"> of ${inPer.length}</span>`,ppN?`${ppC} confirmed · ${ppN-ppC} estimated`:'No promoted posts found')
+    +k(`Typical ${rqK}`,rq20.length?Math.round(med(rq20.map(p=>p.rch))).toLocaleString():'—',rq20.length?`Median of the last ${rq20.length} measurable posts`:`${PNAME} reports no reach or views yet`);
+  drawPromo();drawPosts();
   $('#chartT').textContent=`Engagement by ${P0.unit}`;
   $('#chartS').textContent=`Total likes plus comments per ${P0.unit}, oldest to newest. The hollow dot is the current ${P0.unit}, still collecting.`;
   chart($('#chart'),S.trend);
   const rh=a=>a.map(r=>`<div class="rec"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join('');
   $('#recs3').innerHTML=rh(S.R.slice(0,3));$('#recs').innerHTML=rh(S.R);
-  SUM=digest(d,S);
+  SUM=buildSUM();
   if(!$('#app').hidden)grow($('#t-'+CUR));
 }
 
+/* ---------------- platform switcher, promoted table, posts list, connections ---------------- */
+function buildView(pl){
+  if(pl!=='all'&&RAW[pl])return RAW[pl];
+  const parts=Object.values(RAW),F=parts.reduce((a,r)=>a+(r.profile.followers_count||0),0);
+  const media=parts.flatMap(r=>r.media.map(m=>({...m,followers:r.profile.followers_count||1})));
+  return{platform:'all',profile:{username:'All platforms',name:'All platforms',followers_count:F,media_count:media.length,profile_picture_url:''},media,online:null,insights:null,overrides:(parts[0]&&parts[0].overrides)||{},fetchedAt:new Date().toISOString()};
+}
+const refresh=()=>render(buildView(PLAT));
+function drawPlats(){
+  const av=Object.keys(RAW),items=[...(av.length>1?[['all','All']]:[]),...['ig','fb','tt'].map(k=>[k,PN[k]])];
+  $('#plats').innerHTML=items.map(([k,n])=>{const on=k==='all'||!!RAW[k];return`<button type="button" class="plat${on?'':' off'}" data-p="${k}" aria-pressed="${k===PLAT}"><i></i>${n}${on?'':(ERR[k]?' · error':' · connect')}</button>`}).join('');
+  const er=Object.keys(ERR).map(k=>PN[k]+' could not load: '+ERR[k]);
+  $('#platNote').hidden=!er.length;$('#platNote').textContent=er.join(' · ');
+}
+$('#plats').addEventListener('click',e=>{
+  const b=e.target.closest('[data-p]');if(!b)return;const k=b.dataset.p;
+  if(k!=='all'&&!RAW[k]){if(ME.role==='owner')tab('set');else{$('#platNote').hidden=false;$('#platNote').textContent=PN[k]+' is not connected. Ask the owner to connect it.'}return}
+  PLAT=k;LS.s('vx-plat',k);drawPlats();drawPills();refresh();showSaved();
+});
+function drawPromo(){
+  const R=S.promo,conf=R[1].n,est=R[2].n;
+  $('#promoS').textContent=`Reach and engagement of promoted and organic posts, from ${R[0].n+conf+est} posts older than 48 hours (${PNAME}).`;
+  $('#promoTag').textContent=`${conf} confirmed · ${est} estimated`;$('#promoTag').className='tag '+(conf?'ok':est?'warn':'');
+  const kind=S.rq.length&&S.rq.every(p=>p.rk==='views')?'views':S.rq.some(p=>p.rk==='views')?'reach / views':'reach',f=v=>v==null?'—':v.toLocaleString(),pc=v=>v==null?'—':v+'%';
+  $('#promoT').innerHTML=`<thead><tr><th>Group</th><th>Posts</th><th>Typical ${kind}</th><th>Typical engagement</th><th>Engagement per ${kind==='views'?'view':'reach'}</th><th>Share of ${kind}</th></tr></thead><tbody>${R.filter((r,i)=>i===0||r.n>0).map(r=>`<tr><td><b>${r.k}</b></td><td class="n">${r.n}</td><td class="n">${f(r.medReach)}${r.nReach&&r.nReach<r.n?` <small class="muted">(n=${r.nReach})</small>`:''}</td><td class="n">${f(r.medE)}</td><td class="n">${pc(r.medPerReach)}</td><td class="n">${pc(r.shareReach)}</td></tr>`).join('')}</tbody>`;
+  const N=[],ks=PLAT==='all'?Object.keys(RAW):[PLAT];
+  N.push(PLAT==='all'?ks.map(k=>PN[k]+': '+promoMethod(k)).join(' '):promoMethod(PLAT));
+  const ads=S.posts.filter(p=>p.promo.paid);
+  if(ads.length)N.push(`Meta ad data for ${ads.length} boosted post${ads.length>1?'s':''}: ${ads.reduce((x,p)=>x+p.promo.paid.reach,0).toLocaleString()} reached through ads (summed across ads, so it can overlap) and ${r1(ads.reduce((x,p)=>x+p.promo.paid.spend,0))} spent, in your ad account's currency.`);
+  const fbp=S.posts.filter(p=>p.pl==='fb'&&p.ins&&p.ins.paid_views!=null);
+  if(fbp.length){const pv=fbp.reduce((x,p)=>x+p.ins.paid_views,0),tv=fbp.reduce((x,p)=>x+(p.ins.views||0),0);N.push(`Facebook: ${pv.toLocaleString()} of ${tv.toLocaleString()} views on these posts (${tv?r1(pv/tv*100):0}%) came from ads.`)}
+  if(ks.includes('ig')&&(RAW.ig&&RAW.ig.promoApi))N.push("Instagram counts likes on the promoted ad separately from the post, so the engagement shown for a boosted Instagram post understates what the ad earned.");
+  if(S.leftOut)N.push(`${S.leftOut} confirmed promoted post${S.leftOut>1?' is':'s are'} left out of best-time, format and caption statistics (change this in Settings > Data accuracy). Totals above always include every post.`);
+  $('#promoN').textContent=N.join(' ');
+}
+function drawPosts(){
+  const own=ME.role==='owner',ov=(DATA.overrides)||{};
+  $('#postsS').textContent=own?'Newest first. If a post was promoted but is not marked (or the other way round), set it here. Your mark always wins.':'Newest first.';
+  $('#prows').innerHTML=S.posts.slice(0,20).map(p=>{
+    const key=p.pl+':'+p.id,cur=ov[key]||'auto',sel=v=>cur===v?' selected':'';
+    return`<div class="prow"><a href="${esc(p.permalink)}" target="_blank" rel="noopener"><img src="${esc(p.thumbnail_url||p.media_url||'')}" alt="" loading="lazy" referrerpolicy="no-referrer"></a><div class="pi"><b>${esc((p.caption||'').replace(/\s+/g,' ').trim()||p.fmt)}</b><small><span class="pd ${p.pl}"></span> ${PN[p.pl]} · ${p.fmt} · ${dshort(p.t)}${p.rch>0?' · '+p.rk+' '+p.rch.toLocaleString():''}</small><small>${promoBadge(p)}${p.mature?'':' <span class="bdg">still collecting</span>'}</small></div><div class="pr"><b class="num">${p.hid?'—':p.e.toLocaleString()}</b>${own?`<br><select data-pm="${esc(key)}" aria-label="Promoted or organic"><option value="auto"${sel('auto')}>Auto</option><option value="paid"${sel('paid')}>Promoted</option><option value="organic"${sel('organic')}>Organic</option></select>`:''}</div></div>`;
+  }).join('')||'<p class="muted">No posts yet.</p>';
+}
+$('#prows').addEventListener('change',async e=>{
+  const sl=e.target.closest('[data-pm]');if(!sl)return;const[k,...r]=sl.dataset.pm.split(':'),id=r.join(':');sl.disabled=true;
+  try{const res=await fetch('/api/promo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform:k,id,mark:sl.value})}),j=await res.json();if(!res.ok)throw new Error(j.error||'Could not save.');Object.values(RAW).forEach(x=>{x.overrides=j.overrides});refresh()}
+  catch(er){alert(er.message);sl.disabled=false}
+});
+function drawConns(){
+  const el=$('#conns');if(!el)return;
+  const pm=ST.perms||[],miss=['read_insights','ads_read'].filter(x=>pm.length&&!pm.includes(x));
+  const row=(n,on,sub,btn)=>`<div class="trow conn"><div><b>${n} <span class="tag ${on?'ok':''}">${on?'Connected':'Not connected'}</span></b><small>${sub}</small></div><span class="acts">${btn}</span></div>`;
+  const meta=ST.plats.ig||ST.plats.fb;
+  el.innerHTML=row('Instagram',!!ST.plats.ig,ST.plats.ig?(RAW.ig?(RAW.ig.promoApi?'Promoted posts confirmed from Meta ad data.':'Promoted posts are estimated (Meta ad data not available).'):'Could not load: '+(ERR.ig||'')):'Needs an Instagram professional account linked to your Page.',`<a class="btn ghost sm2" href="/api/login">${meta?'Reconnect':'Connect'} with Meta</a>`)
+   +row('Facebook Page',!!ST.plats.fb,ST.plats.fb?(ST.names.fb||'')+(RAW.fb?(RAW.fb.promoApi?' · promoted posts confirmed from Meta paid vs organic views.':' · promoted posts are estimated.'):' · could not load: '+(ERR.fb||'')):'Connects together with Instagram.','')
+   +row('TikTok',!!ST.plats.tt,ST.plats.tt?(RAW.tt?'@'+RAW.tt.profile.username+' · TikTok does not expose ad data, so promoted videos are estimated unless you mark them.':'Could not load: '+(ERR.tt||'')):(ST.ttConfigured?'Read-only access to your profile stats and videos.':'Add TIKTOK_CLIENT_KEY and TIKTOK_CLIENT_SECRET in Vercel, redeploy, then connect.'),ST.plats.tt?`<a class="btn ghost sm2" href="/api/ttlogin">Reconnect</a><a class="btn ghost sm2" href="/api/ttlogout" onclick="return confirm('Disconnect TikTok?')">Disconnect</a>`:(ST.ttConfigured?`<a class="btn sm2" href="/api/ttlogin">Connect TikTok</a>`:''))
+   +(miss.length?`<p class="muted sm err2" style="margin-top:12px">Meta has not granted: ${miss.join(', ')}. Reconnect with Meta and accept every permission to get confirmed promoted posts and Facebook reach.</p>`:'');
+}
+
 /* ---------------- digest: the whole dataset in compact form, sent to Gemini ---------------- */
-function digest(d,S){
-  const{F,posts,P,T}=S,ia=d.insights||{},sum=a=>a?a.reduce((x,y)=>x+(y.v||0),0):null,pst=posts.slice(0,150);
+function digestOne(d,S,withPosts){
+  const{F,posts,P,T}=S,ia=d.insights||{},pl=d.platform||'ig',sum=a=>a?a.reduce((x,y)=>x+(y.v||0),0):null,pst=posts.slice(0,150);
   const tbl=a=>a.map(x=>({name:x.k,n:x.n,median:Math.round(x.med),average:Math.round(x.avg)}));
-  return{
-    today:isoDay(new Date()),timezone:'Africa/Algiers (UTC+1)',
-    account:{username:d.profile.username,name:d.profile.name,followers:F,totalMedia:d.profile.media_count,postsAnalysed:posts.length,measurablePosts:P.length,postsWithHiddenLikes:S.hidden,oldestPost:isoDay(posts[posts.length-1].t),newestPost:isoDay(posts[0].t)},
+  const ser=a=>a&&a.length?a.map(x=>[String(x.t).slice(0,10),x.v]):null;
+  const rqm=f=>{const a=S.rq.map(f).filter(v=>v!=null);return a.length?Math.round(med(a)):null};
+  const pr=p=>({status:p.promo.status,source:p.promo.src,estimateScore:p.promo.score,ads:p.promo.ads,adsLive:p.promo.active,adReach:p.promo.paid?p.promo.paid.reach:undefined,adImpressions:p.promo.paid?p.promo.paid.impressions:undefined,adSpend:p.promo.paid?r2(p.promo.paid.spend):undefined,adClicks:p.promo.paid?p.promo.paid.clicks:undefined,paidViews:p.promo.paidViews,organicViews:p.promo.organicViews});
+  const brief=p=>({id:p.id,platform:PN[p.pl],date:isoDay(p.t),format:p.fmt,engagement:p.e,reachOrViews:p.rch||null,promo:p.promo.status});
+  const org=P.filter(p=>p.promo.status==='organic');
+  const o={
+    platform:PN[pl]||'All platforms',
+    account:{username:d.profile.username,name:d.profile.name,followers:F,following:d.profile.following??ia.following??undefined,totalMedia:d.profile.media_count,postsAnalysed:posts.length,measurablePosts:P.length,postsWithHiddenLikes:S.hidden,oldestPost:posts.length?isoDay(posts[posts.length-1].t):null,newestPost:posts.length?isoDay(posts[0].t):null},
     period:{view:PER,days:S.N,label:PERS[PER].now,thisPeriod:{posts:S.per.n,engagement:S.per.sum,typicalRatePct:r1(S.per.er),postsUnder48h:S.per.late},previousPeriod:{posts:S.per.pn,engagement:S.per.psum,typicalRatePct:r1(S.per.per)},trend:S.trend.map(x=>({from:isoDay(x.t),posts:x.n,engagement:x.v})),bestSlotsToday:PER==='day'?S.T.today.map(s=>({day:FULL[s.w],time:slotLbl(s)})):undefined},
     kpis:{engagementRatePct:r1(S.er),typicalEngagementPerPost:Math.round(S.perPost),postsPerWeekRecent:r1(S.ppw),recentWindowDays:S.W,momentumVsPreviousWindowPct:S.ratio===null?null:Math.round((S.ratio-1)*100),longestGapDays:Math.round(S.gap),healthScore:S.score,scoreParts:S.parts.map(p=>({part:p[0],points:Math.round(p[1]),max:p[2]}))},
-    timing:{source:T.src==='audience'?'follower online activity (Instagram)':'own post performance',confidence:T.conf,daysObserved:T.days||null,topSlots:T.slots.map(s=>({day:FULL[s.w],time:slotLbl(s),score:r1(s.v)})),weekdayValues:DAYS.map((D,i)=>({day:D,value:r1(T.dayV[i]),unit:T.src==='audience'?'avg % of followers online per hour':'median likes+comments',n:T.dayN[i]})),peakPctFollowersOnline:T.src==='audience'?r1(T.peakPct):null},
+    promotedVsOrganic:{detection:pl==='all'?Object.keys(RAW).map(k=>PN[k]+': '+promoMethod(k)).join(' '):promoMethod(pl),statsBasis:S.basis,confirmedPromotedPostsLeftOutOfPerformanceStats:S.leftOut,
+      groups:S.promo.map(r=>({group:r.k,posts:r.n,medianReachOrViews:r.medReach,postsWithReach:r.nReach,medianEngagement:r.medE,medianEngagementPerFollowerPct:r.medRate,medianEngagementPerReachPct:r.medPerReach,shareOfTotalReachPct:r.shareReach})),
+      promotedPosts:posts.filter(p=>p.promo.status!=='organic').slice(0,40).map(p=>({...brief(p),...pr(p)})),
+      boostCandidates:(S.boost||[]).map(p=>({...brief(p),engagementPerReachPct:r2(p.e/p.rch*100)}))},
+    timing:{source:T.src==='audience'?'follower online activity (Instagram)':'own post performance',confidence:T.conf,daysObserved:T.days||null,topSlots:T.slots.map(s=>({day:FULL[s.w],time:slotLbl(s),score:r1(s.v)})),weekdayValues:DAYS.map((D,i)=>({day:D,value:r1(T.dayV[i]),unit:T.src==='audience'?'avg % of followers online per hour':'median likes+comments',n:T.dayN[i]})),peakPctFollowersOnline:T.src==='audience'?r1(T.peakPct):null,
+      audienceOnlineByHour:T.src==='audience'?DAYS.map((D,w)=>({day:D,avgFollowersOnlineHour0to23:T.grid.slice(w*24,w*24+24).map(x=>Math.round(x))})):undefined},
     formats:tbl(S.fmts),weekdays:tbl(S.byDay).map((x,i)=>({...x,name:FULL[i]})),captionLength:tbl(S.capB),hashtags:tbl(S.tagB),
-    reachQuality:S.rq.length?{posts:S.rq.length,medianReach:Math.round(med(S.rq.map(p=>p.ins.reach||0))),medianSaves:Math.round(med(S.rq.map(p=>p.ins.saved||0))),medianShares:Math.round(med(S.rq.map(p=>p.ins.shares||0)))}:null,
+    reachQuality:S.rq.length?{posts:S.rq.length,medianReachOrViews:rqm(p=>p.rch),medianSaves:rqm(p=>p.ins&&p.ins.saved),medianShares:rqm(p=>p.ins&&p.ins.shares),medianFollowsFromPost:rqm(p=>p.ins&&p.ins.follows),medianProfileVisits:rqm(p=>p.ins&&p.ins.profile_visits)}:null,
+    topOrganicPosts:[...org].sort((a,b)=>b.e-a.e).slice(0,10).map(brief),weakestOrganicPosts:[...org].sort((a,b)=>a.e-b.e).slice(0,5).map(brief),
     demographics:{age:ia.age||null,gender:ia.gender||null,topCities:ia.city||null,topCountries:ia.country||null},
-    accountLast28Days:{reach:ia.reach??null,views:ia.views??null,interactions:ia.interactions??null,accountsEngaged:ia.accountsEngaged??null,profileViews:ia.profileViews??null,websiteClicks:ia.websiteClicks??null,netFollowerChange:ia.followerDays?sum(ia.followerDays):null,avgDailyReach:ia.reachDays&&ia.reachDays.length?Math.round(sum(ia.reachDays)/ia.reachDays.length):null},
-    recommendationsAlreadyShown:S.R.map(r=>r[0]),
-    posts:pst.map(p=>({date:isoDay(p.t),day:DAYS[p.wz.w],hour:p.wz.h,format:p.fmt,e:p.e,likes:p.hid?null:p.likes,comments:p.com,reach:p.ins&&p.ins.reach||undefined,saves:p.ins&&p.ins.saved||undefined,shares:p.ins&&p.ins.shares||undefined,views:p.ins&&p.ins.views||undefined,mature:p.mature,captionLength:p.capLen,hashtags:p.tags,caption:(p.caption||'').replace(/\s+/g,' ').slice(0,140)}))
+    accountLast28Days:pl==='ig'?{reach:ia.reach??null,views:ia.views??null,interactions:ia.interactions??null,likes:ia.likes??null,comments:ia.comments??null,shares:ia.shares??null,saves:ia.saves??null,accountsEngaged:ia.accountsEngaged??null,profileViews:ia.profileViews??null,websiteClicks:ia.websiteClicks??null,netFollowerChange:ia.followerDays?sum(ia.followerDays):null,avgDailyReach:ia.reachDays&&ia.reachDays.length?Math.round(sum(ia.reachDays)/ia.reachDays.length):null,dailyReach:ser(ia.reachDays),dailyFollowerChange:ser(ia.followerDays)}
+      :pl==='fb'?{pageUniqueViewers:ia.reach??null,pageMediaViews:ia.views??null,paidViews:ia.viewsSplit?ia.viewsSplit.paid:null,organicViews:ia.viewsSplit?ia.viewsSplit.organic:null,postEngagements:ia.interactions??null,newFollows:ia.newFollows??null,unfollows:ia.unfollows??null,pageViews:ia.profileViews??null,dailyViews:ser(ia.viewsDays),dailyUniqueViewers:ser(ia.reachDays),dailyNewFollows:ser(ia.followDays)}
+      :pl==='tt'?{totalLikesAllTime:ia.totalLikes??null,totalVideos:ia.totalVideos??null,following:ia.following??null,note:'TikTok API gives per-video views, likes, comments and shares only: no reach, audience, demographics or daily analytics.'}:null,
+    recommendationsAlreadyShown:S.R.map(r=>r[0])
   };
+  if(withPosts)o.posts=pst.map(p=>({id:p.id,date:isoDay(p.t),day:DAYS[p.wz.w],hour:p.wz.h,format:p.fmt,e:p.e,likes:p.hid?null:p.likes,comments:p.com,shares:p.pl==='ig'?(p.ins&&p.ins.shares):p.shr,reach:p.ins&&p.ins.reach!=null?p.ins.reach:undefined,views:p.ins&&p.ins.views!=null?p.ins.views:undefined,saves:p.ins&&p.ins.saved!=null?p.ins.saved:undefined,follows:p.ins&&p.ins.follows,profileVisits:p.ins&&p.ins.profile_visits,avgWatchSec:p.ins&&p.ins.ig_reels_avg_watch_time!=null?r1(p.ins.ig_reels_avg_watch_time/1000):undefined,totalWatchSec:p.ins&&p.ins.ig_reels_video_view_total_time!=null?Math.round(p.ins.ig_reels_video_view_total_time/1000):undefined,durationSec:p.duration||undefined,engagementPerReachPct:p.rch>0&&!p.hid?r2(p.e/p.rch*100):undefined,mature:p.mature,captionLength:p.capLen,hashtags:p.tags,caption:(p.caption||'').replace(/\s+/g,' ').slice(0,240),promo:pr(p)}));
+  return o;
+}
+function buildSUM(){
+  const platforms={};
+  Object.keys(RAW).forEach(k=>{const v=buildView(k);platforms[PNK[k]]=digestOne(v,k===PLAT?S:analyze(v),true)});
+  return{today:isoDay(new Date()),timezone:'Africa/Algiers (UTC+1)',view:PLAT,viewName:PN[PLAT],connectedPlatforms:Object.keys(RAW).map(k=>PN[k]),platformsThatFailedToLoad:Object.keys(ERR).map(k=>PN[k]+': '+ERR[k]),
+    definitions:{engagement:'Instagram: likes + comments. Facebook and TikTok: reactions/likes + comments + shares.',reach:'Unique accounts reached (Instagram, Facebook). TikTok exposes views only.',promo:'promo.status paid = promoted (confirmed when source is meta_ads, meta_insights or manual); likely_paid = statistical estimate; organic = not promoted (confirmed only when source is not estimate).',mature:'Posts under 48 hours old are still collecting engagement and are excluded from performance stats.',statsBasis:S.basis==='all'?'all posts':S.basis==='strict'?'organic posts only (likely-promoted estimates also excluded)':'organic posts (confirmed promoted posts excluded)'},
+    activeView:digestOne(DATA,S,false),platforms};
 }
 
 /* ---------------- reports ---------------- */
-const REPS=()=>[['full',PERS[PER].adj+' report'],['plan',PERS[PER].plan],['timing','Timing & audience'],['content','Content & captions'],['growth','Growth']];
+const REPS=()=>[['full',PERS[PER].adj+' report'],['plan',PERS[PER].plan],['timing','Timing & audience'],['content','Content & captions'],['growth','Growth'],['promo','Promoted vs organic'],...(Object.keys(RAW).length>1?[['compare','Platforms']]:[])];
 let REP='full',busy=false;
-function drawPills(){$('#repS').textContent=`${PERS[PER].adj} view. Built from every post, the audience data and your account insights.`;$('#pills').innerHTML=REPS().map(([id,n])=>`<button class="pill" type="button" data-rep="${id}" aria-pressed="${id===REP}">${n}</button>`).join('')}
+function drawPills(){if(!REPS().some(x=>x[0]===REP))REP='full';$('#repS').textContent=`${PERS[PER].adj} view. Built from every post, the audience data and your account insights.`;$('#pills').innerHTML=REPS().map(([id,n])=>`<button class="pill" type="button" data-rep="${id}" aria-pressed="${id===REP}">${n}</button>`).join('')}
 $('#pills').addEventListener('click',e=>{const b=e.target.closest('[data-rep]');if(!b)return;REP=b.dataset.rep;drawPills();showSaved()});
 function showRep(mdText,meta,name){
   const el=$('#rep');el.hidden=false;
   el.innerHTML=`<div class="repbar"><span class="muted sm">${esc(meta)}</span><span class="acts"><button class="btn ghost sm2" type="button" id="cpy">Copy</button><button class="btn ghost sm2" type="button" id="dl">Download</button></span></div><div class="md">${md(mdText)}</div>`;
   $('#cpy').onclick=async()=>{try{await navigator.clipboard.writeText(mdText);$('#cpy').textContent='Copied'}catch{$('#cpy').textContent='Copy failed'}setTimeout(()=>{const c=$('#cpy');if(c)c.textContent='Copy'},1500)};
-  $('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([mdText],{type:'text/markdown'}));a.download=`vexalytics-${name}-${PER}-${isoDay(new Date())}.md`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
+  $('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([mdText],{type:'text/markdown'}));a.download=`vexalytics-${PLAT}-${name}-${PER}-${isoDay(new Date())}.md`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 }
 function showSaved(){
-  const raw=LS.g('vx-rep-'+REP+'-'+PER);if(!raw){$('#rep').hidden=true;return}
+  const raw=LS.g('vx-rep-'+PLAT+'-'+REP+'-'+PER);if(!raw){$('#rep').hidden=true;return}
   try{const o=JSON.parse(raw);showRep(o.md,`${o.src} · saved ${new Date(o.t).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'})}`,REP)}catch{$('#rep').hidden=true}
 }
-function saveRep(md,src){LS.s('vx-rep-'+REP+'-'+PER,JSON.stringify({md,src,t:Date.now()}))}
+function saveRep(md,src){LS.s('vx-rep-'+PLAT+'-'+REP+'-'+PER,JSON.stringify({md,src,t:Date.now()}))}
 $('#repAI').onclick=async()=>{
   if(busy||!AI.has)return;busy=true;const b=$('#repAI');b.disabled=true;b.textContent='Reading all your data…';
   $('#rep').hidden=false;$('#rep').innerHTML='<div class="load" style="margin:30px auto"></div><p class="muted sm" style="text-align:center">The AI is analysing every post. This can take up to a minute.</p>';
@@ -768,13 +986,16 @@ $('#repAI').onclick=async()=>{
 };
 $('#repLoc').onclick=()=>{saveRep(localReport(REP),'Instant report');showSaved()};
 function localReport(type){
-  const{F,posts,P,T,byDay,fmts,capB,tagB,R,per}=S,u=DATA.profile.username,L=[],P0=PERS[PER];
+  const{F,posts,P,T,byDay,fmts,capB,tagB,R,per}=S,u=PLAT==='all'?'all platforms':DATA.profile.username,L=[],P0=PERS[PER];
   const row=a=>`| ${a.k} | ${a.n} | ${Math.round(a.med)} | ${Math.round(a.avg)} |`;
   const tb=(h,a)=>[`| ${h} | Posts | Typical (median) | Average |`,'|---|---|---|---|',...a.map(row)];
   const pc=(x,y)=>y?`${x>=y?'+':''}${Math.round((x/y-1)*100)}%`:'n/a',rng=s=>s.len===1?hh(s.h):hh(s.h)+'–'+hh(s.h+s.len);
-  L.push(`# ${P0.adj} data report for @${u}`,`*${new Date().toLocaleDateString('en-GB',{dateStyle:'long'})} · ${P.length} measurable posts of ${posts.length} loaded · Algeria time*`,'');
+  L.push(`# ${P0.adj} data report for ${PLAT==='all'?u:'@'+u} (${PNAME})`,`*${new Date().toLocaleDateString('en-GB',{dateStyle:'long'})} · ${P.length} measurable posts of ${posts.length} loaded · Algeria time*`,'');
   L.push(`## ${P0.now} vs ${P0.prev}`,'| Metric | Now | Before | Change |','|---|---|---|---|',`| Posts | ${per.n} | ${per.pn} | ${pc(per.n,per.pn)} |`,`| Engagement (likes + comments) | ${per.sum.toLocaleString()} | ${per.psum.toLocaleString()} | ${pc(per.sum,per.psum)} |`,`| Typical engagement rate | ${per.n?per.er.toFixed(2)+'%':'n/a'} | ${per.pn?per.per.toFixed(2)+'%':'n/a'} | ${pc(per.er,per.per)} |`,'');
   L.push('## Account snapshot','| Metric | Value |','|---|---|',`| Followers | ${F.toLocaleString()} |`,`| Engagement rate (typical, last 20 posts) | ${S.er.toFixed(2)}% |`,`| Typical likes + comments per post | ${Math.round(S.perPost)} |`,`| Posts per week (last ${S.W} days) | ${S.ppw.toFixed(1)} |`,`| Longest recent gap | ${Math.round(S.gap)} days |`,`| Posting health score | ${S.score}/100 |`,'');
+  {const pr=S.promo.filter((r,i)=>i===0||r.n>0),pp=posts.filter(p=>p.promo.status!=='organic').slice(0,10);
+  L.push('## Promoted vs organic',promoMethod(PLAT),'','| Group | Posts | Typical reach/views | Typical engagement | Engagement per reach | Share of reach |','|---|---|---|---|---|---|',...pr.map(r=>`| ${r.k} | ${r.n} | ${r.medReach==null?'n/a':r.medReach.toLocaleString()} | ${r.medE} | ${r.medPerReach==null?'n/a':r.medPerReach+'%'} | ${r.shareReach==null?'n/a':r.shareReach+'%'} |`),'');
+  if(pp.length)L.push('Promoted posts (newest first):','',...pp.map(p=>`- ${PN[p.pl]} ${p.fmt} of ${isoDay(p.t)}: ${p.promo.status==='paid'?'promoted':'likely promoted (estimate)'}, ${p.rch?p.rk+' '+p.rch.toLocaleString()+', ':''}engagement ${p.e}`),'');}
   L.push('## Best times (all history)',T.src==='audience'?`Based on ${T.days} days of follower activity (confidence: ${T.conf}).`:`Instagram sent no follower activity, so this uses your own posts (confidence: ${T.conf}).`,'',...T.slots.map((s,i)=>`${i+1}. **${FULL[s.w]} ${slotLbl(s)}**`),'');
   L.push('## Formats',...tb('Format',fmts),'','## Weekdays',...tb('Day',byDay.map((x,i)=>({...x,k:FULL[i]}))),'','## Captions',...tb('Caption length',capB),'',...tb('Hashtags',tagB),'');
   L.push('## Top posts','| Date | Format | Likes + comments | Link |','|---|---|---|---|',...[...P].sort((a,b)=>b.e-a.e).slice(0,5).map(p=>`| ${isoDay(p.t)} | ${p.fmt} | ${p.e} | [open](${p.permalink}) |`),'','## Weakest posts','| Date | Format | Likes + comments | Link |','|---|---|---|---|',...[...P].sort((a,b)=>a.e-b.e).slice(0,3).map(p=>`| ${isoDay(p.t)} | ${p.fmt} | ${p.e} | [open](${p.permalink}) |`),'');
@@ -793,11 +1014,11 @@ function localReport(type){
 
 /* ---------------- agent chat ---------------- */
 let CHAT=[];try{CHAT=JSON.parse(LS.g('vx-chat')||'[]')}catch{}
-const SUGG=[()=>PER==='day'?'What should I post today?':PER==='month'?'Plan my content for this month':'What should I post this week?','Why did my weakest post underperform?','Which format should I focus on?','Write 5 captions in the style of my best post'];
+const SUGG=[()=>PER==='day'?'What should I post today?':PER==='month'?'Plan my content for this month':'What should I post this week?','Which posts were promoted, and did it pay off?','Why did my weakest post underperform?','Which format should I focus on?','Write 5 captions in the style of my best post'];
 const saveChat=()=>LS.s('vx-chat',JSON.stringify(CHAT.filter(m=>!m.pending).slice(-40)));
 function drawChat(){
   const el=$('#msgs');
-  if(!CHAT.length){el.innerHTML=`<div class="empty"><div class="ai-ic">Vex</div><p class="muted" style="margin-top:8px">Your analytics agent. It has read every post, your best times and your audience data.</p><div class="sugg">${SUGG.map(x=>typeof x==='function'?x():x).map(s=>`<button type="button" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>`}
+  if(!CHAT.length){el.innerHTML=`<div class="empty"><div class="ai-ic">Vex</div><p class="muted" style="margin-top:8px">Your analytics agent. It has read every post on every connected platform, including which ones were promoted.</p><div class="sugg">${SUGG.map(x=>typeof x==='function'?x():x).map(s=>`<button type="button" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>`}
   else el.innerHTML=CHAT.map(m=>m.role==='user'?`<div class="msg u">${esc(m.content)}</div>`:m.pending?`<div class="msg a"><span class="dots"><i></i><i></i><i></i></span></div>`:m.err?`<div class="msg e">${esc(m.content)}</div>`:`<div class="msg a md">${md(m.content)}${m.fb?`<div class="via">Answered by ${esc(m.via)} because your main model was unavailable.</div>`:''}</div>`).join('');
   el.scrollTop=el.scrollHeight;
 }
@@ -874,7 +1095,8 @@ $('#tadd').onclick=async()=>{
   catch(e){tstat(e.message,'bad')}
 };
 $('#tlist').addEventListener('click',async e=>{const b=e.target.closest('[data-rev]');if(!b||!confirm('Revoke this access code? That person is signed out right away.'))return;try{drawTeam((await teamCall({del:b.dataset.rev})).members)}catch(er){tstat(er.message,'bad')}});
-$('#align').onchange=function(){LS.s('vx-align',this.value);render(DATA)};
+$('#align').onchange=function(){LS.s('vx-align',this.value);refresh()};
+$('#basis').onchange=function(){LS.s('vx-basis',this.value);refresh()};
 
 /* ---------------- settings: appearance (mode + themes) ---------------- */
 (function(){
