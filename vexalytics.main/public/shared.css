@@ -1,0 +1,14 @@
+:root{--bg:#0d0610;--card:#170b1c;--line:#2e1a35;--ink:#fbf4fa;--mute:#b9a3bd;--a1:#ff2d95;--a2:#b4137a;--ok:#3ddc97;--warn:#ffb020;--bad:#ff5470;--nav:#0d0610e6;--field:#0d0610;--glow:#4a0f3c55;--soft:#e4d3e6;color-scheme:dark}
+/* Light mode: soft dusty rose, not bright white, so photos and gradients still show through */
+html[data-m=light]{--bg:#e9dce6;--card:#f3e9f0e6;--line:#cdb5c9;--ink:#2a1030;--mute:#6a516d;--a1:#d81b7e;--a2:#a30f68;--ok:#157a4f;--warn:#9a5a00;--bad:#b3243f;--nav:#ecdfe9e6;--field:#f7eff5;--glow:#d81b7e26;--soft:#4a3350;color-scheme:light}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:radial-gradient(900px 500px at 80% -10%,var(--glow),transparent),var(--bg);color:var(--ink);font:16px/1.55 'Inter',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 22px;font:600 15px inherit;font-family:inherit;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;box-shadow:0 8px 24px #ff2d9533;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 12px 30px #ff2d9555}.btn.ghost{background:transparent;border:1px solid var(--line);box-shadow:none;color:var(--ink)}.btn.sm{padding:8px 14px;font-size:14px}
+.lang{display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}.lang button{border:0;background:none;color:var(--mute);font:600 12px inherit;font-family:inherit;padding:5px 9px;border-radius:7px;cursor:pointer}.lang button.on{background:var(--a1);color:#fff}
+.thm{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+input,select{width:100%;background:var(--field);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:12px 14px;font:inherit;margin-top:10px}input:focus,select:focus{outline:2px solid var(--a1);border-color:transparent}
+.err{color:var(--bad);font-size:14px;min-height:20px;margin-top:8px}
