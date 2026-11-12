@@ -1,0 +1,106 @@
+<!doctype html><html lang="en" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vexalytics — Social & website analytics</title><meta name="description" content="Instagram, Facebook, TikTok and website analytics in one dashboard.">
+<meta name="theme-color" content="#fbf6fb"><link rel="icon" href="/favicon-32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('vx_theme')||'light'}catch(e){}</script>
+<link rel="stylesheet" href="/shared.css">
+<style>
+nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:var(--nav);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+nav .wrap{display:flex;align-items:center;gap:16px;height:68px}nav .brand img{height:32px}.links{display:flex;gap:6px;margin-inline:auto}.links a{color:var(--mute);font-size:15px;font-weight:500;padding:8px 14px;border-radius:10px;transition:color .15s,background .15s}.links a:hover{color:var(--ink);background:var(--alt)}
+.acts{display:flex;gap:10px;align-items:center}
+
+/* hero */
+.hero{position:relative;overflow:hidden;isolation:isolate;padding:104px 0 112px;min-height:560px;display:flex;align-items:center}
+.hero:before{content:"";position:absolute;inset:0;z-index:-2;background:url(/hero.jpg) center/cover no-repeat}
+.hero:after{content:"";position:absolute;inset:0;z-index:-1;--d:90deg;background:linear-gradient(var(--d),color-mix(in srgb,var(--hero-ov) calc(var(--hero-a)*100%),transparent) 0%,color-mix(in srgb,var(--hero-ov) 55%,transparent) 42%,color-mix(in srgb,var(--hero-ov) calc(var(--hero-b)*100%),transparent) 100%),linear-gradient(180deg,transparent 70%,var(--bg))}
+[dir=rtl] .hero:after{--d:270deg}
+.hero .wrap{width:100%}.hero-in{max-width:640px}
+.hero h1{font-size:clamp(36px,5.6vw,62px);line-height:1.1;letter-spacing:-.025em;font-weight:800}
+.hero h1 span{display:block}.hero h1 .g{background:linear-gradient(135deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
+.hero p{color:var(--ink2);font-size:clamp(16px,2vw,19px);line-height:1.65;max-width:520px;margin:22px 0 34px}
+.hero .row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn.lg{padding:16px 30px;font-size:16px;border-radius:14px;gap:10px;position:relative;overflow:hidden}
+.btn.lg:not(.ghost){box-shadow:0 12px 30px var(--glow),inset 0 1px 0 #ffffff55}
+.btn.lg:not(.ghost):before{content:"";position:absolute;top:0;bottom:0;width:60%;inset-inline-start:-80%;background:linear-gradient(105deg,transparent,#ffffff40,transparent);transition:inset-inline-start .6s}
+.btn.lg:not(.ghost):hover:before{inset-inline-start:130%}.btn.lg:not(.ghost):hover{transform:translateY(-2px);box-shadow:0 16px 38px var(--glow),inset 0 1px 0 #ffffff55}
+.btn.lg.ghost{background:var(--card);border:1.5px solid var(--line);box-shadow:var(--shadow)}.btn.lg.ghost:hover{border-color:var(--a1);color:var(--a1);transform:translateY(-2px)}
+.btn svg{width:18px;height:18px;flex:none;transition:transform .2s}.btn:hover svg.arr{transform:translateX(3px)}[dir=rtl] .btn svg.arr{transform:scaleX(-1)}[dir=rtl] .btn:hover svg.arr{transform:scaleX(-1) translateX(3px)}
+.trial{display:inline-flex;align-items:center;gap:8px;margin-top:22px;color:var(--mute);font-size:14px}.trial:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 22%,transparent)}
+
+/* sections */
+section{padding:84px 0}h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;font-weight:800;margin-bottom:44px;text-align:center}
+h2:after{content:"";display:block;width:48px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--a1),var(--a2));margin:14px auto 0}
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+#fg{grid-template-columns:repeat(3,1fr)}
+.feat{position:relative;padding:28px;border-radius:20px;box-shadow:var(--shadow);transition:transform .2s,border-color .2s,box-shadow .2s;overflow:hidden}
+.feat:before{content:"";position:absolute;top:0;inset-inline:0;height:3px;background:linear-gradient(90deg,var(--a1),var(--a2));opacity:0;transition:opacity .2s}
+.feat:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--a1) 45%,var(--line))}.feat:hover:before{opacity:1}
+.card h3{font-size:18px;margin:18px 0 8px;font-weight:700}.card p{color:var(--mute);font-size:15px;line-height:1.6}
+.ic{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--a1) 16%,transparent),color-mix(in srgb,var(--a2) 8%,transparent));border:1px solid color-mix(in srgb,var(--a1) 30%,transparent);display:grid;place-items:center;color:var(--a1)}
+.ic svg{width:25px;height:25px}
+#how{background:var(--alt)}.step b{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;margin-bottom:6px;box-shadow:0 6px 16px var(--glow)}.step h3{margin-top:12px}
+.tog{display:flex;justify-content:center;gap:6px;margin:-18px auto 38px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;width:max-content;max-width:100%}.tog button{border:0;background:none;color:var(--mute);font:600 14px inherit;font-family:inherit;padding:10px 20px;border-radius:10px;cursor:pointer}.tog button.on{background:var(--a1);color:#fff}.tog button.on em{color:#fff}.tog em{font-style:normal;font-size:12px;color:var(--ok);margin-inline-start:6px}
+.plan{position:relative;display:flex;flex-direction:column;padding:28px;box-shadow:var(--shadow)}.plan.pop{border-color:var(--a1);box-shadow:0 0 0 1px var(--a1),0 20px 50px var(--glow)}.plan .badge{position:absolute;top:-12px;inset-inline-start:24px;background:var(--a1);color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px}
+.plan h3{margin-top:0}.price{font-size:40px;font-weight:800;margin:12px 0 2px;letter-spacing:-.02em}.price small{font-size:14px;color:var(--mute);font-weight:500}.plan ul{list-style:none;padding:0;margin:18px 0 24px;flex:1}.plan li{padding:7px 0;color:var(--ink2);font-size:15px;display:flex;align-items:center;gap:10px}.plan li:before{content:"✓";flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);font-size:12px;font-weight:800}
+.note{text-align:center;color:var(--mute);font-size:14px;margin-top:24px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:12px}summary{cursor:pointer;font-weight:600}details p{color:var(--mute);margin-top:10px;font-size:15px}
+footer{border-top:1px solid var(--line);padding:40px 0 calc(30px + env(safe-area-inset-bottom));color:var(--mute);font-size:14px}footer .wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center}footer img{height:28px;margin-bottom:8px}footer nav{all:unset;display:flex;gap:18px;flex-wrap:wrap}
+.modal{position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(4px);display:none;place-items:center;z-index:50;padding:16px}.modal.open{display:grid}.box{width:min(420px,100%);position:relative;box-shadow:0 30px 80px #0004}.box h3{font-size:22px;margin-top:0}.x{position:absolute;top:12px;inset-inline-end:14px;background:none;border:0;color:var(--mute);font-size:24px;cursor:pointer}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--alt);border:1px solid var(--line);border-radius:12px;padding:4px;margin:2px 28px 12px 0}[dir=rtl] .seg{margin:2px 0 12px 28px}.seg button{border:0;background:none;color:var(--mute);font:600 14px inherit;font-family:inherit;padding:10px;border-radius:9px;cursor:pointer}.seg button.on{background:var(--card);color:var(--a1);box-shadow:var(--shadow)}
+.owner{border-top:3px solid var(--a2)}.obadge{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;color:var(--a2);background:color-mix(in srgb,var(--a2) 10%,transparent);padding:6px 12px;border-radius:99px}:root[data-theme=dark] .obadge{color:var(--g1)}.obadge svg{width:18px;height:18px}.ohint{color:var(--mute);font-size:14px;margin-top:12px}.own{opacity:.7}.own:hover{opacity:1;color:var(--a1)}
+.lnk{background:none;border:0;color:var(--a1);font:inherit;cursor:pointer;padding:0}.sw{margin-top:14px;font-size:14px;color:var(--mute);text-align:center}
+@media(max-width:900px){#fg{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.links{display:none}nav .wrap{gap:8px;height:60px}nav .brand{margin-inline-end:auto}.hero{padding:56px 0 64px;min-height:0}.acts .btn.ghost{display:none}section{padding:56px 0}#fg{grid-template-columns:1fr}.hero:after{background:linear-gradient(180deg,color-mix(in srgb,var(--hero-ov) 88%,transparent),color-mix(in srgb,var(--hero-ov) 72%,transparent) 70%,var(--bg))}.btn.lg{flex:1 1 auto}}
+</style></head><body>
+<nav><div class="wrap"><a class="brand" href="/"><img class="logo-l" src="/logo-wordmark-dark.png" alt="Vexalytics"><img class="logo-d" src="/logo-wordmark.png" alt="Vexalytics"></a>
+<div class="links"><a href="#features" data-i="features"></a><a href="#pricing" data-i="pricing"></a><a href="#how" data-i="how"></a><a href="#policy" data-i="policy"></a></div>
+<div class="acts">
+<div class="lang"><button class="ibtn" type="button" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.6 4 5.7 4 9s-1.4 6.4-4 9c-2.6-2.6-4-5.7-4-9s1.4-6.4 4-9z"/></svg><span class="cur">EN</span></button>
+<div class="menu"><button type="button" data-l="en">English</button><button type="button" data-l="fr">Français</button><button type="button" data-l="ar">العربية</button></div></div>
+<button class="ibtn th" type="button" aria-label="Toggle theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="btn ghost sm" onclick="openM('login')" data-i="login"></button><button class="btn sm" onclick="openM('signup')" data-i="start"></button></div></div></nav>
+<header class="hero"><div class="wrap"><div class="hero-in"><h1><span class="g" data-i="h1a"></span><span data-i="h1b"></span></h1><p data-i="sub"></p>
+<div class="row"><button class="btn lg" onclick="openM('signup')"><span data-i="start"></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><a class="btn lg ghost" href="#pricing"><span data-i="cta2"></span></a></div><span class="trial" data-i="trial"></span></div></div></header>
+<section id="features"><div class="wrap"><h2 data-i="features"></h2><div class="grid" id="fg"></div></div></section>
+<section id="pricing"><div class="wrap"><h2 data-i="pricing"></h2><div class="tog"><button data-p="month" class="on" data-i="monthly"></button><button data-p="year"><span data-i="yearly"></span><em data-i="save"></em></button></div><div class="grid" id="pg"></div><p class="note" data-i="payNote"></p></div></section>
+<section id="how"><div class="wrap"><h2 data-i="how"></h2><div class="grid" id="sg"></div></div></section>
+<section id="policy"><div class="wrap" style="max-width:780px"><h2 data-i="policy"></h2>
+<details id="privacy"><summary data-i="p_priv"></summary><p data-i="p_priv_t"></p></details><details id="terms"><summary data-i="p_terms"></summary><p data-i="p_terms_t"></p></details><details id="cookies"><summary data-i="p_cook"></summary><p data-i="p_cook_t"></p></details></div></section>
+<footer><div class="wrap"><div><img class="logo-l" src="/logo-wordmark-dark.png" alt="Vexalytics"><img class="logo-d" src="/logo-wordmark.png" alt="Vexalytics"><div data-i="tag"></div><div>© <span id="yr"></span> Vexalytics. <span data-i="rights"></span></div></div>
+<nav><a href="#features" data-i="features"></a><a href="#pricing" data-i="pricing"></a><a href="/privacy" data-i="privacy"></a><a href="/terms" data-i="terms"></a><a href="/cookies" data-i="cookies"></a><a href="#" class="own" onclick="openA();return false" data-i="admin"></a></nav></div></footer>
+<div class="modal" id="m" onclick="if(event.target===this)closeM()"><div class="card box"><button class="x" onclick="closeM()">×</button>
+<div class="seg"><button type="button" id="tabL" onclick="openM('login')" data-i="signin"></button><button type="button" id="tabS" onclick="openM('signup')" data-i="create"></button></div>
+<form id="f" onsubmit="return go(event)"><input id="nm" data-ph="name" autocomplete="name"><input id="em" type="email" data-ph="email" required autocomplete="email"><input id="pw" type="password" data-ph="pw" required autocomplete="current-password">
+<div class="err" id="er"></div><button class="btn" style="width:100%;margin-top:6px" id="sub"></button></form></div></div>
+<div class="modal" id="am" onclick="if(event.target===this)closeA()"><div class="card box owner"><button class="x" onclick="closeA()">×</button>
+<div class="obadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span data-i="admin"></span></div><p class="ohint" data-i="adminHint"></p>
+<form id="af" onsubmit="return goA(event)"><input id="apw" type="password" data-ph="ownerPw" required autocomplete="current-password">
+<div class="err" id="aer"></div><button class="btn" style="width:100%;margin-top:6px" data-i="adminBtn"></button></form></div></div>
+<script src="/i18n.js"></script>
+<script>
+const IC={"f1": "<rect x=\"3\" y=\"3\" width=\"7.5\" height=\"7.5\" rx=\"2\"/><rect x=\"13.5\" y=\"3\" width=\"7.5\" height=\"7.5\" rx=\"2\"/><rect x=\"3\" y=\"13.5\" width=\"7.5\" height=\"7.5\" rx=\"2\"/><rect x=\"13.5\" y=\"13.5\" width=\"7.5\" height=\"7.5\" rx=\"2\"/>", "f2": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3.5 2\"/>", "f3": "<path d=\"M8 8l-5 4 5 4M16 8l5 4-5 4M13.5 5l-3 14\"/>", "f4": "<path d=\"M3 12h4l3-8 4 16 3-8h4\"/>", "f5": "<path d=\"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z\"/><path d=\"M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z\"/>", "f6": "<rect x=\"7\" y=\"2.5\" width=\"10\" height=\"19\" rx=\"2.5\"/><path d=\"M11 18.5h2\"/>"};const F=['f1','f2','f3','f4','f5','f6'];let per='month',plans=[],mode='login';
+const $=s=>document.querySelector(s);
+function draw(){$('#fg').innerHTML=F.map(k=>`<div class="card feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg></div><h3>${T(k+'t')}</h3><p>${T(k+'d')}</p></div>`).join('');
+$('#sg').innerHTML=[1,2,3].map(n=>`<div class="card step"><b>${n}</b><h3>${T('s'+n+'t')}</h3><p>${T('s'+n+'d')}</p></div>`).join('');
+$('#pg').innerHTML=plans.map((p,i)=>`<div class="card plan ${i===1?'pop':''}">${i===1?`<span class="badge">${T('pop')}</span>`:''}<h3>${p.name}</h3><div class="price">${money(per==='year'?p.price_year:p.price_month)} <small>${T(per==='year'?'perYear':'perMonth')}</small></div>
+<ul><li>${T('sites',p.max_sites)}</li><li>${T(p.platforms>1?'plats':'plat1')}</li><li>${T(p.ai?'ai':'noai')}</li></ul><button class="btn ${i===1?'':'ghost'}" onclick="openM('signup')">${T('choose')} ${p.name}</button></div>`).join('');
+$('#yr').textContent=new Date().getFullYear()}
+initUI(()=>{draw();renderM()});
+document.querySelectorAll('.tog button').forEach(b=>b.onclick=()=>{per=b.dataset.p;document.querySelectorAll('.tog button').forEach(x=>x.classList.toggle('on',x===b));draw()});
+function openM(m){mode=m;closeA();$('#m').classList.add('open');renderM()}
+function renderM(){const sg=mode==='signup';$('#nm').style.display=sg?'':'none';$('#pw').autocomplete=sg?'new-password':'current-password';
+ $('#sub').textContent=T(sg?'create':'signin');$('#tabL').classList.toggle('on',!sg);$('#tabS').classList.toggle('on',sg);$('#er').textContent=''}
+function closeM(){$('#m').classList.remove('open')}
+function openA(){closeM();$('#am').classList.add('open');$('#aer').textContent='';setTimeout(()=>$('#apw').focus(),50)}
+function closeA(){$('#am').classList.remove('open')}
+const errMsg=j=>{const k='err_'+(j.error||'');return T(k)!==k?T(k):T('err')};
+async function go(e){e.preventDefault();$('#er').textContent='';const body={email:$('#em').value,password:$('#pw').value,name:$('#nm').value,lang:L};
+ const r=await fetch(mode==='signup'?'/api/register':'/api/ulogin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ if(r.ok)return location.href='/portal.html';$('#er').textContent=errMsg(await r.json().catch(()=>({})))}
+async function goA(e){e.preventDefault();$('#aer').textContent='';
+ const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('#apw').value})});
+ if(r.ok)return location.href='/portal.html';const j=await r.json().catch(()=>({}));$('#aer').textContent=j.error&&T('err_'+j.error)!=='err_'+j.error?T('err_'+j.error):T('err_bad_owner')}
+const path=location.pathname.slice(1);if(['privacy','terms','cookies'].includes(path)){const d=document.getElementById(path);d.open=true;setTimeout(()=>d.scrollIntoView({behavior:'smooth'}),300)}
+fetch('/api/me').then(r=>r.ok&&r.json()).then(j=>{if(j)document.querySelector('.acts .btn.sm:last-child').onclick=()=>location.href='/portal.html'}).catch(()=>{});
+plans=[{name:'Starter',price_month:1900,price_year:19000,max_sites:1,platforms:1,ai:false},{name:'Growth',price_month:4900,price_year:49000,max_sites:3,platforms:3,ai:true},{name:'Pro',price_month:9900,price_year:99000,max_sites:10,platforms:3,ai:true}];
+applyLang(draw);fetch('/api/plans').then(r=>r.json()).then(j=>{if(j.plans&&j.plans.length){plans=j.plans;draw()}}).catch(()=>{});
+</script></body></html>

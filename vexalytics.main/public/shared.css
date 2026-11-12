@@ -1,0 +1,28 @@
+/* Light is the default theme. Dark applies with <html data-theme="dark"> */
+:root{--bg:#fbf6fb;--card:#ffffff;--alt:#f5ecf6;--line:#eadbed;--ink:#1d1022;--ink2:#4a3a50;--mute:#6f5c75;--a1:#ff2d95;--a2:#b4137a;--ok:#0f9d68;--warn:#c47a00;--bad:#e03357;
+--field:#ffffff;--nav:#fbf6fbd9;--shadow:0 10px 30px #5a1a4a14;--glow:#ff2d9540;--g1:#ff2d95;--g2:#b4137a;--overlay:#1d102266;
+--hero-ov:#fbf6fb;--hero-a:.86;--hero-b:.05;color-scheme:light}
+:root[data-theme=dark]{--bg:#0d0610;--card:#170b1c;--alt:#12081766;--line:#2e1a35;--ink:#fbf4fa;--ink2:#e4d3e6;--mute:#b9a3bd;--ok:#3ddc97;--warn:#ffb020;--bad:#ff5470;
+--field:#0d0610;--nav:#0d0610cc;--shadow:0 10px 30px #0006;--glow:#ff2d9555;--g1:#ff7ac0;--g2:#ff2d95;--overlay:#000b;
+--hero-ov:#0d0610;--hero-a:.8;--hero-b:.12;color-scheme:dark}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:radial-gradient(900px 500px at 80% -10%,#ff2d9518,transparent),var(--bg);color:var(--ink);font:16px/1.55 'Inter',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+:root[data-theme=dark] body{background:radial-gradient(900px 500px at 80% -10%,#4a0f3c55,transparent),var(--bg)}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.logo-d{display:none}:root[data-theme=dark] .logo-l{display:none}:root[data-theme=dark] .logo-d{display:block}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 22px;font:600 15px inherit;font-family:inherit;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;box-shadow:0 8px 24px var(--glow);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 12px 30px var(--glow)}.btn.ghost{background:transparent;border:1px solid var(--line);box-shadow:none;color:var(--ink)}.btn.ghost:hover{border-color:var(--a1);box-shadow:none}.btn.sm{padding:8px 14px;font-size:14px}
+
+/* icon buttons: theme toggle + language globe */
+.ibtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;min-width:38px;padding:0 10px;border-radius:11px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font:600 13px inherit;font-family:inherit;transition:border-color .15s,background .15s}
+.ibtn:hover{border-color:var(--a1)}.ibtn svg{width:19px;height:19px;flex:none}
+.th .sun{display:none}:root[data-theme=dark] .th .sun{display:block}:root[data-theme=dark] .th .moon{display:none}
+.lang{position:relative}.lang .menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:var(--shadow);display:none;z-index:40}
+.lang.open .menu{display:block}.lang .menu button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;border:0;background:none;color:var(--ink);font:500 14px inherit;font-family:inherit;padding:9px 12px;border-radius:9px;cursor:pointer;text-align:start}
+.lang .menu button:hover{background:var(--alt)}.lang .menu button.on{color:var(--a1);font-weight:700}.lang .menu button.on:after{content:"";width:7px;height:7px;border-radius:50%;background:var(--a1)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+input,select{width:100%;background:var(--field);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:12px 14px;font:inherit;margin-top:10px}input:focus,select:focus{outline:2px solid var(--a1);border-color:transparent}
+.err{color:var(--bad);font-size:14px;min-height:20px;margin-top:8px}
