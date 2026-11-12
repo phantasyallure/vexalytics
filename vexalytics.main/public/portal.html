@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Vexalytics</title><meta name="theme-color" content="#0d0610">
+<link rel="icon" href="/favicon-32.png"><link rel="stylesheet" href="/shared.css">
+<style>
+header{position:sticky;top:0;z-index:10;background:var(--nav);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}header .wrap{display:flex;align-items:center;gap:12px;height:60px}header img{height:28px}.sp{flex:1}
+main{padding:36px 0 calc(60px + env(safe-area-inset-bottom));max-width:640px}h2{font-size:26px;margin:0 0 6px}p.m{color:var(--mute);font-size:14px}
+.pl{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}.pl:last-of-type{border:0}.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;margin-inline-start:8px}.ok{background:#3ddc9722;color:var(--ok)}.no{background:#8a6a9022;color:var(--mute)}
+.go{margin-top:18px;width:100%;padding:15px 22px;font-size:16px}.go[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+</style></head><body>
+<header><div class="wrap"><a href="/"><img src="/logo-wordmark.png" alt="Vexalytics"></a><span class="sp"></span><div class="lang"><button data-l="en">EN</button><button data-l="fr">FR</button><button data-l="ar">ع</button></div><button class="thm" id="thm" type="button" aria-label="Theme"></button><a class="btn ghost sm" href="/api/signout" data-i="logout"></a></div></header>
+<main class="wrap"><h2 id="t"></h2><p class="m" data-i="connD" style="margin-bottom:18px"></p><div class="card" id="c"></div><button class="btn go" id="go" onclick="location.href='/app.html'"></button><p class="m" id="hint" style="margin-top:10px;text-align:center"></p></main>
+<script src="/i18n.js"></script>
+<script>
+const $=s=>document.querySelector(s);let S={};
+async function boot(){try{S=await(await fetch('/api/status')).json()}catch{S={}}
+ if(!S.authed)return location.replace('/');initTheme();applyLang(draw)}
+function draw(){const p=S.plats||{},meta=p.ig||p.fb,ok=meta||p.tt,
+ row=(n,on,url,lab)=>`<div class="pl"><span>${n}<span class="pill ${on?'ok':'no'}">${T(on?'connected':'notConn')}</span></span><a class="btn sm ${on?'ghost':''}" href="${url}">${on?'↻':lab}</a></div>`;
+ $('#t').textContent=T('conn');
+ $('#c').innerHTML=row('Instagram + Facebook',meta,'/api/login',T('connectMeta'))+row('TikTok',p.tt,'/api/ttlogin',T('connectTT'));
+ const g=$('#go');g.textContent=T('openDash2')+' →';g.disabled=!ok;$('#hint').textContent=ok?'':T('connectFirst')}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.l,draw));
+boot();
+</script></body></html>
