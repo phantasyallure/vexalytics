@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Vexalytics</title><meta name="theme-color" content="#150a11">
+<link rel="icon" href="/favicon-32.png"><link rel="stylesheet" href="/shared.css">
+<style>
+header{position:sticky;top:0;z-index:10;background:var(--nav);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}header .wrap{display:flex;align-items:center;gap:10px;height:60px}header img{height:28px}.sp{flex:1}
+main{padding:32px 0 calc(60px + env(safe-area-inset-bottom));max-width:640px}h2{font-size:clamp(22px,6vw,26px);margin:0 0 6px}p.m{color:var(--mute);font-size:14px}
+.pl{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}.pl:last-child{border:0}.pl b{display:block;font-weight:600}.pl small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;margin-inline-start:8px;white-space:nowrap}.ok{background:#4ade9b22;color:var(--ok)}.no{background:#8a6a9022;color:var(--mute)}
+.go{margin-top:18px;width:100%;padding:15px 22px;font-size:16px}.go[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+.opt{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:14px;margin-top:10px;cursor:pointer;background:var(--field)}.opt input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--a1)}.opt.on{border-color:var(--a1);box-shadow:0 0 0 1px var(--a1)}
+@media(max-width:520px){header .wrap{height:56px;gap:6px}header img{height:24px}.lang button{padding:5px 7px}.pl{flex-wrap:wrap}.pl>.btn{width:100%}main{padding-top:22px}}
+@media(max-width:360px){header .btn.sm{padding:7px 9px;font-size:13px}}
+</style></head><body>
+<header><div class="wrap"><a href="/"><img src="/logo-wordmark.png" alt="Vexalytics"></a><span class="sp"></span><div class="lang"><button data-l="en">EN</button><button data-l="fr">FR</button><button data-l="ar">ع</button></div><button class="thm" id="thm" type="button" aria-label="Theme"></button><a class="btn ghost sm" href="/api/signout" data-i="logout"></a></div></header>
+<main class="wrap"><h2 id="t"></h2><p class="m" id="d" style="margin-bottom:18px"></p><div class="card" id="c"></div><button class="btn go" id="go" onclick="location.href='/app.html'"></button><p class="m" id="hint" style="margin-top:10px;text-align:center"></p></main>
+<script src="/i18n.js"></script>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let S={},pick=null,sel='';
+async function boot(){try{S=await(await fetch('/api/status')).json()}catch{S={}}
+ if(!S.authed)return location.replace('/');initTheme();
+ if(new URLSearchParams(location.search).get('pick')){try{pick=(await(await fetch('/api/pages')).json()).pages||[]}catch{pick=[]}if(!pick.length)pick=null;else sel=pick[0].id}
+ applyLang(draw)}
+function draw(){
+ if(pick)return drawPick();
+ const p=S.plats||{},meta=p.ig||p.fb,ok=meta||p.tt,nm=(S.names&&(S.names.meta||S.names.fb))||'',
+ row=(n,on,url,lab,sub)=>`<div class="pl"><span><b>${n}<span class="pill ${on?'ok':'no'}">${T(on?'connected':'notConn')}</span></b>${sub?`<small>${esc(sub)}</small>`:''}</span><a class="btn sm ${on?'ghost':''}" href="${url}">${lab}</a></div>`;
+ $('#t').textContent=T('conn');$('#d').textContent=T('connD');
+ $('#c').innerHTML=row('Instagram + Facebook',meta,'/api/login',meta?T('change'):T('connectMeta'),meta&&nm?T('connectedAs')+' '+nm:'')+row('TikTok',p.tt,'/api/ttlogin',p.tt?'↻':T('connectTT'));
+ const g=$('#go');g.style.display='';g.textContent=T('openDash2')+' →';g.disabled=!ok;g.onclick=()=>location.href='/app.html';$('#hint').textContent=ok?'':T('connectFirst')}
+function drawPick(){
+ $('#t').textContent=T('pickT');$('#d').textContent=T('pickD');$('#hint').textContent='';
+ $('#c').innerHTML=pick.map(p=>`<label class="opt ${p.id===sel?'on':''}"><input type="radio" name="pg" value="${esc(p.id)}" ${p.id===sel?'checked':''}><span><b style="font-weight:600">${esc(p.name)}</b><small style="display:block;color:var(--mute);font-size:13px">${p.ig?'Instagram: @'+esc(p.ig):T('noIg')}</small></span></label>`).join('');
+ $('#c').onchange=e=>{sel=e.target.value;drawPick()};
+ const g=$('#go');g.style.display='';g.disabled=false;g.textContent=T('pickBtn');g.onclick=async()=>{g.disabled=true;
+  const r=await fetch('/api/pickpage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:sel})});
+  if(r.ok){history.replaceState(0,'','/portal.html');pick=null;S=await(await fetch('/api/status')).json();draw()}else{const j=await r.json().catch(()=>({}));$('#hint').textContent=j.error||T('err');g.disabled=false}}}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.l,draw));
+boot();
+</script></body></html>
